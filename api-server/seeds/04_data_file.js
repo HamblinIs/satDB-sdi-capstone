@@ -7,7 +7,7 @@ exports.seed = async function(knex) {
   await knex('data_file').del()
   await knex('data_file').insert([
     {file_path_name: 'this is just a test'},
-    // {file_path_name: 'rowValue1'},
-    // {file_path_name: 'rowValue1'},
+    {file_path_name: 'additional data'},
+    {file_path_name: 'even more data'}
   ]);
 };

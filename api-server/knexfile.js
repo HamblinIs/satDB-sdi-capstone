@@ -3,12 +3,21 @@
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
+
+
+
 module.exports = {
 
   development: {
     client: 'pg',
     connection: 
       'postgres://postgres:docker@127.0.0.1:5432/assessment_database'
+  },
+  
+  localhost: {
+    client: "pg",
+    connection: "postgres://postgres:docker@db:5432/assessment_database"
+
   },
     
   // staging: {

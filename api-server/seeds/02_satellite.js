@@ -7,7 +7,8 @@ exports.seed = async function(knex) {
   await knex('satellite').del()
   await knex('satellite').insert([
     {orbit: 'LEO', owner: 'AFRL', name: 'ASCENT', tail_num: 17245},
-    // {orbit: 'rowValue1', owner: '', name: '', tail_num: ''},
-    // {orbit: 'rowValue1', owner: '', name: '', tail_num: ''}
+    {orbit: '???', owner: 'NASA', name: 'Rossi', tail_num: 65447},
+    {orbit: 'LEO', owner: 'NASA ', name: 'Hubble', tail_num: 45345}
+
   ]);
 };

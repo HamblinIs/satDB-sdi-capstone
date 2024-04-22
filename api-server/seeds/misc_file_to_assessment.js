@@ -7,7 +7,7 @@ exports.seed = async function(knex) {
   await knex('misc_file_to_assessment').del()
   await knex('misc_file_to_assessment').insert([
     {misc_file_id: 1, assessment_id: 1},
-    // {misc_file_id: 1, assessment_id: 1},
-    // {misc_file_id: 1, assessment_id: 1},
+    {misc_file_id: 2, assessment_id: 2},
+    {misc_file_id: 3, assessment_id: 3}
   ]);
 };
