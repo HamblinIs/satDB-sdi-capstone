@@ -1,119 +1,131 @@
 
 import React from 'react';
-// import satellite from 'satellite.js';
 import { MapContainer, TileLayer, Marker, Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+
 
 const satellite = require('satellite.js');
 
 export default function SatelliteGroundTrack() {
 
-
-    const calculateGroundTrack = (satelliteData) => {
-        // // Convert the epoch from the TLE into a JavaScript Date object
-        const epoch = new Date(satelliteData.EPOCH);
-
-        // // Define the satellite record (sgp4init) from orbital elements
-        const satrec = satellite.twoline2satrec(
-            // `1 ${satelliteData.NORAD_CAT_ID}`,
-            // `2 ${satelliteData.NORAD_CAT_ID} ${satelliteData.INCLINATION} ${satelliteData.RA_OF_ASC_NODE} ${satelliteData.ECCENTRICITY} ${satelliteData.ARG_OF_PERICENTER} ${satelliteData.MEAN_ANOMALY} ${satelliteData.MEAN_MOTION}`
-            `1 00694U 63047A   24112.92261363  .00003936  00000+0  48755-3 0  9993`,
-            `2 00694  30.3557  61.0634 0566758 167.6695 193.8430 14.07287348 34628`
-        
-        );
-
-        // // Propagate satellite using time since epoch (in minutes).
-        // const positionAndVelocity = satellite.propagate(satrec, epoch);
-
-        // // Get position and velocity vectors from the result
-        // const positionEci = positionAndVelocity.position;
-        // const velocityEci = positionAndVelocity.velocity;
-
-        // // Get GMST for the given date
-        // const gmst = satellite.gstime(epoch);
-
-        // // Get the geodetic coordinates (latitude, longitude, altitude)
-        // const geodeticCoords = satellite.eciToGeodetic(positionEci, gmst);
-
-        // // Convert radians to degrees
-        // const latitude = satellite.degreesLat(geodeticCoords.latitude);
-        // const longitude = satellite.degreesLong(geodeticCoords.longitude);
-        // const altitude = geodeticCoords.height;
-
-
-        // Calculate the period of the orbit (in minutes)
-        const period = 1440 / satelliteData.MEAN_MOTION;
-
-        // Calculate the time step (in minutes)
-        const timeStep = 1; // You can adjust this value as needed
-
-        // Initialize an array to hold the ground track coordinates
-        const groundTrack = [];
-
-        for (let t = 0; t <= period; t += timeStep) {
-            // Calculate the time since epoch
-            const timeSinceEpoch = new Date(epoch.getTime() + t * 60 * 1000);
-
-            // Propagate the satellite's position and velocity
-            const positionAndVelocity = satellite.propagate(satrec, timeSinceEpoch);
-            console.log(positionAndVelocity)
-
-            // Get the position in ECI coordinates
-            const positionEci = positionAndVelocity.position;
-
-            // Get the GMST for the given date
-            const gmst = satellite.gstime(timeSinceEpoch);
-
-            // Get the geodetic coordinates (latitude, longitude, altitude)
-            const geodeticCoords = satellite.eciToGeodetic(positionEci, gmst);
-
-            // Convert radians to degrees
-            const latitude = satellite.degreesLat(geodeticCoords.latitude);
-            const longitude = satellite.degreesLong(geodeticCoords.longitude);
-
-            // Add the coordinates to the ground track
-            groundTrack.push({ latitude, longitude });
-        }
-
-        // Now, `groundTrack` is an array of objects, each with a `latitude` and `longitude` property
-
-
-
-        return groundTrack;
-    }
-
-    // example satellite object
+     // example satellite object
     const satelliteData = {
-        "OBJECT_NAME": "ATLAS CENTAUR 2",
-        "OBJECT_ID": "1963-047A",
-        "EPOCH": "2024-04-20T20:36:38.101248",
-        "MEAN_MOTION": 14.07277452,
-        "ECCENTRICITY": 0.0566761,
-        "INCLINATION": 30.3549,
-        "RA_OF_ASC_NODE": 66.9653,
-        "ARG_OF_PERICENTER": 158.358,
-        "MEAN_ANOMALY": 204.2006,
+        "OBJECT_NAME": "GPS BIII-6  (PRN 28)",
+        "OBJECT_ID": "2023-009A",
+        "EPOCH": "2024-04-20T05:03:28.578816",
+        "MEAN_MOTION": 2.00568186,
+        "ECCENTRICITY": 0.0002049,
+        "INCLINATION": 55.0835,
+        "RA_OF_ASC_NODE": 179.4402,
+        "ARG_OF_PERICENTER": 110.4542,
+        "MEAN_ANOMALY": 258.908,
         "EPHEMERIS_TYPE": 0,
         "CLASSIFICATION_TYPE": "U",
-        "NORAD_CAT_ID": 694,
+        "NORAD_CAT_ID": 55268,
         "ELEMENT_SET_NO": 999,
-        "REV_AT_EPOCH": 3447,
-        "BSTAR": 0.00042161,
-        "MEAN_MOTION_DOT": 3.415e-5,
+        "REV_AT_EPOCH": 944,
+        "BSTAR": 0,
+        "MEAN_MOTION_DOT": 2.1e-7,
         "MEAN_MOTION_DDOT": 0
     };
 
-    console.log(calculateGroundTrack(satelliteData));
-    const groundTrack = calculateGroundTrack(satelliteData);
+    // example TLE
+    const tle = `1 55268U 23009A   24111.21074744  .00000021  00000+0  00000+0 0  9999
+    2 55268  55.0835 179.4402 0002049 110.4542 258.9080  2.00568186  9448`;
+
+    const calculateGroundTrack = (tle) => {
+        // Split the TLE into lines
+        const tleLines = tle.split('\n');
+
+        // Convert the TLE lines into a satellite record (satrec) using the satellite.js library
+        const satrec = satellite.twoline2satrec(tleLines[0].trim(), tleLines[1].trim());
+
+        // Calculate the period of the satellite's orbit in seconds
+        const period = 2 * Math.PI / satrec.no;
+
+        // Define the time step for the propagation
+        const step = period / 100;
+
+        // Get the current time in milliseconds since the Unix Epoch
+        let currentTime = (new Date()).getTime();
+
+        // Initialize arrays to store the latitudes and longitudes
+        let latitudes = [];
+        let longitudes = [];
+
+        // Loop over one orbital period
+        for (let t = 0; t < 120 * period; t += step) {
+            // Propagate the satellite's position and velocity for the current time step
+            const positionAndVelocity = satellite.propagate(satrec, new Date(currentTime + t * 1000));
+
+            // Get the position in the Earth-Centered Inertial (ECI) coordinate system
+            const positionEci = positionAndVelocity.position;
+
+            // Calculate the Greenwich Mean Sidereal Time (GMST)
+            const gmst = satellite.gstime(new Date(currentTime + t * 1000));
+
+            // Convert the position from the ECI coordinate system to the geodetic coordinate system
+            const positionGd = satellite.eciToGeodetic(positionEci, gmst);
+
+            // Convert from radians to degrees
+            const longitude = satellite.degreesLong(positionGd.longitude);
+            const latitude = satellite.degreesLat(positionGd.latitude);
+
+            longitudes.push(longitude);
+            latitudes.push(latitude);
+
+            // console.log(`Time: ${t}, Latitude: ${latitude}, Longitude: ${longitude}`);
+        }
+
+        return { longitudes, latitudes };
+    }
+
+   
+    const { longitudes, latitudes } = calculateGroundTrack(tle);
+    const positions = latitudes.map((lat, i) => [lat, longitudes[i]]);
+   
+
+
+
+
+// // Convert EPOCH to the format used in TLE
+// let epochYear = satelliteData.EPOCH.substr(0, 4).slice(-2);
+// let epochDay = (new Date(satelliteData.EPOCH) - new Date(`${epochYear}0101`)) / (1000 * 60 * 60 * 24);
+
+// // Convert MEAN_MOTION to revolutions per day
+// let meanMotion = satelliteData.MEAN_MOTION * 24;
+
+// // Convert BSTAR to the format used in TLE
+// let bstar = satelliteData.BSTAR.toExponential().replace('+', '');
+
+// const tle = `1 ${satelliteData.NORAD_CAT_ID.toString().padStart(5, '0')}U ${satelliteData.OBJECT_ID} ${epochYear}${epochDay.toFixed(8)} ${satelliteData.MEAN_MOTION_DOT.toExponential().replace('+', '').padStart(10, '0')} ${bstar} 0 ${satelliteData.ELEMENT_SET_NO.toString().padStart(4, '0')}
+// 2 ${satelliteData.NORAD_CAT_ID.toString().padStart(5, '0')} ${satelliteData.INCLINATION.toFixed(4)} ${satelliteData.RA_OF_ASC_NODE.toFixed(4)} ${satelliteData.ECCENTRICITY.toFixed(7).replace('0.', '')} ${satelliteData.ARG_OF_PERICENTER.toFixed(4)} ${satelliteData.MEAN_ANOMALY.toFixed(4)} ${meanMotion.toFixed(8)}${satelliteData.REV_AT_EPOCH.toString().padStart(5, '0')}`;
+
+
+
+
+
+
+    
+
+
   
 
     return (
-        <MapContainer center={[groundTrack[0].latitude, groundTrack[0].longitude]} zoom={2} style={{ height: "100vh", width: "100%" }}>
-            {/* <TileLayer
+
+        <MapContainer center={[0, 0]} zoom={2} style={{ height: "90vh", width: "90%", marginLeft: "5%", border: "solid black" }}>
+            
+            <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
-            <Polyline positions={groundTrack} color='red' /> */}
+
+            <Polyline positions={positions} color='red' />
+
+            {/* {positions.map((position, idx) => (
+                <Marker key={idx} position={position} />
+            ))} */}
+
         </MapContainer>
     );
 

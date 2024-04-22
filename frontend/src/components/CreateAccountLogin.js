@@ -5,12 +5,10 @@ import {useState} from 'react';
 export default function CreateAccountLogin() {
   const [userSelect, setUserSelect] = useState(0);
   const [newAccount, setNewAccount] = useState({
-      first: '',
-      last:'',
-      username: '',
-      password: '',
-      reason: ''
-  })
+      email: '',
+      password:'',
+      first_name: '',
+      last_name: ''  })
 
 
   const showChoice = (number) =>{
@@ -30,7 +28,34 @@ export default function CreateAccountLogin() {
   };
 
   const checkLogin = () =>{
+    const userName = document.getElementById("username").value
+    const passWord = document.getElementById("password").value
 
+    const loginInfo = {
+      email: userName,
+      password: passWord
+    }
+      fetch('http://localhost:3000/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({loginInfo})
+      })
+      .then(res => console.log(res))
+      .catch(error => console.error("error logging in:", error))
+  }
+
+  const registerUser = () => {
+    fetch('http://localhost:3000/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({newAccount})
+      })
+      .then(res => console.log(res))
+      .catch(error => console.error("error registering a new account:", error))
   }
 
   return (
@@ -55,7 +80,7 @@ export default function CreateAccountLogin() {
 
       :
       userSelect === 2?
-     <form onSubmit={handleSubmit}>
+     <form onSubmit={registerUser}>
         <label> First Name:
         <input type="text" id="first" onChange={handleChange} />
         </label>

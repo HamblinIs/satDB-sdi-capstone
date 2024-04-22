@@ -1,23 +1,32 @@
-import React from 'react';
+import React , { useState }from 'react';
+
 
 export default function AssessmentDetails() {
+  const [selectedAssessment, setSelectedAssessment] = useState(0)
+  const [assessmentInfo, setAssessmentInfo] = useState({})
+
+
+  fetch(`http://localhost:3000/assessments/${selectedAssessment}`)
+  .then(res => res.json())
+  .then(res => setAssessmentInfo)
+
   return (
     <div>
       <h1>Assessment Details</h1>
 
       <label>Name:</label>
-      {/* <p>{assessment.name}</p> */}
+      <p>{assessmentInfo.name}</p>
       <br/>
       <label>Associated Satellite:</label>
       <br/>
       <label>Date:</label>
-      {/* <p>{assessment.date} onChange={handleChange}</p> */}
+      <p>{assessmentInfo.date}</p>
       <br/>
       <label>Details:</label>
-      {/* <p>{assessment.details} onChange={handleChange}</p> */}
+      <p>{assessmentInfo.details}</p>
       <br/>
       <label>Owner:</label>
-      {/* <p>{assessment.owner} onChange={handleChange}</p> */}
+      <p>{assessmentInfo.owner}</p>
       <br/>
       <label>Model File:</label>
       {/* <input type="file" name="model_file" onChange={handleFileChange} /> */}

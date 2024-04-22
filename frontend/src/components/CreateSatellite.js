@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 export default function CreateSatellite() {
   const [satellite, setSatellite] = useState({
     name: '',
+    images: [],
     tailNumber: '',
     orbitalRegime: '',
-    details: '',
-    owner: '',
+    // details: '',
+    created_by: [{id: 1, name:''}],
     model_file: '', // todo: need to have an input for model files and simulation files
     simulation_file: '',
   });
@@ -50,10 +51,10 @@ export default function CreateSatellite() {
           </select>
         </label>
         <br/>
-        <label>Details:
+        {/* <label>Details:
           <textarea name="details" value={satellite.details} onChange={handleChange} />
         </label>
-        <br/>
+        <br/> */}
         <label>Owner:
           <input type="text" name="owner" value={satellite.owner} onChange={handleChange} />
         </label>
