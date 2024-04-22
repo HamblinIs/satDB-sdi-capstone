@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require('cors');
+const bcrypt = require("bcrypt");
 const api = express();
 const port = process.env.PORT || 8080;
 const knex = require('knex')(require('./knexfile.js')['development'])
@@ -10,7 +11,7 @@ api.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)
 );
 
-
+const saltRounds = 10;
 
 // GET /satellites
 /*
@@ -78,16 +79,29 @@ api.listen(port, () =>
 */
 
 // POST /auth/login
-
 /*
     {
         email: "",
         password: ""
     }
 */
+api.post("/auth/login", (req, res) => {
+    const {email, password} = req.body;
+    knex("user_account").select("*").where({email: email})
+    .then((dbRes) => {
+        try {
+            if (bcrypt.compareSync(password, dbRes[0].password)) {
+                res.status(201).json({status: "Authenticated", userData: dbRes[0]})
+            } else {
+                res.status(400).json({status: "Password did not match"});
+            }
+        } catch {
+            res.status(400).json({status: "Bad Request"});
+        }
+    })
+})
 
 // POST /auth/register
-
 /*
     {
         email: "",
@@ -96,3 +110,20 @@ api.listen(port, () =>
         last_name: ""
     }
 */
+api.post("/auth/register", (req, res) => {
+    try {
+        const {first_name, last_name, email, password} = req.body;
+        const hash = bcrypt.hashSync(password, saltRounds);
+
+        knex("user_accounts").insert({first_name: first_name, last_name: last_name, email: email, password: hash})
+        .then(dbRes => {
+            knex("user_accounts").select("*").where({email: email})
+            .then(dbRes => res.status(201).json({status: "Authenticated", userData: dbRes[0]}))
+        })
+        .catch(err => res.status(500))
+
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({error: err})
+    }
+})
