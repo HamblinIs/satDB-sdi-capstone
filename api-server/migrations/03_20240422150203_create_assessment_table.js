@@ -5,6 +5,7 @@
 exports.up = function(knex) {
   return knex.schema.createTable('assessment', table => {
     table.increments('id')
+    table.string('name')
     table.string('description')
     table.date('creation_date')
   })
