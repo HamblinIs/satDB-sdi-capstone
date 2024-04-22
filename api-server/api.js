@@ -171,3 +171,29 @@ api.post("/auth/register", (req, res) => {
         res.status(400).json({error: err})
     }
 })
+
+// POST /satellites
+/*
+{
+    name: "FOO"
+}
+*/
+// api.post('/satellite/new', (req, res) = > {
+//     const{name, orbit, owner}
+// })
+
+
+//POST New Assessment
+
+api.post('/assessment/new', (req, res) => {
+    const { name, description, creation_date} = req.body;
+    knex('assessment')
+        .insert({ name, description, creation_date })
+        .then(response => {
+            res.status(201).send(`Assesment ${name} successfully added.`)
+        })
+        .catch(err => {
+            res.status(500).send(`Unable to add assessment ${name}.`)
+        })
+            
+})
