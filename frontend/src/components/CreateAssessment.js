@@ -6,13 +6,16 @@ export default function CreateAssessment() {
     name: '',
     satellites: [],
     date:'',
-    details: '',
+    // details: '',
     owner: '',
     model_file: '', // todo: need to have an input for model files and simulation files
     simulation_file: '',
     misc_files: []
   });
-  const [addFiles, setAddFiles] = useState([''])
+  const [modFiles, setModFiles] = useState();
+  const [simFiles, setSimFiles] = useState();
+  const modelCounter = [];
+  const simCounter = [];
 
   const handleChange = (e) => {
     // name is the key name
@@ -31,11 +34,38 @@ export default function CreateAssessment() {
     console.log(assessment);
   };
 
-  const addFile = () => {
-    setAddFiles(...addFiles, 'another')
+const setModelFilesNum = () =>{
+    const amount = document.getElementById("modelFilesNum").value
 
+    for(let i=1; i<amount; i++){
+      modelCounter.push(<>
+        <label>Model File:
+          <input type="file" name="model_file" onChange={handleFileChange} />
+        </label>
+        <br/>
+        </>)
+    }
+    console.log("counter", modelCounter)
+    setModFiles(modelCounter)
+}
+
+const setSimFilesNum = () => {
+  const amount = document.getElementById("simFilesNum").value
+
+
+  for(let i=1; i<amount; i++ ){
+    simCounter.push(
+      <>
+      <label>Simulation File:
+          <input type="file" name="simulation_file" onChange={handleFileChange} />
+        </label>
+        <br/>
+      </>
+    )
   }
-
+  console.log("counter", simCounter)
+  setSimFiles(simCounter)
+}
 
   return (
     <div>
@@ -53,30 +83,71 @@ export default function CreateAssessment() {
           <input type="date" name="date" value={assessment.date} onChange={handleChange} />
         </label>
         <br/>
-      <label>Details:
+      {/* <label>Details:
           <textarea name="details" value={assessment.details} onChange={handleChange} />
         </label>
-        <br/>
+        <br/> */}
       <label>Owner:
           <input type="text" name="owner" value={assessment.owner} onChange={handleChange} />
         </label>
         <br/>
-        <label>Model File:
+        <label># of Model Files
+        <select id = "modelFilesNum" name="modelFilesNum"  onChange={() => setModelFilesNum()}>
+            <option value="">--Please choose an option--</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option> 
+          </select>
+          </label>
+          <br />
+          {modFiles === undefined ?
+          <></>
+          :
+          <>
+          <label>Model File:
           <input type="file" name="model_file" onChange={handleFileChange} />
         </label>
         <br/>
-          <button onClick={() => addFile}>Add File </button>
-          {addFiles.map( item => {
-            return (
-            <>
-            <input type="file" name="add_file" onChange={handleFileChange} />
-            </>
-            )})}
+          {modFiles.map( item =>  item)}
         <br/>
-        <label>Simulation File:
-          <input type="file" name="simulation_file" onChange={handleFileChange} />
+        </>
+        }
+        <label># of Simulation Files
+        <select id = "simFilesNum" name="simFilesNum"  onChange={() => setSimFilesNum()}>
+            <option value="">--Please choose an option--</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option> 
+          </select>
+          </label>
+          <br />
+          {simFiles === undefined ?
+          <></>
+          :
+          <>
+          <label>Simulation File:
+          <input type="file" name="model_file" onChange={handleFileChange} />
         </label>
         <br/>
+          {simFiles.map( item =>  item)}
+        <br/>
+        </>
+        } 
+          
         <input type="submit" value="Submit" />
       
     </form>

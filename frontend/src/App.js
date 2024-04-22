@@ -9,7 +9,7 @@ import CreateAccountLogin from './components/CreateAccountLogin';
 import SatelliteModelOrbit from './components/SatelliteModelOrbit';
 import AccountRequestViewer from './components/AccountRequestViewer';
 import Satellites from './components/Satellites';
-// import SatelliteGroundTrack from './components/SatelliteGroundTrack';
+import SatelliteGroundTrack from './components/SatelliteGroundTrack';
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
         <li><Link to="/SatelliteModelOrbit">SatelliteModelOrbit</Link></li>
         <li><Link to="/AccountRequestViewer">AccountRequestViewer</Link></li>
         <li><Link to="/Satellites">Satellites</Link></li>
-        {/* <li><Link to="/SatelliteGroundTrack">Satellite Ground Track</Link></li> */}
+        <li><Link to="/SatelliteGroundTrack">Satellite Ground Track</Link></li>
         </ul></nav>
 
 
@@ -38,7 +38,7 @@ function App() {
         <Route path="/AssessmentDetails/:id" element={<AssessmentDetails />} />
         <Route path="/SatelliteDetails/:id" element={<SatelliteDetails />} />
         <Route path="/Satellites" element={<Satellites />} />
-        {/* <Route path="/SatelliteGroundTrack" element={<SatelliteGroundTrack/>} /> */}
+        <Route path="/SatelliteGroundTrack" element={<SatelliteGroundTrack/>} />
       </Routes>
       
 
