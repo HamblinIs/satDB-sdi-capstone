@@ -35,24 +35,25 @@ export default function CreateAccountLogin() {
       email: userName,
       password: passWord
     }
-      fetch('http://localhost:3000/auth/login', {
+
+      fetch('http://localhost:8080/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
       },
-      body: JSON.stringify({loginInfo})
+      body: JSON.stringify(loginInfo)
       })
       .then(res => console.log(res))
       .catch(error => console.error("error logging in:", error))
   }
 
   const registerUser = () => {
-    fetch('http://localhost:3000/auth/register', {
+    fetch('http://localhost:8080/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
       },
-      body: JSON.stringify({newAccount})
+      body: JSON.stringify(newAccount)
       })
       .then(res => console.log(res))
       .catch(error => console.error("error registering a new account:", error))
@@ -66,12 +67,12 @@ export default function CreateAccountLogin() {
       <button onClick= {() => showChoice(2)}>Create Account</button>
 
     {userSelect === 1? 
-      <form onSubmit={checkLogin}>
-        <label> Username
+      <form onSubmit={ () => checkLogin()}>
+        <label> Email:
         <input type="text" id="username"  />
         </label>
         <br/>
-        <label> Password
+        <label> Password:
         <input type="text" id="password"/>
         </label>
         <br/>
@@ -89,7 +90,7 @@ export default function CreateAccountLogin() {
         <input type="text" id="last" onChange={handleChange} />
         </label>
         <br/>
-        <label> Username:
+        <label> Email:
         <input type="text" id="username" onChange={handleChange} />
         </label>
         <br/>

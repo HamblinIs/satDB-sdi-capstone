@@ -83,7 +83,7 @@ export default function SatelliteGroundTrack() {
    
     const { longitudes, latitudes } = calculateGroundTrack(tle);
     const positions = latitudes.map((lat, i) => [lat, longitudes[i]]);
-   
+    positions.sort((a,b) => a[1]-b[1]);
 
 
 

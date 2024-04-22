@@ -8,7 +8,7 @@ export default function AssessmentDetails() {
 
   fetch(`http://localhost:3000/assessments/${selectedAssessment}`)
   .then(res => res.json())
-  .then(res => setAssessmentInfo)
+  .then(res => setAssessmentInfo(res))
 
   return (
     <div>

@@ -10,17 +10,18 @@ export default function HomePage() {
 
   const handleSearch = () => {
     if(category === 'satellites'){
-      fetch(`http://localhost:3000/satellites`)
+      fetch(`http://localhost:8080/satellites?name=${searchTerm}`)
       .then(response => response.json())
-      .then(data => setAllData(data))
+      .then(data => {
+        console.log("data", data)
+        setAllQueryData(data)
+      })
     }
     else if(category === 'assessments'){
-      fetch(`http://localhost:3000/assessments`)
+      fetch(`http://localhost:8080/assessments?name=${searchTerm}`)
       .then(response => response.json())
-      .then(data => setAllData(data))
+      .then(data => setAllQueryData(data))
     }
-
-    setAllQueryData(allData.filter(item => item.name.includes(searchTerm)))
   }
  
   const handleSort = () => {
@@ -45,19 +46,12 @@ const chooseCategory = () => {
   // FILTER FEATURES
   const [filter, setFilter] = useState('all');
   const [filterText, setFilterText] = useState('');
-  const handleFilterChange = (event) => {
-    setFilterText(event.target.value);
-  };
-  // filter using "My Inventory" button
-  let items = []; // delete this
-  let filteredItems = filter === 'all' ? items : items.filter(item => item.user_id === item.user_id);
 
-  // filter again based on textfield input
-  filteredItems = filteredItems.filter(item =>
-    item.item_id.toString().includes(filterText.toLowerCase()) ||
-    item.username.toLowerCase().includes(filterText.toLowerCase()) ||
-    item.item_name.toLowerCase().includes(filterText.toLowerCase()) ||
-    item.description.toLowerCase().includes(filterText.toLowerCase())
+  // filter based on textfield input
+  const filteredItems = queryData.filter(item =>
+    item.id.toString().includes(filterText.toLowerCase()) ||
+    item.name.toLowerCase().includes(filterText.toLowerCase()) ||
+    item.tail_num.toString().includes(filterText.toLowerCase())
   );
 
 
@@ -83,6 +77,7 @@ const chooseCategory = () => {
 
 
 
+  
   return (
     <div>
 
@@ -100,7 +95,7 @@ const chooseCategory = () => {
 
         <br />
 
-        <input 
+        <input
           type='text'
           placeholder='Search here'
           value={searchTerm}
@@ -116,14 +111,42 @@ const chooseCategory = () => {
 
       <div>
         <ul>
-          {queryData.map( item => {
-            return(
+          {queryData.map(item => {
+            return (
               <li>
                 <p>{item.name}</p>
-              </li>            
-              )
+              </li>
+            )
           })}
         </ul>
+      </div>
+
+
+      <div>
+        <input type="text" value={filterText} placeholder="Filter" onChange={(e) => setFilterText(e.target.value)} />
+
+        {sortedItems.length > 0 ?
+          <table>
+            <thead>
+              <tr>
+                {Object.keys(sortedItems[0]).map((header, index) => (
+                  <th key={index}><button onClick={()=>handleSort2(header)}>{header}</button></th>
+                ))}
+              </tr>
+            </thead>
+
+            <tbody>
+              {sortedItems.map((row, index) => (
+                <tr key={index}>
+                  {Object.keys(sortedItems[0]).map((header, i) => (
+                    <td key={i}>{row[header]}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          : null
+        }
       </div>
 
 
@@ -135,4 +158,5 @@ const chooseCategory = () => {
 
     </div>
   );
-}
+};
+
