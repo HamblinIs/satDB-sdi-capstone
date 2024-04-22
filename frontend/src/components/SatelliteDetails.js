@@ -15,37 +15,33 @@ export default function SatelliteDetails() {
     <div>
       <h1>Satellite Details</h1>
 
-      <form>
-
-        <label>Satellite Name:
-          <input type="text" value={satellite.OBJECT_NAME} readOnly />
-        </label>
-
-        <label>Satellite Id:
-          <input type="text" value={satellite.OBJECT_ID} readOnly />
-        </label>
-
-        <label>Two-line Element:
-          <input type="text" value={satellite.twoLineElement} readOnly />
-        </label>
-
-        <label>Orbital Period:
-          <input type="text" value={satellite.orbitalPeriod} readOnly />
-        </label>
-
-        <label>Mission Type:
-          <input type="text" value={satellite.missionType} readOnly />
-        </label>
-
-        <label>Mission Design Life:
-          <input type="text" value={satellite.missionDesignLife} readOnly />
-        </label>
-
-        <label>Expected Retirement Date:
-          <input type="text" value={satellite.expectedRetirementDate} readOnly />
-        </label>
-
-      </form>
+        <label>Satellite Name:</label>
+        <br />
+        <p>{satellite.name}</p>
+        <br />
+        <label>Satellite Id:</label>
+        <br />
+        <p>{satellite.OBJECT_ID}</p>
+        <br />
+        <label>Two-line Element:</label>
+        <br />
+        <p>{satellite.twoLineElement}</p>
+        <br />
+        <label>Orbital Period:</label>
+        <br />
+        <p>{satellite.orbitalPeriod}</p>
+        <br />
+        <label>Mission Type:</label>
+        <br />
+        <p>{satellite.missionType}</p>
+        <br />
+        <label>Mission Design Life:</label>
+        <br />
+        <p>{satellite.missionDesignLife}</p>
+        <br />
+        <label>Expected Retirement Date:</label>
+        <br />
+        <p>{satellite.expectedRetirementDate}</p>
     </div>
   );
 }

@@ -7,7 +7,8 @@ export default function CreateSatellite() {
     orbitalRegime: '',
     details: '',
     owner: '',
-    file: null // todo: need to have an input for model files and simulation files
+    model_file: '', // todo: need to have an input for model files and simulation files
+    simulation_file: '',
   });
 
   const handleChange = (e) => {
@@ -35,11 +36,11 @@ export default function CreateSatellite() {
         <label>Name:
           <input type="text" name="name" value={satellite.name} onChange={handleChange} />
         </label>
-
+        <br/>
         <label>Tail Number:
           <input type="text" name="tailNumber" value={satellite.tailNumber} onChange={handleChange} />
         </label>
-
+        <br/>
         <label>Orbital Regime:
           <select name="orbitalRegime" value={satellite.orbitalRegime} onChange={handleChange}>
             <option value="">--Please choose an option--</option>
@@ -48,19 +49,23 @@ export default function CreateSatellite() {
             <option value="GEO">Geostationary Orbit (GEO)</option>
           </select>
         </label>
-
+        <br/>
         <label>Details:
-          <input type="text" name="details" value={satellite.details} onChange={handleChange} />
+          <textarea name="details" value={satellite.details} onChange={handleChange} />
         </label>
-
+        <br/>
         <label>Owner:
           <input type="text" name="owner" value={satellite.owner} onChange={handleChange} />
         </label>
-
-        <label>File:
-          <input type="file" name="file" onChange={handleFileChange} />
+        <br/>
+        <label>Model File:
+          <input type="file" name="model_file" onChange={handleFileChange} />
         </label>
-
+        <br/>
+        <label>Simulation File:
+          <input type="file" name="simulation_file" onChange={handleFileChange} />
+        </label>
+        <br/>
         <input type="submit" value="Submit" />
       
       </form>
