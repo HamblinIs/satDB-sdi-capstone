@@ -40,9 +40,10 @@ export default function CreateAccountLogin() {
         headers: {
           'Content-Type': 'application/json'
       },
-      body: JSON.stringify({loginInfo})
+      body: JSON.stringify(loginInfo)
       })
-      .then(res => console.log(res))
+      .then(res => res.json())
+      .then(data => console.log(data))
       .catch(error => console.error("error logging in:", error))
   }
 

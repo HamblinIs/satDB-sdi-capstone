@@ -34,9 +34,18 @@ api.get('/', (req, res) => {
 ]
 */
 api.get('/satellites', (req, res) => {
-    knex('satellite').select('id', 'name', 'tail_num')
-    .then( data => res.status(200).json(data))
-    .catch(err => res.status(404).send(err));
+    let {name} = req.query;
+    if (name != undefined) {
+        console.log(name);
+        knex('satellite').select('id', 'name', 'tail_num').whereILike('name', `%${name}%`)
+        .then( data => res.status(200).json(data))
+        .catch(err => res.status(404).send(err));
+    } else {
+        knex('satellite').select('id', 'name', 'tail_num')
+        .then( data => res.status(200).json(data))
+        .catch(err => res.status(404).send(err));
+    }
+    
 })
 
 // GET /satellites/:id
@@ -66,12 +75,23 @@ api.get('/satellites/:id', async (req, res) => {
 
 // GET /assessments
 
-api.get('/assessment', (req, res) => {
-  knex('assessment')
-    .select('id', 'name', 'creation_date')
-    .then(data => res.status(200).json(data))
-    .catch(err => res.status(404).send(err))
-  
+api.get('/assessments', (req, res) => {
+    let {name} = req.query;
+    let{creation_date} = req.query
+    if (name != undefined) {
+        // console.log(name);
+        knex('assessment').select('id', 'name', 'creation_date')
+        .whereILike('name', `%${name}%`)
+        .orderBy('creation_date', 'name', creation_date)
+        //.orderBy([{ column: 'email' }, { column: 'age', order: 'desc' }]);
+        .then( data => res.status(200).json(data))
+        .catch(err => res.status(404).send(err));
+    } else {
+        knex('assessment').select('id', 'name', 'creation_date')
+        .then( data => res.status(200).json(data))
+        .catch(err => res.status(404).send(err));
+    }
+    
 })
 /*
 [
@@ -175,20 +195,43 @@ api.post("/auth/register", (req, res) => {
 // POST /satellites
 /*
 {
-    name: "FOO"
+    name: "FOO",
+    
 }
 */
-// api.post('/satellite/new', (req, res) = > {
-//     const{name, orbit, owner}
-// })
+api.post('/satellite/new', (req, res) => {
+    const {name, orbit, owner, tailNumber} = req.body;
+    knex('satellite')
+        .insert({name, orbit, owner, tailNumber})
+        .then(response => {
+            res.status(201).send(`Satellite ${name} has been created.`)
+        })
+        .catch(err => {
+            res.status(500).send(`Failed to add ${name} satellite.`)
+        })
+})
 
 
 //POST New Assessment
-
+/*
+{
+    name: "",
+    description: "",
+    creation_date: "",
+    images: [],
+    sim_file: [],
+    data_file: [],
+    misc_file: []
+}
+*/
 api.post('/assessment/new', (req, res) => {
     const { name, description, creation_date} = req.body;
     knex('assessment')
         .insert({ name, description, creation_date })
+    knex('images').insert('file_path_name')
+    knex('sim_file').insert('file_path_name')
+    knex('misc_file').insert('file_path_name')
+    knex('data_file').insert('file_path_name')
         .then(response => {
             res.status(201).send(`Assesment ${name} successfully added.`)
         })
