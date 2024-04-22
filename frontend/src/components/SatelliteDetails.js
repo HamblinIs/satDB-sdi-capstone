@@ -1,15 +1,31 @@
-import React from 'react';
+import React , { useState }from 'react';
 
 export default function SatelliteDetails() {
+  const [selectedSatellite, setSelectedSatellite] = useState(0)
+  const [satellite, setSatellite] = useState({
+    name: '',
+    id: '',
+    twoLineElement: '',
+    orbitalPeriod: '',
+    missionType: '',
+    missionDesignLife: '',
+    expectedRetirementDate: ''
+  })
+  
   // Replace the following state with actual data fetched from API
-  const satellite = {
-    name: 'some satellite',
-    twoLineElement: '1 25544U 98067A   21275.58693519  .00001303  00000-0  25332-4 0  9991',
-    orbitalPeriod: '92.69 minutes',
-    missionType: 'scientific/experimental',
-    missionDesignLife: '15 years',
-    expectedRetirementDate: '2023-11-20'
-  };
+  // const satellite = {
+  //   name: 'some satellite',
+  //   twoLineElement: '1 25544U 98067A   21275.58693519  .00001303  00000-0  25332-4 0  9991',
+  //   orbitalPeriod: '92.69 minutes',
+  //   missionType: 'scientific/experimental',
+  //   missionDesignLife: '15 years',
+  //   expectedRetirementDate: '2023-11-20'
+  // };
+
+  fetch(`http://localhost:8080/satellites?name=`)
+  .then(response => response.json())
+  .then(data => {setSatellite(data)})
+
 
   return (
     <div>
@@ -21,7 +37,7 @@ export default function SatelliteDetails() {
         <br />
         <label>Satellite Id:</label>
         <br />
-        <p>{satellite.OBJECT_ID}</p>
+        <p>{satellite.id}</p>
         <br />
         <label>Two-line Element:</label>
         <br />
