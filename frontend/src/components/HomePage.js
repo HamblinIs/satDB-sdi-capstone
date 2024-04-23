@@ -1,6 +1,12 @@
 import React , { useState } from 'react';
+import ImageViewer from './ImageViewer';
+
+// const images = require.context('C:\Users\isaac\OneDrive\Pictures\AI_Generated', true);
+// const imageList = images.keys().map(image => images(image));
 
 export default function HomePage() {
+  const imagesArr=["https://cdn.defenseone.com/media/img/cd/2023/08/11/GettyImages_1407240226/open-graph.jpg", "https://spaceplace.nasa.gov/satellite/en/TEMPO.en.jpg", "https://media.istockphoto.com/id/1339097795/photo/satellite-orbiting-the-earth.jpg?s=612x612&w=0&k=20&c=FMG2NypIT0JuZVs26qSYOq2qTwsO89woydrwZimK21s="];
+
 
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] =  useState('desending')
@@ -133,6 +139,16 @@ const chooseCategory = () => {
         <button onClick={handleAddAssessment}>Add Assessment</button>
       </div>
 
+          {/* {imageList.map((image, index) => (
+        <img key={index} src={image} alt={`image-${index}`} />
+      ))} */}
+      
+      <ImageViewer images={imagesArr}/>
+      
+          {/* <img src="C:\Users\isaac\OneDrive\Pictures\AI Generated\pilot cat.png" alt='cat'/>
+          <img src="/layers.png" alt='sat'/>
+          <img src="/satellie.jpg" alt="img"/>
+          <img src="https://cdn.defenseone.com/media/img/cd/2023/08/11/GettyImages_1407240226/open-graph.jpg" alt="web picture" /> */}
     </div>
   );
 }

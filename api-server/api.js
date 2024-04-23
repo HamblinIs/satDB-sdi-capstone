@@ -82,8 +82,7 @@ api.get('/assessments', (req, res) => {
         // console.log(name);
         knex('assessment').select('id', 'name', 'creation_date')
         .whereILike('name', `%${name}%`)
-        .orderBy('creation_date', 'name', creation_date)
-        //.orderBy([{ column: 'email' }, { column: 'age', order: 'desc' }]);
+        .orderBy(['creation_date', {column: 'name', order: 'desc'}])
         .then( data => res.status(200).json(data))
         .catch(err => res.status(404).send(err));
     } else {
@@ -228,10 +227,10 @@ api.post('/assessment/new', (req, res) => {
     const { name, description, creation_date} = req.body;
     knex('assessment')
         .insert({ name, description, creation_date })
-    knex('images').insert('file_path_name')
-    knex('sim_file').insert('file_path_name')
-    knex('misc_file').insert('file_path_name')
-    knex('data_file').insert('file_path_name')
+    // knex('images').insert('file_path_name')
+    // knex('sim_file').insert('file_path_name')
+    // knex('misc_file').insert('file_path_name')
+    // knex('data_file').insert('file_path_name')
         .then(response => {
             res.status(201).send(`Assesment ${name} successfully added.`)
         })
