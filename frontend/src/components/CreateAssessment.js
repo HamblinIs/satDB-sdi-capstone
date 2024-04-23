@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function CreateAssessment() {
   const navigate = useNavigate();
-  const [assessmentId, setAssessmentId] = useState();
   const[satellite, setSatellite] = useState('');
   const [assessment, setAssessment] = useState({
     name: '',
@@ -60,11 +59,7 @@ export default function CreateAssessment() {
         //   }
         // })
         .then(res => res.json())
-        .then(res => {
-          console.log(res);
-          setAssessmentId(res.id);
-          navigate(`/AssessmentDetails/${res.id}`);
-        });
+        .then(res => navigate(`/AssessmentDetails/${res.id}`));
     } catch (error) {
       console.error('Failed to add assessment:', error);
     }

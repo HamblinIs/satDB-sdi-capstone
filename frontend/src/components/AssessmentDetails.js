@@ -11,11 +11,8 @@ export default function AssessmentDetails() {
     // console.log("params id", assessmentId)
     fetch(`http://localhost:8080/assessments/${assessmentId.id}`)
       .then(res => res.json())
-      .then(res => {
-        // console.log("response", res)
-        setAssessmentInfo(res)
-      })
-  }, [])
+      .then(res => setAssessmentInfo(res))
+  }, []);
 
   const handleSave = () => {
     // todo: need to add save logic: fetch with PATCH method
@@ -64,6 +61,7 @@ export default function AssessmentDetails() {
         <label>Model File:</label>
 
         {/* <input type="file" name="model_file" onChange={handleFileChange} /> */}
+        
         <br />
 
         <label>Simulation File:</label>
