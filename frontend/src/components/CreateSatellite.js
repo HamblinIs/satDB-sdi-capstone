@@ -4,7 +4,8 @@ export default function CreateSatellite() {
   const [satellite, setSatellite] = useState({
     name: '',
     images: [],
-    tailNumber: '',
+    owner: '',
+    tailNumber: 0,
     orbitalRegime: '',
     // details: '',
     created_by: [{id: 1, name:''}],
@@ -25,9 +26,60 @@ export default function CreateSatellite() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // todo: send a POST request to the satellites table
-    console.log(satellite);
-  };
+
+    try {
+      fetch ('http://localhost:8080/satellite/new', {
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+          name: satellite.name,
+          orbit: satellite.orbitalRegime,
+          owner: satellite.owner,
+          tailNumber: satellite.tailNumber
+        })
+      })
+      .then(async (res) => {
+        if (res.status === 200) {
+          alert("There was an error creating the item");
+        } else {
+          window.confirm("Item has been created!");
+        }
+      })
+    } catch(error) {
+      console.error('Failed to add satellite:', error);
+    }
+  }
+
+
+
+  // const handleDeleteButtonClick = () => {
+  //   console.log(selectedItemID);
+  //   fetch("http://localhost:8080/delete-item", {
+  //     method: "DELETE",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(delete_data)
+  //   })
+  //   .then((res) => {
+  //     if (res.status === 409) {
+  //       alert("There was an error deleting the item");
+  //     } else {
+  //       window.confirm("Item has been deleted!");
+  //       setRefreshToggle(!refreshToggle);
+  //       setItemSelected(false);
+  //     }
+  //   });
+  // };
+
+
+
+
+
+
 
   return (
     <div>
@@ -68,7 +120,7 @@ export default function CreateSatellite() {
         </label>
         <br/>
         <input type="submit" value="Submit" />
-      
+
       </form>
     </div>
   );

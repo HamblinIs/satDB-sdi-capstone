@@ -1,16 +1,20 @@
 import React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateAssessment() {
+const navigate = useNavigate();
+
+  const[satellite, setSatellite] = useState('')
   const [assessment, setAssessment] = useState({
     name: '',
-    satellites: [],
-    date:'',
-    // details: '',
-    owner: '',
-    model_file: '', // todo: need to have an input for model files and simulation files
-    simulation_file: '',
-    misc_files: []
+    // satellites: [],
+    creation_date:'',
+    description: '',
+    // owner: '',
+    // model_file: '', // todo: need to have an input for model files and simulation files
+    // simulation_file: '',
+    // misc_files: []
   });
   const [modFiles, setModFiles] = useState();
   const [simFiles, setSimFiles] = useState();
@@ -25,47 +29,76 @@ export default function CreateAssessment() {
   };
 
   const handleFileChange = (e) => {
-    setAssessment(prevState => ({ ...prevState, file: e.target.files[0] }));
+    // setAssessment(prevState => ({ ...prevState, file: e.target.files[0] }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // todo: send a POST request to the assessments table
-    console.log(assessment);
-  };
 
-const setModelFilesNum = () =>{
-    const amount = document.getElementById("modelFilesNum").value
+    try {
+      fetch('http://localhost:8080/assessment/new', {
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        },
 
-    for(let i=1; i<amount; i++){
-      modelCounter.push(<>
-        <label>Model File:
-          <input type="file" name="model_file" onChange={handleFileChange} />
-        </label>
-        <br/>
-        </>)
+        body: JSON.stringify({
+          name: assessment.name,
+          creation_date: assessment.creation_date,
+          description: assessment.description
+        })
+      })
+    //   .then(response => {
+    //     console.log(response)
+    // })
+      // .then(async (res) => {
+      //   if (res.status === 201) {
+      //     window.confirm("Assmen has been created!")
+      //     // navigate(`/AssessmentDetails/${res.id}`)
+      //   } else {
+      //     alert("There was an error creating the assessment");
+      //   }
+      // })
+      .then(res => res.json())
+      .then(res => navigate(`/AssessmentDetails/${res.id}`));
+    } catch(error) {
+      console.error('Failed to add assessment:', error);
     }
-    console.log("counter", modelCounter)
-    setModFiles(modelCounter)
-}
-
-const setSimFilesNum = () => {
-  const amount = document.getElementById("simFilesNum").value
-
-
-  for(let i=1; i<amount; i++ ){
-    simCounter.push(
-      <>
-      <label>Simulation File:
-          <input type="file" name="simulation_file" onChange={handleFileChange} />
-        </label>
-        <br/>
-      </>
-    )
   }
-  console.log("counter", simCounter)
-  setSimFiles(simCounter)
-}
+
+
+  const setModelFilesNum = () =>{
+  //     const amount = document.getElementById("modelFilesNum").value
+
+  //     for(let i=1; i<amount; i++){
+  //       modelCounter.push(<>
+  //         <label>Model File:
+  //           <input type="file" name="model_file" onChange={handleFileChange} />
+  //         </label>
+  //         <br/>
+  //         </>)
+  //     }
+  //     console.log("counter", modelCounter)
+  //     setModFiles(modelCounter)
+  }
+
+  const setSimFilesNum = () => {
+  //   const amount = document.getElementById("simFilesNum").value
+
+
+  //   for(let i=1; i<amount; i++ ){
+  //     simCounter.push(
+  //       <>
+  //       <label>Simulation File:
+  //           <input type="file" name="simulation_file" onChange={handleFileChange} />
+  //         </label>
+  //         <br/>
+  //       </>
+  //     )
+  //   }
+  //   console.log("counter", simCounter)
+  //   setSimFiles(simCounter)
+  }
 
   return (
     <div>
@@ -78,15 +111,17 @@ const setSimFilesNum = () => {
         <br/>
 
       <label>Associated Satellite:
-        </label>
+        <input type="text" name="associatedSat" value={assessment.associatedSat} onChange={handleChange} />
+      </label>
+      <br/>
       <label>Date:
-          <input type="date" name="date" value={assessment.date} onChange={handleChange} />
+          <input type="date" name="creation_date" value={assessment.creation_date} onChange={handleChange} />
         </label>
         <br/>
-      {/* <label>Details:
-          <textarea name="details" value={assessment.details} onChange={handleChange} />
+      <label>Description:
+          <textarea name="description" value={assessment.description} onChange={handleChange} />
         </label>
-        <br/> */}
+        <br/>
       <label>Owner:
           <input type="text" name="owner" value={assessment.owner} onChange={handleChange} />
         </label>
@@ -103,7 +138,7 @@ const setSimFilesNum = () => {
             <option value="7">7</option>
             <option value="8">8</option>
             <option value="9">9</option>
-            <option value="10">10</option> 
+            <option value="10">10</option>
           </select>
           </label>
           <br />
@@ -131,7 +166,7 @@ const setSimFilesNum = () => {
             <option value="7">7</option>
             <option value="8">8</option>
             <option value="9">9</option>
-            <option value="10">10</option> 
+            <option value="10">10</option>
           </select>
           </label>
           <br />
@@ -146,11 +181,13 @@ const setSimFilesNum = () => {
           {simFiles.map( item =>  item)}
         <br/>
         </>
-        } 
-          
+        }
+
         <input type="submit" value="Submit" />
-      
+
     </form>
     </div>
   );
 }
+
+

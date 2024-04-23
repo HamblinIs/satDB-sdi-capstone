@@ -1,14 +1,18 @@
-import React , { useState }from 'react';
-
+import React , { useState, useEffect }from 'react';
+import { useParams } from 'react-router-dom';
 
 export default function AssessmentDetails() {
   const [selectedAssessment, setSelectedAssessment] = useState(0)
   const [assessmentInfo, setAssessmentInfo] = useState({})
+  const {assessmentId} = useParams();
 
+  useEffect(() => {
+    fetch(`http://localhost:8080/assessments/${assessmentId}`)
+    .then(res => res.json())
+    // .then(res => setAssessmentInfo(res))
+    .then(res => console.log(res))
+  }, [assessmentInfo])
 
-  fetch(`http://localhost:3000/assessments/${selectedAssessment}`)
-  .then(res => res.json())
-  .then(res => setAssessmentInfo(res))
 
   return (
     <div>
