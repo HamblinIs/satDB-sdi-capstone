@@ -17,19 +17,10 @@ export default function CreateAccountLogin() {
   }
 
   const handleChange = (e, type) => {
-    // name is the key name
-    // value is e.target.value
     const { name, value } = e.target;
     setNewAccount(prevState => ({ ...prevState, [type]: value }));
   };
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   // todo: send a POST request to the assessments table
-  //   console.log(newAccount);
-  // };
-
   
-
   const checkLogin = () =>{
     const userName = document.getElementById("username").value
     const passWord = document.getElementById("password").value
@@ -54,13 +45,13 @@ export default function CreateAccountLogin() {
           console.log(response.userData)
           navigate('/')
         }else{
+          alert('Login failed')
           console.log(response.status)
         }
       })
       .catch(error => {
         console.log('Login error', error)
       })
-      //navigate('/')
   }
 
   const registerUser = () => {
@@ -85,7 +76,6 @@ export default function CreateAccountLogin() {
       })
       .then(res => res.json())
       .then(response => {
-        //console.log(response)
         if(response.status == "Authenticated"){
           alert('Created Account')
           setActiveUser(response.userData)
@@ -100,20 +90,26 @@ export default function CreateAccountLogin() {
       })
   }
 
-  // useEffect(() => {
-  //   console.log('User', userE.activeUser)
-  // },[userE.activeUser])
+  const handleSignOut = () => {
+    setActiveUser({})
+    setUserSelect(0)
+    navigate('/')
+  }
 
   return (
     <div>
       <h1>Create Account/Login</h1>
-      <button onClick= {() => showChoice(1)}>Login</button>
+      {activeUser.email && (
+             <button onClick={handleSignOut}>Sign Out</button> 
+      )}
+      {!activeUser.email && (
+        <button onClick= {() => showChoice(1)}>Login</button>
+      )}
       <br/>
       <button onClick= {() => showChoice(2)}>Create Account</button>
-
     {userSelect === 1? 
       <>
-        <br></br>
+        <br/>
         <label> Email:
         <input type="text" id="username"  />
         </label>
@@ -124,11 +120,10 @@ export default function CreateAccountLogin() {
         <br/>
         <button onClick={ () => checkLogin()}>Submit</button>
       </>
-
       :
       userSelect === 2?
      <>
-      <br></br>
+      <br/>
         <label> First Name:
         <input type="text" id="first" onChange={(event) => handleChange(event, "first_name")} />
         </label>
