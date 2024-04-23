@@ -231,10 +231,10 @@ api.post('/assessment/new', (req, res) => {
     const { name, description, creation_date} = req.body;
     knex('assessment')
         .insert({ name, description, creation_date })
-    knex('images').insert('file_path_name')
-    knex('sim_file').insert('file_path_name')
-    knex('misc_file').insert('file_path_name')
-    knex('data_file').insert('file_path_name')
+    // knex('images').insert('file_path_name')
+    // knex('sim_file').insert('file_path_name')
+    // knex('misc_file').insert('file_path_name')
+    // knex('data_file').insert('file_path_name')
         .then(response => {
             res.status(201).send(`Assesment ${name} successfully added.`)
         })
