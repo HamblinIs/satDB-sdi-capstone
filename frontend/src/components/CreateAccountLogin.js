@@ -1,5 +1,6 @@
 import React from 'react';
 import {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function CreateAccountLogin() {
@@ -9,6 +10,7 @@ export default function CreateAccountLogin() {
       password:'',
       first_name: '',
       last_name: ''  })
+  const navigate = useNavigate()
 
 
   const showChoice = (number) =>{
@@ -43,9 +45,20 @@ export default function CreateAccountLogin() {
       },
       body: JSON.stringify(loginInfo)
       })
-      .then(res => res.json())
-      .then(data => console.log(data))
-      .catch(error => console.error("error logging in:", error))
+      .then(response => {
+        if(response.ok) {
+          console.log('Login Successful')
+        }else{
+          console.error('Failed to log in')
+        }
+      })
+      .catch(error => {
+        console.log('Login error', error)
+      })
+      navigate('/')
+      // .then(res => res.json())
+      // .then(data => console.log(data))
+      // .catch(error => console.error("error logging in:", error))
   }
 
   const registerUser = () => {
@@ -56,8 +69,18 @@ export default function CreateAccountLogin() {
       },
       body: JSON.stringify(newAccount)
       })
-      .then(res => console.log(res))
-      .catch(error => console.error("error registering a new account:", error))
+      .then(response => {
+        if(response.ok) {
+          console.log('Created Account')
+        }else{
+          console.error('Failed to create account')
+        }
+      })
+      .catch(error=>{
+        console.error('Error registering a new account', error)
+      })
+      // .then(res => console.log(res))
+      // .catch(error => console.error("error registering a new account:", error))
   }
 
   return (
