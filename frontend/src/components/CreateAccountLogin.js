@@ -1,6 +1,6 @@
-import React from 'react';
-import {useState} from 'react';
-
+import React, { useState, useContext }  from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../App.js'
 
 export default function CreateAccountLogin() {
   const [userSelect, setUserSelect] = useState(0);
@@ -9,24 +9,18 @@ export default function CreateAccountLogin() {
       password:'',
       first_name: '',
       last_name: ''  })
-
+  const navigate = useNavigate()
+  let { activeUser, setActiveUser } = React.useContext(UserContext);
 
   const showChoice = (number) =>{
     setUserSelect(number)
   }
 
-  const handleChange = (e) => {
-    // name is the key name
-    // value is e.target.value
+  const handleChange = (e, type) => {
     const { name, value } = e.target;
-    setNewAccount(prevState => ({ ...prevState, [name]: value }));
+    setNewAccount(prevState => ({ ...prevState, [type]: value }));
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // todo: send a POST request to the assessments table
-    console.log(newAccount);
-  };
-
+  
   const checkLogin = () =>{
     const userName = document.getElementById("username").value
     const passWord = document.getElementById("password").value
@@ -44,11 +38,35 @@ export default function CreateAccountLogin() {
       body: JSON.stringify(loginInfo)
       })
       .then(res => res.json())
-      .then(data => console.log(data))
-      .catch(error => console.error("error logging in:", error))
+      .then(response => {
+        if(response.status == "Authenticated") {
+          console.log('Login Successful')
+          setActiveUser(response.userData)
+          console.log(response.userData)
+          navigate('/')
+        }else{
+          alert('Login failed')
+          console.log(response.status)
+        }
+      })
+      .catch(error => {
+        console.log('Login error', error)
+      })
   }
 
   const registerUser = () => {
+    console.log(newAccount)
+    if(
+      !newAccount.email ||
+      !newAccount.password ||
+      !newAccount.first_name ||
+      !newAccount.last_name ||
+      !newAccount.purpose 
+    ) {
+      alert('Fill out form')
+      return;
+    }
+
     fetch('http://localhost:8080/auth/register', {
         method: 'POST',
         headers: {
@@ -56,19 +74,42 @@ export default function CreateAccountLogin() {
       },
       body: JSON.stringify(newAccount)
       })
-      .then(res => console.log(res))
-      .catch(error => console.error("error registering a new account:", error))
+      .then(res => res.json())
+      .then(response => {
+        if(response.status == "Authenticated"){
+          alert('Created Account')
+          setActiveUser(response.userData)
+          console.log(response.userData)
+          navigate('/')
+        }else{
+          alert('Failed to create account')
+        }
+      })
+      .catch(error=>{
+        alert('Error registering a new account', error)
+      })
+  }
+
+  const handleSignOut = () => {
+    setActiveUser({})
+    setUserSelect(0)
+    navigate('/')
   }
 
   return (
     <div>
       <h1>Create Account/Login</h1>
-      <button onClick= {() => showChoice(1)}>Login</button>
+      {activeUser.email && (
+             <button onClick={handleSignOut}>Sign Out</button> 
+      )}
+      {!activeUser.email && (
+        <button onClick= {() => showChoice(1)}>Login</button>
+      )}
       <br/>
       <button onClick= {() => showChoice(2)}>Create Account</button>
-
     {userSelect === 1? 
-      <form onSubmit={ () => checkLogin()}>
+      <>
+        <br/>
         <label> Email:
         <input type="text" id="username"  />
         </label>
@@ -77,35 +118,35 @@ export default function CreateAccountLogin() {
         <input type="text" id="password"/>
         </label>
         <br/>
-        <input type="submit" value="Submit" />
-      </form>
-
+        <button onClick={ () => checkLogin()}>Submit</button>
+      </>
       :
       userSelect === 2?
-     <form onSubmit={registerUser}>
+     <>
+      <br/>
         <label> First Name:
-        <input type="text" id="first" onChange={handleChange} />
+        <input type="text" id="first" onChange={(event) => handleChange(event, "first_name")} />
         </label>
         <br/>
         <label> Last Name:
-        <input type="text" id="last" onChange={handleChange} />
+        <input type="text" id="last" onChange={(event) => handleChange(event, "last_name")} />
         </label>
         <br/>
         <label> Email:
-        <input type="text" id="username" onChange={handleChange} />
+        <input type="text" id="email" onChange={(event) => handleChange(event, "email")} />
         </label>
         <br/>
         <label> Password:
-        <input type="text" id="password" onChange={handleChange} />
+        <input type="text" id="password" onChange={(event) => handleChange(event, "password")} />
         </label>
         <br/>
         <label> Purpose for Account:
-        <textarea id="purpose" onChange={handleChange} />
+        <textarea id="purpose" onChange={(event) => handleChange(event, "purpose")} />
         </label>
         <br />
-        <input type="submit" value="Submit" />
+        <button onClick={registerUser}>Submit</button>
 
-      </form>
+      </>
       :
       <></>
 

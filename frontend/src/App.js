@@ -10,11 +10,17 @@ import SatelliteModelOrbit from './components/SatelliteModelOrbit';
 import AccountRequestViewer from './components/AccountRequestViewer';
 import Satellites from './components/Satellites';
 import SatelliteGroundTrack from './components/SatelliteGroundTrack';
+import { useState, createContext } from 'react';
+
+export const UserContext = createContext();
 
 function App() {
+
+  const [ activeUser, setActiveUser ] = useState({});
+
   return (
     <div className="App">
-
+      <UserContext.Provider value={{activeUser, setActiveUser}}>
       <nav><ul style={{ listStyleType: "none", padding: 0}}>
         <li><Link to="/">Home Page</Link></li>
         <li><Link to="/login">Login</Link></li>
@@ -42,7 +48,7 @@ function App() {
       </Routes>
       
 
-
+      </UserContext.Provider>
     </div>
   );
 }

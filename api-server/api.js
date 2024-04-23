@@ -154,7 +154,7 @@ api.get('/assessments/:id', async (req, res) => {
 */
 api.post("/auth/login", (req, res) => {
     const {email, password} = req.body;
-    knex("user_account").select("*").where({email: email})
+    knex("user_accounts").select("*").where({email: email})
     .then((dbRes) => {
         try {
             if (bcrypt.compareSync(password, dbRes[0].password)) {
