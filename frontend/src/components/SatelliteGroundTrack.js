@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import { MapContainer, TileLayer, Marker, Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+
 
 
 const satellite = require('satellite.js');
@@ -106,7 +107,7 @@ export default function SatelliteGroundTrack() {
 
 
 
-    
+
 
 
   
@@ -119,7 +120,7 @@ export default function SatelliteGroundTrack() {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
-
+            
             <Polyline positions={positions} color='red' />
 
             {/* {positions.map((position, idx) => (

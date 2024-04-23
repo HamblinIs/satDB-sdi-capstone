@@ -34,10 +34,12 @@ api.get('/', (req, res) => {
 ]
 */
 api.get('/satellites', (req, res) => {
-    let {name} = req.query;
+    let { name } = req.query;
     if (name != undefined) {
-        console.log(name);
-        knex('satellite').select('id', 'name', 'tail_num').whereILike('name', `%${name}%`)
+        // console.log(name);
+        knex('satellite').select('id', 'name', 'orbit', 'owner', 'tail_num')
+        .whereILike('name', `%${name}%`)
+        .orderBy('tail_num', 'desc')
         .then( data => res.status(200).json(data))
         .catch(err => res.status(404).send(err));
     } else {
@@ -76,19 +78,20 @@ api.get('/satellites/:id', async (req, res) => {
 // GET /assessments
 
 api.get('/assessments', (req, res) => {
-    let {name} = req.query;
-    let{creation_date} = req.query
+    let { name } = req.query;
+    let {creation_date} = req.query;
     if (name != undefined) {
         // console.log(name);
-        knex('assessment').select('id', 'name', 'creation_date')
+        knex('assessment').select('id', 'name', 'description', 'creation_date')
         .whereILike('name', `%${name}%`)
-        .orderBy('creation_date', 'name', creation_date)
+        .orderBy('creation_date', 'desc')
+        .orderBy('name', 'asc')
         //.orderBy([{ column: 'email' }, { column: 'age', order: 'desc' }]);
-        .then( data => res.status(200).json(data))
+        .then(data => res.status(200).json(data))
         .catch(err => res.status(404).send(err));
     } else {
         knex('assessment').select('id', 'name', 'creation_date')
-        .then( data => res.status(200).json(data))
+        .then(data => res.status(200).json(data))
         .catch(err => res.status(404).send(err));
     }
     

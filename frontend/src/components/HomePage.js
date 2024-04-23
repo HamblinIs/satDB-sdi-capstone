@@ -48,11 +48,21 @@ const chooseCategory = () => {
   const [filterText, setFilterText] = useState('');
 
   // filter based on textfield input
-  const filteredItems = queryData.filter(item =>
-    item.id.toString().includes(filterText.toLowerCase()) ||
-    item.name.toLowerCase().includes(filterText.toLowerCase()) ||
-    item.tail_num.toString().includes(filterText.toLowerCase())
-  );
+  let filteredItems = [];
+  if (category === 'satellites') {
+    filteredItems = queryData.filter(item =>
+      item.id.toString().includes(filterText.toLowerCase()) ||
+      item.name.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.tail_num.toString().includes(filterText.toLowerCase())
+    )
+  } else if (category === 'assessments') {
+    filteredItems = queryData.filter(item =>
+      item.id.toString().includes(filterText.toLowerCase()) ||
+      item.name.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.description.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.creation_date.toString().includes(filterText.toLowerCase())
+    )
+  }
 
 
   // SORT FEATURES
@@ -101,15 +111,15 @@ const chooseCategory = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button onClick={handleSearch}>Search</button>
-        <button onClick={handleSort}>Sort</button>
+        <button onClick={() => handleSearch()}>Search</button>
+        <button onClick={() => handleSort()}>Sort</button>
 
       </div>
 
 
 
 
-      <div>
+      {/* <div>
         <ul>
           {queryData.map(item => {
             return (
@@ -119,14 +129,14 @@ const chooseCategory = () => {
             )
           })}
         </ul>
-      </div>
+      </div> */}
 
 
-      <div>
+      <div style={{ margin: "0 auto", display: "block", width: "80vw" }}>
         <input type="text" value={filterText} placeholder="Filter" onChange={(e) => setFilterText(e.target.value)} />
 
         {sortedItems.length > 0 ?
-          <table>
+          <table style={{border: '1px solid black'}}>
             <thead>
               <tr>
                 {Object.keys(sortedItems[0]).map((header, index) => (
