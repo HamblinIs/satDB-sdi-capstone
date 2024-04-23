@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function CreateAssessment() {
-const navigate = useNavigate();
-
-  const[satellite, setSatellite] = useState('')
+  const navigate = useNavigate();
+  const [assessmentId, setAssessmentId] = useState();
+  const[satellite, setSatellite] = useState('');
   const [assessment, setAssessment] = useState({
     name: '',
     // satellites: [],
@@ -32,13 +32,13 @@ const navigate = useNavigate();
     // setAssessment(prevState => ({ ...prevState, file: e.target.files[0] }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    // e.preventDefault();
 
     try {
       fetch('http://localhost:8080/assessment/new', {
         method: 'POST',
-        headers:{
+        headers: {
           'Content-Type': 'application/json'
         },
 
@@ -48,20 +48,24 @@ const navigate = useNavigate();
           description: assessment.description
         })
       })
-    //   .then(response => {
-    //     console.log(response)
-    // })
-      // .then(async (res) => {
-      //   if (res.status === 201) {
-      //     window.confirm("Assmen has been created!")
-      //     // navigate(`/AssessmentDetails/${res.id}`)
-      //   } else {
-      //     alert("There was an error creating the assessment");
-      //   }
-      // })
-      .then(res => res.json())
-      .then(res => navigate(`/AssessmentDetails/${res.id}`));
-    } catch(error) {
+        // .then(response => {
+        //   console.log(response)
+        // })
+        // .then(async (res) => {
+        //   if (res.status === 201) {
+        //     window.confirm("Assmen has been created!")
+        //     // navigate(`/AssessmentDetails/${res.id}`)
+        //   } else {
+        //     alert("There was an error creating the assessment");
+        //   }
+        // })
+        .then(res => res.json())
+        .then(res => {
+          console.log(res);
+          setAssessmentId(res.id);
+          navigate(`/AssessmentDetails/${res.id}`);
+        });
+    } catch (error) {
       console.error('Failed to add assessment:', error);
     }
   }
@@ -104,7 +108,8 @@ const navigate = useNavigate();
     <div>
       <h1>Create Assessment</h1>
 
-      <form onSubmit={handleSubmit}>
+      <>
+      
       <label>Name:
           <input type="text" name="name" value={assessment.name} onChange={handleChange} />
         </label>
@@ -183,9 +188,9 @@ const navigate = useNavigate();
         </>
         }
 
-        <input type="submit" value="Submit" />
+        <button onClick = {() => handleSubmit()}>Submit</button>
 
-    </form>
+    </>
     </div>
   );
 }

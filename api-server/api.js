@@ -226,7 +226,7 @@ api.post('/assessment/new',  (req, res) => {
                 creation_date: req.body.creation_date,
                 description: req.body.description
             })
-            .returning("id")
+            .returning(['id'])
             // knex('images').insert('file_path_name')
             // knex('sim_file').insert('file_path_name')
             // knex('misc_file').insert('file_path_name')
