@@ -107,7 +107,7 @@ const chooseCategory = () => {
 
         <input
           type='text'
-          placeholder='Search here'
+          placeholder='Search here for name'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -131,16 +131,16 @@ const chooseCategory = () => {
         </ul>
       </div> */}
 
+      {sortedItems.length > 0 ?
 
-      <div style={{ margin: "0 auto", display: "block", width: "80vw" }}>
-        <input type="text" value={filterText} placeholder="Filter" onChange={(e) => setFilterText(e.target.value)} />
+        <div style={{ margin: "0 auto", display: "block", width: "80vw" }}>
+          <input type="text" value={filterText} placeholder="Filter" onChange={(e) => setFilterText(e.target.value)} />
 
-        {sortedItems.length > 0 ?
-          <table style={{border: '1px solid black'}}>
+          <table style={{ border: '1px solid black' }}>
             <thead>
               <tr>
                 {Object.keys(sortedItems[0]).map((header, index) => (
-                  <th key={index}><button onClick={()=>handleSort2(header)}>{header}</button></th>
+                  <th key={index}><button onClick={() => handleSort2(header)}>{header}</button></th>
                 ))}
               </tr>
             </thead>
@@ -155,15 +155,17 @@ const chooseCategory = () => {
               ))}
             </tbody>
           </table>
-          : null
-        }
-      </div>
+        </div>
+
+        : null
+      }
+      
 
 
 
       <div>
-        <button onClick={handleAddSatellite}>Add Satellite</button>
-        <button onClick={handleAddAssessment}>Add Assessment</button>
+        <button onClick={() => handleAddSatellite()}>Add Satellite</button>
+        <button onClick={() => handleAddAssessment()}>Add Assessment</button>
       </div>
 
     </div>
