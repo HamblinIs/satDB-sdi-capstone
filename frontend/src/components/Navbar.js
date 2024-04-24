@@ -1,24 +1,22 @@
-import React, { useState } from 'react';
-import { Link, useMatch, useResolvedPath } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useMatch, useResolvedPath, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-
+import { IoIosArrowDown, IoIosArrowUp, IoIosMenu } from "react-icons/io";
+import { UserContext } from '../App.js'
+import CreateAccountLogin from './CreateAccountLogin';
 
 const HeaderStyle = styled(Link)`
-  background-color: black;
-  font-size: 50px;
-  color: white;
-  width: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 20;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  text-align: center;
-  margin-top: 25px;
-  text-decoration: none;
+background-color: black;
+font-size: 50px;
+color: white;
+width: 100%;
+z-index: 20;
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 10px;
+margin-top: 25px;
+margin-bottom: 10px;
 `;
 
 const NavUL = styled.ul`
@@ -30,8 +28,8 @@ const NavUL = styled.ul`
   gap: 1rem;
   align-items: center;
   justify-content: center;
+  margin-bottom: 10px;
 `
-
 
 const NavLink = styled(Link)`
 color: inherit;
@@ -49,7 +47,6 @@ background-color: ${props => props.isActive ? '#555' : 'transparent'};
 }
 `;
 
-
 const DropdownMenu = styled.div`
   position: relative;
   display: inline-block;
@@ -60,7 +57,6 @@ const DropdownButton = styled.button`
   color: black;
   padding: 10px;
   font-size: 16px;
-  border: none;
   cursor: pointer;
 `;
 
@@ -69,6 +65,7 @@ const DropdownContent = styled.div`
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
+  border: 1px solid black;
   z-index: 1;
 `;
 
@@ -82,10 +79,43 @@ const DropdownLink = styled(Link)`
   }
 `;
 
+const NavbarDropDown = styled.div`
+  margin-right: 1rem;
+`
+const NavbarButton = styled.div`
+color: white;
+display: flex;
+justify-content: flex-end;
+align-items: center;
+background-color: transparent;
+border: none;
+cursor: pointer;
+`;
+
+const NavbarLink = styled.div`
+color:white
+`
+
+const HeaderLinkContainer = styled.div`
+display: flex;
+justify-content: center;
+flex-grow: 1;
+`
+
+const HeaderLink = styled(Link)`
+text-decoration: none;
+color: white;
+font-size: 50px;
+`
+
 
 
 export default function Navbar() {
+  const navigate = useNavigate();
+
+  const { activeUser, setActiveUser} = React.useContext(UserContext)
   const [isOpen, setIsOpen] = useState(false);
+  const[showLoginModel, setShowLoginModal] = useState(false);
 
   const handleToggle = () => {
     setIsOpen(!isOpen)
@@ -95,28 +125,59 @@ export default function Navbar() {
     setIsOpen(false)
   }
 
+  const toggleLoginModel = () => {
+    navigate('/')
+    setShowLoginModal(!showLoginModel)
+  }
+
+  const handleSignOut = () => {
+    setActiveUser({})
+  }
+
+
+  const handleMouseLeave = () => {
+    setIsOpen(false); // Close the menu when the mouse leaves
+  };
+
   return (
     <>
-    <HeaderStyle to='/'>
-      Satellite Assessment Center
+    <HeaderStyle>
+      <HeaderLinkContainer>
+        <HeaderLink to='/'>Satellite Assessment Center</HeaderLink>
+      </HeaderLinkContainer>
+      <NavbarDropDown>
+        <NavbarButton onClick={handleToggle}>
+          <NavbarLink><IoIosMenu /></NavbarLink>
+        </NavbarButton>
+      </NavbarDropDown>
+
+      <ListItem>
+        {activeUser.email ? (
+          <NavLink as='div' onClick={handleSignOut}>Sign Out</NavLink>
+        ) : (
+          <NavLink as='div' onClick={toggleLoginModel}>Login</NavLink>
+        )}
+      </ListItem>
+      {showLoginModel && (
+        <CreateAccountLogin
+        toggleLoginModel={toggleLoginModel}
+        setActiveUser={setActiveUser}>
+        </CreateAccountLogin>
+      )}
     </HeaderStyle>
+
     <NavUL>
-      {/* <CustomLink to='/'>Home</CustomLink> */}
-      {/* <CustomLink to='/CreateAssessment'>Create Assessment</CustomLink>
-      <CustomLink to='/CreateSatellite"'>Create Satellite</CustomLink> */}
-      <DropdownMenu>
-        <DropdownButton onClick={handleToggle}>
+
+      <DropdownMenu onMouseLeave={handleMouseLeave}>
+        <DropdownButton onMouseOver={handleToggle}>
           Create {isOpen ? <IoIosArrowUp/> : <IoIosArrowDown/>}
           </DropdownButton>
-
           <DropdownContent isOpen={isOpen}>
            <DropdownLink to="/CreateAssessment" onClick={handleLinkClick}>Create Assessment</DropdownLink>
             <DropdownLink to="/CreateSatellite" onClick={handleLinkClick}>Create Satellite</DropdownLink>
-            {/* <DropdownLink to="/Satellites" onClick={handleLinkClick}>View Satellites</DropdownLink>
-            <DropdownLink to="/SatelliteModelOrbit" onClick={handleLinkClick}>Satellite Model Orbit</DropdownLink>
-             <DropdownLink to="/SatelliteGroundTrack">Satellite Ground Track</DropdownLink> */}
           </DropdownContent>
       </DropdownMenu>
+
       <CustomLink to='/SatelliteModelOrbit'>Satellite Model Orbit</CustomLink>
       <CustomLink to='/Satellites'>View Satellites</CustomLink>
       <CustomLink to='/SatelliteGroundTrack'>Satellite Ground Track</CustomLink>

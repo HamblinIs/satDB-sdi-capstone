@@ -1,6 +1,11 @@
 import React, { useState, useContext }  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../App.js'
+import styled from 'styled-components';
+
+
+const toggleLoginModel = styled.div`
+`
 
 export default function CreateAccountLogin() {
   const [userSelect, setUserSelect] = useState(0);
@@ -20,7 +25,7 @@ export default function CreateAccountLogin() {
     const { name, value } = e.target;
     setNewAccount(prevState => ({ ...prevState, [type]: value }));
   };
-  
+
   const checkLogin = () =>{
     const userName = document.getElementById("username").value
     const passWord = document.getElementById("password").value
@@ -61,7 +66,7 @@ export default function CreateAccountLogin() {
       !newAccount.password ||
       !newAccount.first_name ||
       !newAccount.last_name ||
-      !newAccount.purpose 
+      !newAccount.purpose
     ) {
       alert('Fill out form')
       return;
@@ -94,20 +99,21 @@ export default function CreateAccountLogin() {
     setActiveUser({})
     setUserSelect(0)
     navigate('/')
+    toggleLoginModel()
   }
 
   return (
     <div>
       <h1>Create Account/Login</h1>
       {activeUser.email && (
-             <button onClick={handleSignOut}>Sign Out</button> 
+             <button onClick={handleSignOut}>Sign Out</button>
       )}
       {!activeUser.email && (
         <button onClick= {() => showChoice(1)}>Login</button>
       )}
       <br/>
       <button onClick= {() => showChoice(2)}>Create Account</button>
-    {userSelect === 1? 
+    {userSelect === 1?
       <>
         <br/>
         <label> Email:

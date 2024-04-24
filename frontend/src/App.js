@@ -21,9 +21,9 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
-      <UserContext.Provider value={{activeUser, setActiveUser}}>
 
+      <UserContext.Provider value={{activeUser, setActiveUser}}>
+      <Navbar />
 
       <Routes>
         <Route exact path="/" element={<HomePage />} />
