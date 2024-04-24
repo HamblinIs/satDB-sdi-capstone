@@ -1,5 +1,5 @@
 import './App.css';
-import { Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import AssessmentDetails from './components/AssessmentDetails';
 import SatelliteDetails from './components/SatelliteDetails';
@@ -11,6 +11,7 @@ import AccountRequestViewer from './components/AccountRequestViewer';
 import Satellites from './components/Satellites';
 import SatelliteGroundTrack from './components/SatelliteGroundTrack';
 import { useState, createContext } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
 export const UserContext = createContext();
 
@@ -20,6 +21,7 @@ function App() {
 
   return (
     <div className="App">
+    <BrowserRouter>
       <UserContext.Provider value={{activeUser, setActiveUser}}>
       <nav><ul style={{ listStyleType: "none", padding: 0}}>
         <li><Link to="/">Home Page</Link></li>
@@ -49,6 +51,7 @@ function App() {
       
 
       </UserContext.Provider>
+      </BrowserRouter>
     </div>
   );
 }
