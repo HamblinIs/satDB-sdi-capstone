@@ -29,9 +29,9 @@ export default function HomePage() {
       .then(data => setAllQueryData(data))
     }
   }
- 
+
   const handleSort = () => {
-    // Toggle sort 
+    // Toggle sort
     const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
     setSortOrder(newSortOrder);
   }
@@ -93,11 +93,11 @@ const chooseCategory = () => {
 
 
 
-  
+
   return (
     <div>
 
-      <h1>Satellite Assessment Center</h1>
+      {/* <h1>Satellite Assessment Center</h1> */}
 
       <div>
 
@@ -165,7 +165,7 @@ const chooseCategory = () => {
 
         : null
       }
-      
+
 
 
 
@@ -177,9 +177,9 @@ const chooseCategory = () => {
           {/* {imageList.map((image, index) => (
         <img key={index} src={image} alt={`image-${index}`} />
       ))} */}
-      
+
       <ImageViewer images={imagesArr}/>
-      
+
           {/* <img src="C:\Users\isaac\OneDrive\Pictures\AI Generated\pilot cat.png" alt='cat'/>
           <img src="/layers.png" alt='sat'/>
           <img src="/satellie.jpg" alt="img"/>

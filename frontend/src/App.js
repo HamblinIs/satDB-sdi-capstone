@@ -11,6 +11,7 @@ import AccountRequestViewer from './components/AccountRequestViewer';
 import Satellites from './components/Satellites';
 import SatelliteGroundTrack from './components/SatelliteGroundTrack';
 import { useState, createContext } from 'react';
+import Navbar from './components/Navbar'
 
 export const UserContext = createContext();
 
@@ -20,18 +21,8 @@ function App() {
 
   return (
     <div className="App">
+      <Navbar />
       <UserContext.Provider value={{activeUser, setActiveUser}}>
-      <nav><ul style={{ listStyleType: "none", padding: 0}}>
-        <li><Link to="/">Home Page</Link></li>
-        <li><Link to="/login">Login</Link></li>
-        <li><Link to="/CreateAssessment">Create Assessment</Link></li>
-        <li><Link to="/CreateSatellite">Create Satellite</Link></li>
-        <li><Link to="/SatelliteModelOrbit">SatelliteModelOrbit</Link></li>
-        <li><Link to="/AccountRequestViewer">AccountRequestViewer</Link></li>
-        <li><Link to="/Satellites">Satellites</Link></li>
-        <li><Link to="/SatelliteGroundTrack">Satellite Ground Track</Link></li>
-        </ul></nav>
-
 
 
       <Routes>
@@ -46,7 +37,7 @@ function App() {
         <Route path="/Satellites" element={<Satellites />} />
         <Route path="/SatelliteGroundTrack" element={<SatelliteGroundTrack/>} />
       </Routes>
-      
+
 
       </UserContext.Provider>
     </div>
