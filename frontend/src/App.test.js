@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen, act, waitFor } from '@testing-library/react';
 import App from './App';
-import { handlers } from './mocks/handlers';
+import { handlers } from './new_mocks/handlers.js';
 import userEvent from '@testing-library/user-event'
 import { TextEncoder } from 'node:util'
 //Objexxt.assign(global, { TextEncoder })
@@ -29,18 +29,18 @@ test('tabs should be available', () => {
 })
 
 
-const server = setupServer(
-    rest.get(`http://localhost:8080/satellites?name=asc`, (req, res, ctx) => {
-        return res(ctx.json(  [
-            {
-                "id": 1,
-                "name": "ASCENT",
-                "orbit": "LEO",
-                "owner": "AFRL",
-                "tail_num": 17245
-            }
-        ])
-      )})
+const server = setupServer(...handlers
+    // rest.get(`http://localhost:8080/satellites?name=asc`, (req, res, ctx) => {
+    //     return res(ctx.json(  [
+    //         {
+    //             "id": 1,
+    //             "name": "ASCENT",
+    //             "orbit": "LEO",
+    //             "owner": "AFRL",
+    //             "tail_num": 17245
+    //         }
+    //     ])
+    //   )})
 )
 
 beforeAll(() => server.listen());
@@ -56,8 +56,9 @@ test('search bar should be present and return data', async() => {
   await act(async() => {userEvent.click(opts[1])})
   userEvent.type(screen.getByRole('textbox'), 'asc')
   await act(async() => {userEvent.click(satSearch)})
+  //render(<App/>)
   //await waitFor(() => screen.getByText('AFRL'));
-  //const satName = screen.getByText('ASCENT')
+  //const satName = screen.getByText("ASCENT")
   expect(satSearch).toBeInTheDocument()
   expect(filt).toBeInTheDocument()
   expect(screen.getByRole('textbox')).toHaveValue('asc')
