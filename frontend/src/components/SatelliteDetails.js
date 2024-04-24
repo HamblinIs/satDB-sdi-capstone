@@ -1,63 +1,125 @@
-import React , { useState }from 'react';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function SatelliteDetails() {
-  const [selectedSatellite, setSelectedSatellite] = useState(0)
+  const navigate = useNavigate();
+  const [selectedSatellite, setSelectedSatellite] = useState(0);
+
   const [satellite, setSatellite] = useState({
-    name: '',
-    id: '',
-    twoLineElement: '',
-    orbitalPeriod: '',
-    missionType: '',
-    missionDesignLife: '',
-    expectedRetirementDate: ''
-  })
-  
-  // Replace the following state with actual data fetched from API
-  // const satellite = {
-  //   name: 'some satellite',
-  //   twoLineElement: '1 25544U 98067A   21275.58693519  .00001303  00000-0  25332-4 0  9991',
-  //   orbitalPeriod: '92.69 minutes',
-  //   missionType: 'scientific/experimental',
-  //   missionDesignLife: '15 years',
-  //   expectedRetirementDate: '2023-11-20'
-  // };
+    orbit: "",
+    owner: "",
+    name: "",
+    tail_num: "",
+  });
 
-  fetch(`http://localhost:8080/satellites?name=`)
-  .then(response => response.json())
-  .then(data => {setSatellite(data)})
+  const [isEditing, setIsEditing] = useState(false);
 
+
+  const id = 1; // delete this
+  useEffect(() => {
+    fetch(`http://localhost:8080/satellites/${id}`)
+    .then(response => response.json())
+    .then(data => setSatellite(data))
+  }, []);
+
+  const handleToggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleSave = () => {
+    // {orbit: 'LEO', owner: 'NASA ', name: 'Hubble', tail_num: 45345}
+    // create postBody for edits
+    const postBody = {
+      orbit: satellite.orbit,
+      owner: satellite.owner,
+      name: satellite.name,
+      tail_num: satellite.tail_num,
+    };
+
+    // fetch POST the edits to the server
+    fetch("http://localhost:8080/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(postBody),
+    });
+
+    handleToggleEdit();
+  };
+
+  const handleChange = (e) => {
+    // name is the key name
+    // value is e.target.value
+    const { name, value } = e.target;
+    setSatellite((prevState) => ({ ...prevState, [name]: value }));
+  };
 
   return (
     <div>
+      <button onClick={() => navigate("/")}>Back to Home</button>
       <h1>Satellite Details</h1>
 
-        <label>Satellite Name:</label>
-        <br />
-        <p>{satellite.name}</p>
-        <br />
-        <label>Satellite Id:</label>
-        <br />
-        <p>{satellite.id}</p>
-        <br />
-        <label>Two-line Element:</label>
-        <br />
-        <p>{satellite.twoLineElement}</p>
-        <br />
-        <label>Orbital Period:</label>
-        <br />
-        <p>{satellite.orbitalPeriod}</p>
-        <br />
-        <label>Mission Type:</label>
-        <br />
-        <p>{satellite.missionType}</p>
-        <br />
-        <label>Mission Design Life:</label>
-        <br />
-        <p>{satellite.missionDesignLife}</p>
-        <br />
-        <label>Expected Retirement Date:</label>
-        <br />
-        <p>{satellite.expectedRetirementDate}</p>
+      <br />
+
+      <label>
+        Satellite Orbit:
+        <input
+          type="text"
+          name="orbit"
+          value={satellite.orbit}
+          onChange={handleChange}
+          readOnly={!isEditing}
+        />
+      </label>
+
+      <br />
+
+      <label>
+        Satellite Owner:
+        <input
+          type="text"
+          name="owner"
+          value={satellite.owner}
+          onChange={handleChange}
+          readOnly={!isEditing}
+        />
+      </label>
+
+      <br />
+
+      <label>
+        Satellite Name:
+        <input
+          type="text"
+          name="name"
+          value={satellite.name}
+          onChange={handleChange}
+          readOnly={!isEditing}
+        />
+      </label>
+
+      <br />
+
+      <label>
+        Tail Number:
+        <input
+          type="number"
+          name="tail_num"
+          value={satellite.tail_num}
+          onChange={handleChange}
+          readOnly={!isEditing}
+        />
+      </label>
+
+      <br/>
+
+      {isEditing ? (
+        <button onClick={() => handleSave()}>Save</button>
+      ) : (
+        <button onClick={() => handleToggleEdit()}>Edit</button>
+      )}
+
+
+
     </div>
   );
 }

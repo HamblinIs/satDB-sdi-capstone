@@ -1,43 +1,90 @@
-import React , { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import SimpleLineChart from './SimpleLineChart';
 
+
 export default function AssessmentDetails() {
+  const [isEditing, setIsEditing] = useState(false);
   const [selectedAssessment, setSelectedAssessment] = useState(0)
   const [assessmentInfo, setAssessmentInfo] = useState({})
-  
-  // fetch(`http://localhost:8080/assessments/${selectedAssessment}`)
-  // .then(res => res.json())
-  // .then(res => setAssessmentInfo(res))
- 
+  const assessmentId = useParams();
+
+  useEffect(() => {
+    // console.log("params id", assessmentId)
+    fetch(`http://localhost:8080/assessments/${assessmentId.id}`)
+      .then(res => res.json())
+      .then(res => setAssessmentInfo(res))
+  }, []);
+
+  const handleSave = () => {
+    // todo: need to add save logic: fetch with PATCH method
+    console.log("save was clicked");
+    handleToggleEdit();
+  }
+
+  const handleToggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+
+  if (assessmentInfo) {
+
     return (
       <div>
         <h1>Assessment Details</h1>
 
-        <label>Name:</label>
-        <p>{assessmentInfo.name}</p>
+
+        <label>Name:
+          <input type='text' value={assessmentInfo.name} readOnly={!isEditing} />
+        </label>
+
         <br />
+
         <label>Associated Satellite:</label>
+
         <br />
-        <label>Date:</label>
-        <p>{assessmentInfo.date}</p>
+
+        <label>Creation Date:
+          <input type='text' value={assessmentInfo.creation_date} readOnly={!isEditing} />
+        </label>
+
         <br />
-        <label>Details:</label>
-        <p>{assessmentInfo.details}</p>
+
+        <label>Description:
+          <input type='text' value={assessmentInfo.description} readOnly={!isEditing} />
+        </label>
+
         <br />
-        <label>Owner:</label>
-        <p>{assessmentInfo.owner}</p>
+
+        <label>Owner:
+          <input type='text' value={assessmentInfo.owner} readOnly={!isEditing} />
+        </label>
+
         <br />
+
         <label>Model File:</label>
+
         {/* <input type="file" name="model_file" onChange={handleFileChange} /> */}
+        
         <br />
+
         <label>Simulation File:</label>
         {/* <input type="file" name="simulation_file" onChange={handleFileChange} /> */}
 
-        <h4>Visual Magnitude</h4>
+
+        <br />
+          
+          <h4>Visual Magnitude</h4>
         <SimpleLineChart/>
 
+        {isEditing ? (
+          <button onClick={() => handleSave()}>Save</button>
+        ) : (
+          <button onClick={() => handleToggleEdit()}>Edit</button>
+        )}
+
       </div>
-
     );
+  }
+}
 
-};

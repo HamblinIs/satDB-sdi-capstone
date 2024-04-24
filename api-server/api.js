@@ -47,7 +47,7 @@ api.get('/satellites', (req, res) => {
         .then( data => res.status(200).json(data))
         .catch(err => res.status(404).send(err));
     }
-    
+
 })
 
 // GET /satellites/:id
@@ -94,7 +94,7 @@ api.get('/assessments', (req, res) => {
         .then(data => res.status(200).json(data))
         .catch(err => res.status(404).send(err));
     }
-    
+
 })
 /*
 [
@@ -114,19 +114,19 @@ api.get('/assessments', (req, res) => {
 // GET /assessments/:id
 api.get('/assessments/:id', async (req, res) => {
 
-       let user_accounts = await knex.raw('SELECT user_accounts.first_name, user_accounts.last_name FROM user_accounts, assessment_to_user_account, assessment WHERE user_accounts.id = assessment_to_user_account.user_account_id AND assessment.id = assessment_to_user_account.assessment_id')
+       let user_accounts = await knex.raw('SELECT user_accounts.first_name, user_accounts.last_name FROM user_accounts, assessment_to_user_account, assessment WHERE user_accounts.id = assessment_to_user_account.user_account_id AND assessment.id = assessment_to_user_account.assessment_id');
        let sim_files = await knex.raw('SELECT sim_file.file_path_name FROM sim_file, sim_file_to_assessment, assessment WHERE assessment.id = sim_file_to_assessment.assessment_id AND sim_file_to_assessment.sim_file_id = sim_file.id;');
        let images = await knex.raw("SELECT image.file_path_name FROM image, image_to_assessment, assessment WHERE assessment.id = image_to_assessment.assessment_id AND image_to_assessment.image_id = image.id;");
        let data_files = await knex.raw('SELECT data_file.file_path_name FROM data_file, data_file_to_assessment, assessment WHERE assessment.id = data_file_to_assessment.assessment_id AND data_file_to_assessment.data_file_id = data_file.id;');
        let misc_files = await knex.raw('SELECT misc_file.file_path_name FROM misc_file, misc_file_to_assessment, assessment WHERE assessment.id = misc_file_to_assessment.assessment_id AND misc_file_to_assessment.misc_file_id = misc_file.id;');
        let assessments = await knex("assessment").select('name', 'description', 'creation_date').where({id: req.params.id});
-       let assessment = assessments[0]
+       let assessment = assessments[0];
        assessment.satellites = await knex("satellite").select('id', 'name', 'tail_num').where({id: req.params.id});
        assessment.images = images["rows"];
        assessment.data_files = data_files["rows"];
-       assessment.misc_files = misc_files["rows"]
-       assessment.sim_files = sim_files["rows"]
-       assessment.user_accounts = user_accounts["rows"]
+       assessment.misc_files = misc_files["rows"];
+       assessment.sim_files = sim_files["rows"];
+       assessment.user_accounts = user_accounts["rows"];
     //    assessment.assessments = assessments["rows"];
        res.status(200).json(assessment)
     })
@@ -199,22 +199,46 @@ api.post("/auth/register", (req, res) => {
 /*
 {
     name: "FOO",
-    
+
 }
 */
-api.post('/satellite/new', (req, res) => {
-    const {name, orbit, owner, tailNumber} = req.body;
-    knex('satellite')
-        .insert({name, orbit, owner, tailNumber})
-        .then(response => {
-            res.status(201).send(`Satellite ${name} has been created.`)
-        })
-        .catch(err => {
-            res.status(500).send(`Failed to add ${name} satellite.`)
-        })
+api.post('/satellite/new', async (req, res) => {
+    // const {name, orbit, owner, tailNumber} = req.body;
+    try{
+    await knex('satellite')
+        .insert({
+            // name, orbit, owner, tailNumber
+            name: req.body.name,
+            orbit: req.body.orbit,
+            owner: req.body.owner,
+            tail_num: parseInt(req.body.tailNumber)
+        });
+        res.status(201).send(`Satellite ${req.body.name} has been created.`)
+    } catch(error) {
+        res.status(500).send(`Failed to add ${req.body.name} satellite.`)
+    }
 })
 
-
+api.post('/assessment/new',  (req, res) => {
+    // const { name, description, creation_date } = req.body;
+    try {
+         knex('assessment')
+            .insert({
+                // name, description, creation_date
+                name: req.body.name,
+                creation_date: req.body.creation_date,
+                description: req.body.description
+            })
+            .returning(['id'])
+            // knex('images').insert('file_path_name')
+            // knex('sim_file').insert('file_path_name')
+            // knex('misc_file').insert('file_path_name')
+            // knex('data_file').insert('file_path_name')
+            .then(assessment => res.status(201).json(assessment[0]))
+    } catch(error) {
+        res.status(500).send(`Unable to add assessment ${req.body.name}.`)
+    }
+})
 //POST New Assessment
 /*
 {
@@ -226,20 +250,6 @@ api.post('/satellite/new', (req, res) => {
     data_file: [],
     misc_file: []
 }
+
 */
-api.post('/assessment/new', (req, res) => {
-    const { name, description, creation_date} = req.body;
-    knex('assessment')
-        .insert({ name, description, creation_date })
-    // knex('images').insert('file_path_name')
-    // knex('sim_file').insert('file_path_name')
-    // knex('misc_file').insert('file_path_name')
-    // knex('data_file').insert('file_path_name')
-        .then(response => {
-            res.status(201).send(`Assesment ${name} successfully added.`)
-        })
-        .catch(err => {
-            res.status(500).send(`Unable to add assessment ${name}.`)
-        })
-            
-})
+
