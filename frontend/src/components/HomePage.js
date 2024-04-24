@@ -1,6 +1,12 @@
 import React , { useState } from 'react';
+import ImageViewer from './ImageViewer';
+
+// const images = require.context('C:\Users\isaac\OneDrive\Pictures\AI_Generated', true);
+// const imageList = images.keys().map(image => images(image));
 
 export default function HomePage() {
+  const imagesArr=["https://cdn.defenseone.com/media/img/cd/2023/08/11/GettyImages_1407240226/open-graph.jpg", "https://spaceplace.nasa.gov/satellite/en/TEMPO.en.jpg", "https://media.istockphoto.com/id/1339097795/photo/satellite-orbiting-the-earth.jpg?s=612x612&w=0&k=20&c=FMG2NypIT0JuZVs26qSYOq2qTwsO89woydrwZimK21s="];
+
 
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] =  useState('desending')
@@ -48,11 +54,21 @@ const chooseCategory = () => {
   const [filterText, setFilterText] = useState('');
 
   // filter based on textfield input
-  const filteredItems = queryData.filter(item =>
-    item.id.toString().includes(filterText.toLowerCase()) ||
-    item.name.toLowerCase().includes(filterText.toLowerCase()) ||
-    item.tail_num.toString().includes(filterText.toLowerCase())
-  );
+  let filteredItems = [];
+  if (category === 'satellites') {
+    filteredItems = queryData.filter(item =>
+      item.id.toString().includes(filterText.toLowerCase()) ||
+      item.name.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.tail_num.toString().includes(filterText.toLowerCase())
+    )
+  } else if (category === 'assessments') {
+    filteredItems = queryData.filter(item =>
+      item.id.toString().includes(filterText.toLowerCase()) ||
+      item.name.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.description.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.creation_date.toString().includes(filterText.toLowerCase())
+    )
+  }
 
 
   // SORT FEATURES
@@ -97,19 +113,19 @@ const chooseCategory = () => {
 
         <input
           type='text'
-          placeholder='Search here'
+          placeholder='Search here for name'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button onClick={handleSearch}>Search</button>
-        <button onClick={handleSort}>Sort</button>
+        <button onClick={() => handleSearch()}>Search</button>
+        <button onClick={() => handleSort()}>Sort</button>
 
       </div>
 
 
 
 
-      <div>
+      {/* <div>
         <ul>
           {queryData.map(item => {
             return (
@@ -119,18 +135,18 @@ const chooseCategory = () => {
             )
           })}
         </ul>
-      </div>
+      </div> */}
 
+      {sortedItems.length > 0 ?
 
-      <div>
-        <input type="text" value={filterText} placeholder="Filter" onChange={(e) => setFilterText(e.target.value)} />
+        <div style={{ margin: "0 auto", display: "block", width: "80vw" }}>
+          <input type="text" value={filterText} placeholder="Filter" onChange={(e) => setFilterText(e.target.value)} />
 
-        {sortedItems.length > 0 ?
-          <table>
+          <table style={{ border: '1px solid black' }}>
             <thead>
               <tr>
                 {Object.keys(sortedItems[0]).map((header, index) => (
-                  <th key={index}><button onClick={()=>handleSort2(header)}>{header}</button></th>
+                  <th key={index}><button onClick={() => handleSort2(header)}>{header}</button></th>
                 ))}
               </tr>
             </thead>
@@ -145,17 +161,29 @@ const chooseCategory = () => {
               ))}
             </tbody>
           </table>
-          : null
-        }
-      </div>
+        </div>
+
+        : null
+      }
+      
 
 
 
       <div>
-        <button onClick={handleAddSatellite}>Add Satellite</button>
-        <button onClick={handleAddAssessment}>Add Assessment</button>
+        <button onClick={() => handleAddSatellite()}>Add Satellite</button>
+        <button onClick={() => handleAddAssessment()}>Add Assessment</button>
       </div>
 
+          {/* {imageList.map((image, index) => (
+        <img key={index} src={image} alt={`image-${index}`} />
+      ))} */}
+      
+      <ImageViewer images={imagesArr}/>
+      
+          {/* <img src="C:\Users\isaac\OneDrive\Pictures\AI Generated\pilot cat.png" alt='cat'/>
+          <img src="/layers.png" alt='sat'/>
+          <img src="/satellie.jpg" alt="img"/>
+          <img src="https://cdn.defenseone.com/media/img/cd/2023/08/11/GettyImages_1407240226/open-graph.jpg" alt="web picture" /> */}
     </div>
   );
 };

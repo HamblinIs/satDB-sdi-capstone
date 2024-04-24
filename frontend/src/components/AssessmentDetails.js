@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import SimpleLineChart from './SimpleLineChart';
+
 
 export default function AssessmentDetails() {
   const [isEditing, setIsEditing] = useState(false);
@@ -26,9 +28,11 @@ export default function AssessmentDetails() {
 
 
   if (assessmentInfo) {
+
     return (
       <div>
         <h1>Assessment Details</h1>
+
 
         <label>Name:
           <input type='text' value={assessmentInfo.name} readOnly={!isEditing} />
@@ -69,6 +73,9 @@ export default function AssessmentDetails() {
 
 
         <br />
+          
+          <h4>Visual Magnitude</h4>
+        <SimpleLineChart/>
 
         {isEditing ? (
           <button onClick={() => handleSave()}>Save</button>
@@ -80,3 +87,4 @@ export default function AssessmentDetails() {
     );
   }
 }
+
