@@ -276,26 +276,89 @@ api.post('/satellite/new', async (req, res) => {
     }
 })
 
-api.post('/assessment/new',  (req, res) => {
-    // const { name, description, creation_date } = req.body;
+api.post('/assessment/new', (req, res) => {
     try {
-         knex('assessment')
+      knex('assessment')
+        .insert({
+          name: req.body.name,
+          creation_date: req.body.creation_date,
+          description: req.body.description,
+        })
+        .returning(['id'])
+        .then(assessment => {
+            const assessmentId = assessment[0].id;
+            // Insert into satellite_to_assessment table using the returned id
+            return knex('satellite_to_assessment')
+                .insert({
+                satellite_id: req.body.associatedSat,
+                assessment_id: assessmentId
+                })
+            .then(() => {
+              res.status(201).json({ id: assessmentId });
+            });
+        })
+        //ALL MODEL SHIT NEEDS MMOVED TO THE SAT SECTION INSTEAD OF THE ASS SECTION
+        // .then(assessment => {
+        //     const assessmentId = assessment[0].id;
+        //     return knex('cad_model')
+        //     .insert({
+        //       model_file: req.body.model_file,
+        //     })
+        //     .then(() => {
+        //       res.status(201).json({ id: assessmentId });
+        //     });
+        // })
+        .then(assessment => {
+            const assessmentId = assessment[0].id;
+            return knex('sim_file_to_assessment')
             .insert({
-                // name, description, creation_date
-                name: req.body.name,
-                creation_date: req.body.creation_date,
-                description: req.body.description
+              simulation_file: req.body.simulation_file,
             })
-            .returning(['id'])
-            // knex('images').insert('file_path_name')
-            // knex('sim_file').insert('file_path_name')
-            // knex('misc_file').insert('file_path_name')
-            // knex('data_file').insert('file_path_name')
-            .then(assessment => res.status(201).json(assessment[0]))
-    } catch(error) {
-        res.status(500).send(`Unable to add assessment ${req.body.name}.`)
+            .then(() => {
+              res.status(201).json({ id: assessmentId });
+            });
+        })
+        .then(assessment => {
+            const assessmentId = assessment[0].id;
+            return knex('misc_file_to_assessment')
+            .insert({
+              misc_files: req.body.misc_files
+            })
+            .then(() => {
+              res.status(201).json({ id: assessmentId });
+            });
+        })
+        .catch(error => {
+          console.error('Error inserting assessment:', error);
+          res.status(500).send(`Unable to add assessment ${req.body.name}.`);
+        });
+    } catch (error) {
+      res.status(500).send(`Unable to add assessment ${req.body.name}.`);
     }
-})
+});
+
+
+
+
+// return knex('cad_model')
+//             .insert({
+//               model_file: req.body.model_file,
+//             })
+//             knex('sim_file')
+//             .insert({
+//               simulation_file: req.body.simulation_file,
+//             })
+//             knex('misc_file')
+//             .insert({
+//               misc_files: req.body.misc_files
+//             })
+
+
+
+
+
+
+
 //POST New Assessment
 /*
 {
