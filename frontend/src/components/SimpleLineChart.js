@@ -25,7 +25,7 @@ export default function SimpleLineChart() {
 
 
             <LineChart
-                width={1600}
+                width={800}
                 height={600}
                 data={csvData}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}

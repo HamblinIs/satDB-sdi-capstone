@@ -67,36 +67,36 @@ export default function CreateAssessment() {
 
 
   const setModelFilesNum = () =>{
-  //     const amount = document.getElementById("modelFilesNum").value
+      const amount = document.getElementById("modelFilesNum").value
 
-  //     for(let i=1; i<amount; i++){
-  //       modelCounter.push(<>
-  //         <label>Model File:
-  //           <input type="file" name="model_file" onChange={handleFileChange} />
-  //         </label>
-  //         <br/>
-  //         </>)
-  //     }
-  //     console.log("counter", modelCounter)
-  //     setModFiles(modelCounter)
+      for(let i=1; i<amount; i++){
+        modelCounter.push(<>
+          <label>Model File:
+            <input type="file" name="model_file" onChange={handleFileChange} />
+          </label>
+          <br/>
+          </>)
+      }
+      console.log("counter", modelCounter)
+      setModFiles(modelCounter)
   }
 
   const setSimFilesNum = () => {
-  //   const amount = document.getElementById("simFilesNum").value
+    const amount = document.getElementById("simFilesNum").value
 
 
-  //   for(let i=1; i<amount; i++ ){
-  //     simCounter.push(
-  //       <>
-  //       <label>Simulation File:
-  //           <input type="file" name="simulation_file" onChange={handleFileChange} />
-  //         </label>
-  //         <br/>
-  //       </>
-  //     )
-  //   }
-  //   console.log("counter", simCounter)
-  //   setSimFiles(simCounter)
+    for(let i=1; i<amount; i++ ){
+      simCounter.push(
+        <>
+        <label>Simulation File:
+            <input type="file" name="simulation_file" onChange={handleFileChange} />
+          </label>
+          <br/>
+        </>
+      )
+    }
+    console.log("counter", simCounter)
+    setSimFiles(simCounter)
   }
 
   return (

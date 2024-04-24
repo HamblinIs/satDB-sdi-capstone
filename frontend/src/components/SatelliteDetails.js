@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import ImageViewer from "./ImageViewer";
+const imagesArr=["https://cdn.defenseone.com/media/img/cd/2023/08/11/GettyImages_1407240226/open-graph.jpg", "https://spaceplace.nasa.gov/satellite/en/TEMPO.en.jpg", "https://media.istockphoto.com/id/1339097795/photo/satellite-orbiting-the-earth.jpg?s=612x612&w=0&k=20&c=FMG2NypIT0JuZVs26qSYOq2qTwsO89woydrwZimK21s="];
 
 export default function SatelliteDetails() {
   const navigate = useNavigate();
@@ -10,12 +12,15 @@ export default function SatelliteDetails() {
     owner: "",
     name: "",
     tail_num: "",
+    assessments: [],
+    cad_models: [],
+    images: []
   });
 
   const [isEditing, setIsEditing] = useState(false);
 
+  const { id } = useParams();
 
-  const id = 1; // delete this
   useEffect(() => {
     fetch(`http://localhost:8080/satellites/${id}`)
     .then(response => response.json())
@@ -28,20 +33,26 @@ export default function SatelliteDetails() {
 
   const handleSave = () => {
     // {orbit: 'LEO', owner: 'NASA ', name: 'Hubble', tail_num: 45345}
-    // create postBody for edits
-    const postBody = {
+
+    // create patchBody for edits
+    const patchBody = {
       orbit: satellite.orbit,
       owner: satellite.owner,
       name: satellite.name,
       tail_num: satellite.tail_num,
+      assessments: satellite.assessments, // todo: ask issac if he wants this editable
+      cad_models: satellite.cad_models, // array of objects, each object having a key file_path_name which stores a file path string
+      images: satellite.images
     };
 
-    // fetch POST the edits to the server
-    fetch("http://localhost:8080/", {
-      method: "POST",
+    // fetch PATCH the edits to the server
+    fetch(`http://localhost:8080/satellites/${id}`, {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(postBody),
-    });
+      body: JSON.stringify(patchBody),
+    })
+      .then(response => response.json())
+      .then(data => console.log(data));
 
     handleToggleEdit();
   };
@@ -62,55 +73,82 @@ export default function SatelliteDetails() {
 
       <label>
         Satellite Orbit:
-        <input
-          type="text"
-          name="orbit"
-          value={satellite.orbit}
-          onChange={handleChange}
-          readOnly={!isEditing}
-        />
+        {isEditing ? (
+        <input type="text" name="orbit" value={satellite.orbit} onChange={handleChange} />
+        ) : (
+          <p>{satellite.orbit}</p>
+        )}
       </label>
 
       <br />
 
       <label>
         Satellite Owner:
-        <input
-          type="text"
-          name="owner"
-          value={satellite.owner}
-          onChange={handleChange}
-          readOnly={!isEditing}
-        />
+        {isEditing ? (
+        <input type="text" name="owner" value={satellite.owner} onChange={handleChange} />
+        ) : (
+          <p>{satellite.owner}</p>
+        )}
       </label>
 
       <br />
 
       <label>
         Satellite Name:
-        <input
-          type="text"
-          name="name"
-          value={satellite.name}
-          onChange={handleChange}
-          readOnly={!isEditing}
-        />
+        {isEditing ? (
+        <input type="text" name="name" value={satellite.name} onChange={handleChange} />
+        ) : (
+          <p>{satellite.name}</p>
+        )}
       </label>
 
       <br />
 
       <label>
         Tail Number:
-        <input
-          type="number"
-          name="tail_num"
-          value={satellite.tail_num}
-          onChange={handleChange}
-          readOnly={!isEditing}
-        />
+        {isEditing ? (
+        <input type="number" name="tail_num" value={satellite.tail_num} onChange={handleChange} />
+        ) : (
+          <p>{satellite.tail_num}</p>
+        )}
       </label>
 
       <br/>
+      <label>
+        Associated Assessments:
+        {isEditing ? (
+        <input type="text" name="assessments" value={satellite.assessments} onChange={handleChange} />
+        ) : (
+          satellite.assessments.map(item => {
+          return(
+            <>
+            <p>name: {item.name}</p>
+            <p>creation date: {item.creation_date}</p>
+          </>)
+          }
+        ))}
+      </label>
+      <br/>
+
+      <label>
+        CAD Models:
+        {isEditing ? (
+        <input type="text" name="cad_models" value={satellite.cad_models} onChange={handleChange} />
+        ) : (
+          satellite.cad_models.map(item => <p>name: {item.file_path_name}</p>))}
+      </label>
+      <br />
+      
+      <label>
+        Image Files:
+        {isEditing ? (
+        <input type="text" name="images" value={satellite.images} onChange={handleChange} />
+        ) : (
+          satellite.images.map(item => <p>name: {item.file_path_name}</p>))}
+      </label>
+      <br />
+
+
 
       {isEditing ? (
         <button onClick={() => handleSave()}>Save</button>
@@ -119,6 +157,7 @@ export default function SatelliteDetails() {
       )}
 
 
+      <ImageViewer images={imagesArr} />
 
     </div>
   );

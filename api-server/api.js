@@ -75,8 +75,65 @@ api.get('/satellites/:id', async (req, res) => {
     res.status(200).json(satellite);
 })
 
-// GET /assessments
 
+
+// PATCH one satellite into a bunch of tables
+api.patch('/satellites/:id', async (req, res) => {
+    const { id } = req.params;
+    const { orbit, owner, name, tail_num, assessments, cad_models, images } = req.body;
+
+    let image_ids_to_delete = await knex.raw(`SELECT distinct image_to_satellite.image_id FROM image_to_satellite, image WHERE image_to_satellite.satellite_id = ${id};`);
+    let image_id_array = image_ids_to_delete["rows"].map(image => image.image_id);
+    await knex("image_to_satellite").where({satellite_id: id}).del()
+    await knex("image").whereIn('id', image_id_array).del()
+    let image_ids_added = await knex("image").insert(images.map(image => ({"file_path_name":image.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
+    await knex("image_to_satellite").insert(image_ids_added.map(image => ({"image_id": image.id, "satellite_id": id})));
+    
+    let cad_model_ids_to_delete = await knex.raw(`select distinct cad_model_to_satellite.cad_model_id FROM cad_model_to_satellite, cad_model WHERE cad_model_to_satellite.satellite_id = ${id};`);
+    let cad_model_id_array = cad_model_ids_to_delete["rows"].map(cad_model => cad_model.cad_model_id);
+    await knex("cad_model_to_satellite").where({satellite_id: id}).del()
+    await knex("cad_model").whereIn('id', cad_model_id_array).del()
+    let cad_model_ids_added = await knex("cad_model").insert(cad_models.map(cad_model => ({file_path_name: cad_model.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
+    await knex("cad_model_to_satellite").insert(cad_model_ids_added.map(cad_model => ({cad_model_id: cad_model.id, satellite_id: id})));
+    
+    await knex("satellite_to_assessment").where({satellite_id: id}).del();
+    await knex("satellite_to_assessment").insert(assessments.map(assessment => ({satellite_id: id, assessment_id: assessment.id})));
+
+    await knex('satellite')
+        .where({id: id})
+        .update({ orbit, owner, name, tail_num })
+        .then((count) => {
+            if (count > 0) {
+                res.status(200).json({ message: `Satellite Id ${id} updated successfully!` });
+            } else {
+                res.status(404).json({ message: `Satellite Id ${id} not found.` });
+            }
+        });
+});
+
+
+//TODO:
+// PATCH one assessment into assessment table
+api.patch('/assessments/:id', (req, res) => {
+    const { id } = req.params;
+
+    const { name, satellites, creation_date, description, owner, data_files, sim_files, misc_files } = req.body;
+
+    knex('assessment')
+        .where({id: id})
+        .update({ name, description, creation_date })
+        .then((count) => {
+            if (count > 0) {
+                res.status(200).json({ message: `Assessment Id ${id} updated successfully!` });
+            } else {
+                res.status(404).json({ message: `Assessment Id ${id} not found.` });
+            }
+        });
+
+});
+
+
+// GET /assessments
 api.get('/assessments', (req, res) => {
     let { name } = req.query;
     let {creation_date} = req.query;
