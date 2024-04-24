@@ -1,8 +1,38 @@
 import React , { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 
+import ImageViewer from './ImageViewer';
+import styled from 'styled-components'
 // const images = require.context('C:\Users\isaac\OneDrive\Pictures\AI_Generated', true);
 // const imageList = images.keys().map(image => images(image));
+
+const imageUrl = "https://mir-s3-cdn-cf.behance.net/project_modules/disp/9e715d17935609.562c11d9e3832.gif"
+
+
+// const divStyle = {
+//   backgroundImage: `url(${imageUrl})`,
+//   backgroundSize: 'cover',
+//   backgroundPosition: 'center',
+//   height: '100vh',
+//   width: '100%',
+//   backgroundColor: `rgba(255, 255, 255, 0.2)`
+// };
+
+
+const StyledButton = styled.button`
+    display: flex;
+    justify-content:center;
+    justify-items:center;
+    align-items:center;
+    align-content:center;
+    color: black;
+    border-radius: 3px;
+    border: 2px solid black;
+    background-color: #96a6ef;
+    width: 100px;
+    height: 35px;
+`
+
 
 export default function HomePage() {
 
@@ -26,9 +56,9 @@ export default function HomePage() {
               navigate(`/AssessmentDetails/${item.id}`);
             }
           }}>Details</button>
-    
+
           return (item)
-        }) 
+        })
         setAllQueryData(addLink)
       })
     }
@@ -45,22 +75,22 @@ export default function HomePage() {
               navigate(`/AssessmentDetails/${item.id}`);
             }
           }}>Details</button>
-    
+
           return (item)
-        }) 
+        })
         setAllQueryData(addLink)
       })
     }
 
     // setAllQueryData(prevState => ([..prevState, ["name"]: <button>{prevState.name}</button> })];
-    
+
     console.log("testing", queryData)
-    
-  
+
+
   }
- 
+
   const handleSort = () => {
-    // Toggle sort 
+    // Toggle sort
     const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
     setSortOrder(newSortOrder);
   }
@@ -128,11 +158,12 @@ const chooseCategory = () => {
 // }
 
 
-  
+
   return (
     <div>
 
-      <h1>Satellite Assessment Center</h1>
+
+      {/* <h1>Satellite Assessment Center</h1> */}
 
       <div>
 
@@ -224,7 +255,7 @@ const chooseCategory = () => {
 
 
 
-                    
+
                   ))}
                 </tr>
               ))}
@@ -234,24 +265,25 @@ const chooseCategory = () => {
 
         : null
       }
-      
+
 
 
 
       <div>
-        <button onClick={() => handleAddSatellite()}>Add Satellite</button>
-        <button onClick={() => handleAddAssessment()}>Add Assessment</button>
+        <StyledButton onClick={() => handleAddSatellite()}>Add Satellite</StyledButton>
+        <StyledButton onClick={() => handleAddAssessment()}>Add Assessment</StyledButton>
       </div>
 
           {/* {imageList.map((image, index) => (
         <img key={index} src={image} alt={`image-${index}`} />
       ))} */}
-      
-      
+
+
           {/* <img src="C:\Users\isaac\OneDrive\Pictures\AI Generated\pilot cat.png" alt='cat'/>
           <img src="/layers.png" alt='sat'/>
           <img src="/satellie.jpg" alt="img"/>
           <img src="https://cdn.defenseone.com/media/img/cd/2023/08/11/GettyImages_1407240226/open-graph.jpg" alt="web picture" /> */}
+
     </div>
   );
 };

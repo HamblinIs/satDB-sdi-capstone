@@ -2,8 +2,11 @@
 import React, {useEffect} from 'react';
 import { MapContainer, TileLayer, Marker, Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import styled from 'styled-components';
 
-
+const StyleBox = styled.div`
+margin-top: 130px
+`
 
 const satellite = require('satellite.js');
 
@@ -81,7 +84,7 @@ export default function SatelliteGroundTrack() {
         return { longitudes, latitudes };
     }
 
-   
+
     const { longitudes, latitudes } = calculateGroundTrack(tle);
     const positions = latitudes.map((lat, i) => [lat, longitudes[i]]);
     positions.sort((a,b) => a[1]-b[1]);
@@ -110,24 +113,26 @@ export default function SatelliteGroundTrack() {
 
 
 
-  
+
 
     return (
+        <StyleBox>
 
-        <MapContainer center={[0, 0]} zoom={2} style={{ height: "90vh", width: "90%", marginLeft: "5%", border: "solid black" }}>
-            
-            <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            />
-            
-            <Polyline positions={positions} color='red' />
+            <MapContainer center={[0, 0]} zoom={2} style={{ height: "90vh", width: "90%", marginLeft: "5%", border: "solid black" }}>
 
-            {/* {positions.map((position, idx) => (
-                <Marker key={idx} position={position} />
-            ))} */}
+                <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                />
 
-        </MapContainer>
+                <Polyline positions={positions} color='red' />
+
+                {/* {positions.map((position, idx) => (
+                    <Marker key={idx} position={position} />
+                ))} */}
+
+            </MapContainer>
+        </StyleBox>
     );
 
 
