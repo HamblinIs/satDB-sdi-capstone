@@ -1,17 +1,15 @@
 import React , { useState } from 'react';
-import ImageViewer from './ImageViewer';
+import {useNavigate} from 'react-router-dom';
 
 // const images = require.context('C:\Users\isaac\OneDrive\Pictures\AI_Generated', true);
 // const imageList = images.keys().map(image => images(image));
 
 export default function HomePage() {
-  const imagesArr=["https://cdn.defenseone.com/media/img/cd/2023/08/11/GettyImages_1407240226/open-graph.jpg", "https://spaceplace.nasa.gov/satellite/en/TEMPO.en.jpg", "https://media.istockphoto.com/id/1339097795/photo/satellite-orbiting-the-earth.jpg?s=612x612&w=0&k=20&c=FMG2NypIT0JuZVs26qSYOq2qTwsO89woydrwZimK21s="];
 
-
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] =  useState('desending')
   const [category, setCategory] = useState('')
-  const [allData, setAllData] = useState([]);
   const [queryData, setAllQueryData] = useState([]);
 
   const handleSearch = () => {
@@ -19,15 +17,46 @@ export default function HomePage() {
       fetch(`http://localhost:8080/satellites?name=${searchTerm}`)
       .then(response => response.json())
       .then(data => {
-        console.log("data", data)
-        setAllQueryData(data)
+        const addLink = data.map(item => {
+          item.link = <button onClick = {() => {
+            if(category === 'satellites'){
+              navigate(`/SatelliteDetails/${item.id}`);
+            }
+            else if(category === 'assessments'){
+              navigate(`/AssessmentDetails/${item.id}`);
+            }
+          }}>Details</button>
+    
+          return (item)
+        }) 
+        setAllQueryData(addLink)
       })
     }
     else if(category === 'assessments'){
       fetch(`http://localhost:8080/assessments?name=${searchTerm}`)
       .then(response => response.json())
-      .then(data => setAllQueryData(data))
+      .then(data => {
+        var addLink = data.map(item => {
+          item.link = <button onClick = {() => {
+            if(category === 'satellites'){
+              navigate(`/SatelliteDetails/${item.id}`);
+            }
+            else if(category === 'assessments'){
+              navigate(`/AssessmentDetails/${item.id}`);
+            }
+          }}>Details</button>
+    
+          return (item)
+        }) 
+        setAllQueryData(addLink)
+      })
     }
+
+    // setAllQueryData(prevState => ([..prevState, ["name"]: <button>{prevState.name}</button> })];
+    
+    console.log("testing", queryData)
+    
+  
   }
  
   const handleSort = () => {
@@ -37,11 +66,11 @@ export default function HomePage() {
   }
 
   const handleAddSatellite = () => {
-    // Add new satellite with model or link to add satellite page
+    navigate('/CreateSatellite')
   }
 
   const handleAddAssessment = () => {
-    // Add new assessment with model or link to add assessment page
+    navigate('/CreateAssessment')
   }
 
 const chooseCategory = () => {
@@ -91,6 +120,12 @@ const chooseCategory = () => {
     return 0;
   });
 
+// it returns string
+// its stored in queryData.name
+// we want to modify queryData.name to return <button></button>
+// queryData = {
+  // name: `<button></button>`
+// }
 
 
   
@@ -125,17 +160,29 @@ const chooseCategory = () => {
 
 
 
-      {/* <div>
-        <ul>
-          {queryData.map(item => {
-            return (
-              <li>
-                <p>{item.name}</p>
-              </li>
-            )
-          })}
-        </ul>
-      </div> */}
+
+
+      {/*
+
+      <TableBody>
+        {sortedItems.map(item => (
+          <TableRow key={item.item_id}>
+            <TableCell>{item.item_id}</TableCell>
+            <TableCell>{item.username}</TableCell>
+            <TableCell>{<Button variant="contained" style={{ textTransform: "none" }} sx={{ color: 'white', backgroundColor: 'primary', borderColor: 'black' }} onClick={() => navigate(`/inventory/item/${item.item_id}`)}>{item.item_name}</Button>}</TableCell>
+            <TableCell>{item.description.length > 100 ? `${item.description.substring(0, 100)}...` : item.description}</TableCell>
+            <TableCell>{item.quantity}</TableCell>
+            <TableCell>{user ? <Button variant="contained" sx={{ color: 'white', backgroundColor: 'red', borderColor: 'black' }} onClick={() => handleDelete(item)}><DeleteIcon /></Button> : null}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+
+      */}
+
+
+
+
+
 
       {sortedItems.length > 0 ?
 
@@ -152,10 +199,32 @@ const chooseCategory = () => {
             </thead>
 
             <tbody>
+              {/* {sortedItems.map(item => (
+                <tr key = {item.id}>
+                  <td>{item.id}</td>
+                  <td onClick = {() => {
+                    if(category === 'satellites'){
+                      navigate(`/SatelliteDetails/${item.id}`);
+                    }
+                    else if(category === 'assessments'){
+                      navigate(`/AssessmentDetails/${item.id}`);
+                    }
+                  }}>{item.name}</td>
+                  <td></td>
+                </tr>
+
+              )
+
+              )} */}
               {sortedItems.map((row, index) => (
                 <tr key={index}>
                   {Object.keys(sortedItems[0]).map((header, i) => (
                     <td key={i}>{row[header]}</td>
+
+
+
+
+                    
                   ))}
                 </tr>
               ))}
@@ -178,7 +247,6 @@ const chooseCategory = () => {
         <img key={index} src={image} alt={`image-${index}`} />
       ))} */}
       
-      <ImageViewer images={imagesArr}/>
       
           {/* <img src="C:\Users\isaac\OneDrive\Pictures\AI Generated\pilot cat.png" alt='cat'/>
           <img src="/layers.png" alt='sat'/>
@@ -187,4 +255,5 @@ const chooseCategory = () => {
     </div>
   );
 };
+
 

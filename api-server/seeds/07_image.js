@@ -7,7 +7,7 @@ exports.seed = async function(knex) {
   await knex('image').del()
   await knex('image').insert([
     {file_path_name: 'S:assessments/COAST_Files/output.png'},
-    {file_path_name: 'example #2'},
-    {file_path_name: 'example numero 3'}
+    {file_path_name: 'S:example 2.png'},
+    {file_path_name: 'S:example 3.jpg'}
   ]);
 };
