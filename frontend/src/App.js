@@ -20,7 +20,13 @@ export const UserContext = createContext();
 const BackgroundDiv = styled.div`
   background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
   width: 100%;
-  height: 4000px;
+  height: 1000px;
+  `
+  const BackgroundDiv2 = styled.div`
+  background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
+  width: 100%;
+  height:1000px;
+  transform: scaleY(-1);
   `
 
 
@@ -29,11 +35,12 @@ function App() {
   const [ activeUser, setActiveUser ] = useState({});
 
   return (
-    <BackgroundDiv className="App">
+    <>
+      <BackgroundDiv className="App">
+
     <Router>
       <UserContext.Provider value={{activeUser, setActiveUser}}>
       <Navbar />
-
       <Routes>
         <Route exact path ="/" element={<WelcomePage />} />
         <Route exact path="/search" element={<HomePage />} />
@@ -48,10 +55,13 @@ function App() {
         <Route path="/SatelliteGroundTrack" element={<SatelliteGroundTrack/>} />
       </Routes>
 
-
       </UserContext.Provider>
       </Router>
-    </BackgroundDiv>
+      </BackgroundDiv>
+      <BackgroundDiv2>
+
+      </BackgroundDiv2>
+    </>
   );
 }
 

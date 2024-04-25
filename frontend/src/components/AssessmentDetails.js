@@ -27,6 +27,20 @@ border: 4px solid #4a478a;
 margin-top: 20px;
 padding: 20px;
 `
+const StyledButton = styled.button`
+    display: flex;
+    justify-content:center;
+    justify-items:center;
+    align-items:center;
+    align-content:center;
+    color: #081448;
+    border-radius: 3px;
+    border: 2px solid black;
+    background-color: #96a6ef;
+    width: 125px;
+    height: 35px;
+    font-weight: bold;
+`
 
 export default function AssessmentDetails() {
   const navigate = useNavigate();
@@ -53,7 +67,7 @@ export default function AssessmentDetails() {
         setAssessmentInfo(res);
         setName(res.name);
         setAssociatedSatellite(res.satellites);
-        setCreationDate(res.creation_date);
+        setCreationDate(res.creation_date.slice(0,10));
         setDescription(res.description);
         setOwner(res.owner);
         setDataFiles(res.data_files);
@@ -97,7 +111,7 @@ export default function AssessmentDetails() {
     return (
       <CenterDiv>
       <BackgroundDiv>
-        <button onClick={() => navigate("/search")}>Back to Search</button>
+        <StyledButton onClick={() => navigate("/search")}>Back to Search</StyledButton>
         <h1>Assessment Details</h1>
 
         <label>Name:
@@ -116,10 +130,10 @@ export default function AssessmentDetails() {
           ) : (
             associatedSatellite.map(item => {
               return (
-                <>
-                  <p>Name: <button onClick={() => navigate(`/SatelliteDetails/${item.id}`)}>{item.name}</button></p>
-                  <p>Tail Number:{item.tail_num}</p>
-                </>
+                <CenterDiv>
+                  <p>Name: {item.name} | Tail Number: {item.tail_num}</p>
+                  <StyledButton onClick={() => navigate(`/SatelliteDetails/${item.id}`)}>View Details</StyledButton>
+                </CenterDiv>
               )
             })
 
@@ -127,7 +141,7 @@ export default function AssessmentDetails() {
         </label>
 
         <br />
-
+        <br/>
         <label>Creation Date:
           {isEditing ? (
             <input type='text' value={creation_date} onChange={(e) => { setCreationDate(e.target.value) }} />
@@ -148,7 +162,7 @@ export default function AssessmentDetails() {
 
         <br />
 
-        {/* Isaac needs to designate whether to make this field "created by" with the user accounts, or remove */}
+        {/* Isaac needs to designate whether to make this field "created by" with the user accounts, or remove
         <label>Owner:
           {isEditing ? (
             <input type='text' value={owner} onChange={(e) => { setOwner(e.target.value) }} />
@@ -157,7 +171,7 @@ export default function AssessmentDetails() {
           )}
         </label>
 
-        <br />
+        <br /> */}
 
         <label>Data Files:
           <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="data_files" isEditing={isEditing} />

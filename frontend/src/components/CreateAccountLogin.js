@@ -7,19 +7,41 @@ import styled from 'styled-components';
 const StyleH1 = styled.h1`
   color: white;
 `
+const BackgroundDiv = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  background-color: #c4cfff;
+  border: 4px solid #4a478a;
+  margin-top: 20px;
+  padding: 20px;
+  font-weight: bold;
+`
+
+const CenterDiv = styled.div`
+display: flex;
+flex-flow: column;
+justify-content: center;
+justify-items: center;
+align-items: center;
+align-content: center;
+`
 
 const StyledButton = styled.button`
-    display: flex;
     justify-content:center;
     justify-items:center;
     align-items:center;
     align-content:center;
-    color: black;
+    color: #081448;
     border-radius: 3px;
     border: 2px solid black;
     background-color: #96a6ef;
-    width: 100px;
+    width: 125px;
     height: 35px;
+    font-weight: bold;
 `
 
 const toggleLoginModel = styled.div`
@@ -122,17 +144,18 @@ export default function CreateAccountLogin() {
 
   return (
     <div>
-      <StyleH1>Create Account/Login</StyleH1>
+      <StyleH1>Welcome User</StyleH1>
       {activeUser.email && (
              <button onClick={handleSignOut}>Sign Out</button>
       )}
       {!activeUser.email && (
-        <button onClick= {() => showChoice(1)}>Login</button>
+        <StyledButton onClick= {() => showChoice(1)}>Login</StyledButton>
       )}
       <br/>
-      <button onClick= {() => showChoice(2)}>Create Account</button>
+      <StyledButton onClick= {() => showChoice(2)}>Create Account</StyledButton>
     {userSelect === 1?
-      <>
+    <CenterDiv>
+      <BackgroundDiv>
         <br/>
         <label> Email:
         <input type="text" id="username"  />
@@ -142,11 +165,13 @@ export default function CreateAccountLogin() {
         <input type="text" id="password"/>
         </label>
         <br/>
-        <button onClick={ () => checkLogin()}>Submit</button>
-      </>
+        <StyledButton onClick={ () => checkLogin()}>Submit</StyledButton>
+      </BackgroundDiv>
+      </CenterDiv>
       :
       userSelect === 2?
-     <>
+      <CenterDiv>
+     <BackgroundDiv>
       <br/>
         <label> First Name:
         <input type="text" id="first" onChange={(event) => handleChange(event, "first_name")} />
@@ -168,9 +193,10 @@ export default function CreateAccountLogin() {
         <textarea id="purpose" onChange={(event) => handleChange(event, "purpose")} />
         </label>
         <br />
-        <button onClick={registerUser}>Submit</button>
+        <StyledButton onClick={registerUser}>Submit</StyledButton>
 
-      </>
+      </BackgroundDiv>
+      </CenterDiv>
       :
       <></>
 

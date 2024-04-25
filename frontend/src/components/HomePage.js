@@ -27,16 +27,6 @@ align-items: center;
 align-content: center;
 `
 
-const CenterTable = styled.table`
-display: flex;
-flex-flow: column;
-justify-content: center;
-justify-items: center;
-align-items: center;
-align-content: center;
-gap: 20px;
-`
-
 const SearchDiv = styled.div`
 display: flex;
 flex-flow: column;
@@ -47,40 +37,65 @@ align-content: center;
 background-color: #c4cfff;
 border: 4px solid #4a478a;
 margin-top: 20px;
-width: 400px;
-padding: 20px;
+padding: 40px;
 gap: 5px;
 `
 
 const BackgroundDiv = styled.div`
-justify-content: center;
-justify-items: center;
-align-items: center;
-align-content: center;
-background-color: #c4cfff;
-border: 4px solid #4a478a;
-margin-top: 20px;
-padding: 20px;
-gap: 5px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  background-color: #c4cfff;
+  border: 4px solid #4a478a;
+  margin-top: 20px;
+  padding: 20px;
 `
 
 const StyledButton = styled.button`
-    display: flex;
     justify-content:center;
     justify-items:center;
     align-items:center;
     align-content:center;
-    color: black;
+    color: #081448;
     border-radius: 3px;
     border: 2px solid black;
     background-color: #96a6ef;
-    width: 100px;
+    width: 125px;
     height: 35px;
+    font-weight: bold;
+`
+
+const FilterButton = styled.button`
+justify-content:center;
+justify-items:center;
+align-items:center;
+align-content:center;
+color: white;
+border-radius: 3px;
+border: 2px solid black;
+background-color: #1a2c80;
+width: 125px;
+height: 25px;
+`
+const DetailsButton = styled.button`
+justify-content:center;
+justify-items:center;
+align-items:center;
+align-content:center;
+color: #081448;
+border-radius: 3px;
+border: 2px solid black;
+background-color: #96a6ef;
+width: 90px;
+height: 25px;
 `
 
 const StyledInput = styled.input`
   height: 35px;
-  width: 200px;
+  width: 250px;
   border-radius: 3px;
   border: 2px solid black;
   background-color: white;
@@ -107,14 +122,9 @@ export default function HomePage() {
       .then(response => response.json())
       .then(data => {
         const addLink = data.map(item => {
-          item.link = <button onClick = {() => {
-            if(category === 'satellites'){
+          item.view = <DetailsButton onClick = {() => {
               navigate(`/SatelliteDetails/${item.id}`);
-            }
-            else if(category === 'assessments'){
-              navigate(`/AssessmentDetails/${item.id}`);
-            }
-          }}>Details</button>
+          }}>Details</DetailsButton>
 
           return (item)
         })
@@ -126,15 +136,10 @@ export default function HomePage() {
       .then(response => response.json())
       .then(data => {
         var addLink = data.map(item => {
-          item.link = <button onClick = {() => {
-            if(category === 'satellites'){
-              navigate(`/SatelliteDetails/${item.id}`);
-            }
-            else if(category === 'assessments'){
+          item.view = <DetailsButton onClick = {() => {
               navigate(`/AssessmentDetails/${item.id}`);
-            }
-          }}>Details</button>
-
+          }}>Details</DetailsButton>
+          item.creation_date = item.creation_date.slice(0,10)
           return (item)
         })
         setAllQueryData(addLink)
@@ -148,19 +153,6 @@ export default function HomePage() {
 
   }
 
-  const handleSort = () => {
-    // Toggle sort
-    const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-    setSortOrder(newSortOrder);
-  }
-
-  const handleAddSatellite = () => {
-    navigate('/CreateSatellite')
-  }
-
-  const handleAddAssessment = () => {
-    navigate('/CreateAssessment')
-  }
 
 const chooseCategory = (e) => {
   // setCategory(document.getElementById("search_category").value);
@@ -223,7 +215,7 @@ const chooseCategory = (e) => {
 
       <SearchDiv>
 
-        <label>Search for:
+        <h3>Search for:
           {/* <select id='search_category' name="search_category" onChange={chooseCategory}>
             <option value="">--Please choose an option--</option>
             <option value="satellites">Satellites</option>
@@ -237,13 +229,13 @@ const chooseCategory = (e) => {
               <input type="radio" value="assessments" name="search_category" /> Assessments
             </label>
           </div>
-        </label>
+        </h3>
 
         <br />
 
         <StyledInput
           type='text'
-          placeholder='Search here for name'
+          placeholder='Insert name or click Search for all results'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -278,15 +270,14 @@ const chooseCategory = (e) => {
 
 
       {sortedItems.length > 0 ?
-<BackgroundDiv>
-        <div style={{ margin: "0 auto", display: "block", width: "80vw" }}>
+        <div style={{ margin: "0 auto", display: "block" }}>
           {/* <input type="text" value={filterText} placeholder="Filter" onChange={(e) => setFilterText(e.target.value)} /> */}
-
+          <BackgroundDiv>
           <table style={{ border: '1px solid black' }}>
             <thead>
               <tr>
                 {Object.keys(sortedItems[0]).map((header, index) => (
-                  <th key={index}><button onClick={() => handleSort2(header)}>{header}</button></th>
+                  <th key={index}><FilterButton onClick={() => handleSort2(header)}>{header.toUpperCase()}</FilterButton></th>
                 ))}
               </tr>
             </thead>
@@ -323,8 +314,9 @@ const chooseCategory = (e) => {
               ))}
             </tbody>
           </table>
+          </BackgroundDiv>
+
         </div>
-        </BackgroundDiv>
         : null
       }
 

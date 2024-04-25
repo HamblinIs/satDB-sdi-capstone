@@ -6,7 +6,8 @@ import styled from 'styled-components'
 
 
 const StyledCarousel = styled(Carousel)`
-margin: 0 auto;
+margin: 10px;
+height: 10%;
 width: 80%;
 
 .carousel .slide {
