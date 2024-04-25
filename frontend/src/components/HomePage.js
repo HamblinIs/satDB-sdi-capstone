@@ -162,8 +162,10 @@ export default function HomePage() {
     navigate('/CreateAssessment')
   }
 
-const chooseCategory = () => {
-  setCategory(document.getElementById("search_category").value)
+const chooseCategory = (e) => {
+  // setCategory(document.getElementById("search_category").value);
+  setCategory(e.target.value);
+  // console.log(category);
 }
 
 
@@ -209,12 +211,7 @@ const chooseCategory = () => {
     return 0;
   });
 
-// it returns string
-// its stored in queryData.name
-// we want to modify queryData.name to return <button></button>
-// queryData = {
-  // name: `<button></button>`
-// }
+
 
 
 
@@ -226,12 +223,21 @@ const chooseCategory = () => {
 
       <SearchDiv>
 
-        <p>Search for </p>
-          <StyledSelect id='search_category' name="search_category" onChange={() => chooseCategory()}>
+        <label>Search for:
+          {/* <select id='search_category' name="search_category" onChange={chooseCategory}>
             <option value="">--Please choose an option--</option>
             <option value="satellites">Satellites</option>
             <option value="assessments">Assessments</option>
-          </StyledSelect>
+          </select> */}
+          <div onChange={chooseCategory}>
+            <label>
+              <input type="radio" value="satellites" name="search_category" /> Satellites
+            </label>
+            <label>
+              <input type="radio" value="assessments" name="search_category" /> Assessments
+            </label>
+          </div>
+        </label>
 
         <br />
 

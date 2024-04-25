@@ -37,8 +37,8 @@ class ImageViewer extends Component{
         <>
 
             <StyledCarousel showArrows={true} >
-            {this.images.map( item => {
-            return (<div>
+            {this.images.map( (item, index) => {
+            return (<div key={index}>
               <img src={item} alt='satellite'/>
 
             </div>
