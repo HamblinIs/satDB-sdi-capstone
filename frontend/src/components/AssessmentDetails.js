@@ -2,7 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import SimpleLineChart from './SimpleLineChart';
 import FilesListViewer from './FilesListViewer';
+import styled from 'styled-components';
 
+const CenterDiv = styled.div`
+display: flex;
+flex-flow: column;
+justify-content: center;
+justify-items: center;
+align-items: center;
+align-content: center;
+`
+
+const BackgroundDiv = styled.div`
+display: flex;
+flex-flow: column;
+justify-content: center;
+justify-items: center;
+align-items: center;
+align-content: center;
+background-color: #c4cfff;
+width: 70%;
+border: 4px solid #4a478a;
+margin-top: 20px;
+padding: 20px;
+`
 
 export default function AssessmentDetails() {
   const navigate = useNavigate();
@@ -70,8 +93,9 @@ export default function AssessmentDetails() {
   if (assessmentInfo) {
 
     return (
-      <div>
-        <button onClick={() => navigate("/")}>Back to Home</button>
+      <CenterDiv>
+      <BackgroundDiv>
+        <button onClick={() => navigate("/search")}>Back to Search</button>
         <h1>Assessment Details</h1>
 
         <label>Name:
@@ -162,7 +186,8 @@ export default function AssessmentDetails() {
         <h4>Visual Magnitude</h4>
         <SimpleLineChart />
 
-      </div>
+      </BackgroundDiv>
+      </CenterDiv>
     );
   }
 }

@@ -5,6 +5,9 @@ import { IoIosArrowDown, IoIosArrowUp, IoIosMenu } from "react-icons/io";
 import { UserContext } from '../App.js'
 import CreateAccountLogin from './CreateAccountLogin';
 
+//ihamblin@yahoo.com
+//Password123
+
 const HeaderStyle = styled(Link)`
 background-color: black;
 font-size: 50px;
@@ -107,8 +110,13 @@ text-decoration: none;
 color: white;
 font-size: 50px;
 `
-
-
+const LoginContainer = styled.div`
+text-decoration: none;
+color: white;
+font-size: 15px;
+background-color:black
+cursor:pointer;
+`
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -126,14 +134,14 @@ export default function Navbar() {
   }
 
   const toggleLoginModel = () => {
-    navigate('/')
-    setShowLoginModal(!showLoginModel)
+    navigate('/login')
+    // setShowLoginModal(!showLoginModel)
   }
 
   const handleSignOut = () => {
-    setActiveUser({})
-  }
-
+    setActiveUser({});
+    navigate('/');
+  };
 
   const handleMouseLeave = () => {
     setIsOpen(false); // Close the menu when the mouse leaves
@@ -143,31 +151,21 @@ export default function Navbar() {
     <>
     <HeaderStyle>
       <HeaderLinkContainer>
-        <HeaderLink to='/'>Satellite Assessment Center</HeaderLink>
+        <HeaderLink to='/'>Satellite Assessment Database</HeaderLink>
       </HeaderLinkContainer>
-      <NavbarDropDown>
-        <NavbarButton onClick={handleToggle}>
-          <NavbarLink><IoIosMenu /></NavbarLink>
-        </NavbarButton>
-      </NavbarDropDown>
 
-      <ListItem>
-        {activeUser.email ? (
-          <NavLink as='div' onClick={handleSignOut}>Sign Out</NavLink>
-        ) : (
-          <NavLink as='div' onClick={toggleLoginModel}>Login</NavLink>
-        )}
-      </ListItem>
-      {showLoginModel && (
-        <CreateAccountLogin
-        toggleLoginModel={toggleLoginModel}
-        setActiveUser={setActiveUser}>
-        </CreateAccountLogin>
-      )}
+    <LoginContainer>
+  {activeUser.email ? (
+    <NavbarLink onClick={handleSignOut}>Logout</NavbarLink>
+  ) : (
+    <NavLink to="/login">Login/Register</NavLink>
+  )}
+</LoginContainer>
+
     </HeaderStyle>
 
     <NavUL>
-
+    <CustomLink to='/search'>Search</CustomLink>
       <DropdownMenu onMouseLeave={handleMouseLeave}>
         <DropdownButton onMouseOver={handleToggle}>
           Create {isOpen ? <IoIosArrowUp/> : <IoIosArrowDown/>}
@@ -177,7 +175,6 @@ export default function Navbar() {
             <DropdownLink to="/CreateSatellite" onClick={handleLinkClick}>Create Satellite</DropdownLink>
           </DropdownContent>
       </DropdownMenu>
-
       <CustomLink to='/SatelliteModelOrbit'>Satellite Model Orbit</CustomLink>
       <CustomLink to='/Satellites'>View Satellites</CustomLink>
       <CustomLink to='/SatelliteGroundTrack'>Satellite Ground Track</CustomLink>

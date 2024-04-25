@@ -2,6 +2,33 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import FilesListViewer from "./FilesListViewer";
 import ImageViewer from "./ImageViewer";
+import styled from 'styled-components'
+
+const CenterDiv = styled.div`
+display: flex;
+flex-flow: column;
+justify-content: center;
+justify-items: center;
+align-items: center;
+align-content: center;
+`
+
+const BackgroundDiv = styled.div`
+display: flex;
+flex-flow: column;
+justify-content: center;
+justify-items: center;
+align-items: center;
+align-content: center;
+background-color: #c4cfff;
+width: 70%;
+border: 4px solid #4a478a;
+margin-top: 20px;
+padding: 20px;
+`
+
+
+
 const imagesArr = ["https://cdn.defenseone.com/media/img/cd/2023/08/11/GettyImages_1407240226/open-graph.jpg", "https://spaceplace.nasa.gov/satellite/en/TEMPO.en.jpg", "https://media.istockphoto.com/id/1339097795/photo/satellite-orbiting-the-earth.jpg?s=612x612&w=0&k=20&c=FMG2NypIT0JuZVs26qSYOq2qTwsO89woydrwZimK21s="];
 
 export default function SatelliteDetails() {
@@ -66,8 +93,9 @@ export default function SatelliteDetails() {
   };
 
   return (
-    <div>
-      <button onClick={() => navigate("/")}>Back to Home</button>
+    <CenterDiv>
+    <BackgroundDiv>
+      <button onClick={() => navigate("/search")}>Back to Search</button>
       <h1>Satellite Details</h1>
 
       <br />
@@ -154,6 +182,7 @@ export default function SatelliteDetails() {
 
       <ImageViewer images={imagesArr} />
 
-    </div>
+    </BackgroundDiv>
+    </CenterDiv>
   );
 }

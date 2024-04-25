@@ -4,6 +4,24 @@ import { UserContext } from '../App.js'
 import styled from 'styled-components';
 
 
+const StyleH1 = styled.h1`
+  color: white;
+`
+
+const StyledButton = styled.button`
+    display: flex;
+    justify-content:center;
+    justify-items:center;
+    align-items:center;
+    align-content:center;
+    color: black;
+    border-radius: 3px;
+    border: 2px solid black;
+    background-color: #96a6ef;
+    width: 100px;
+    height: 35px;
+`
+
 const toggleLoginModel = styled.div`
 `
 
@@ -104,7 +122,7 @@ export default function CreateAccountLogin() {
 
   return (
     <div>
-      <h1>Create Account/Login</h1>
+      <StyleH1>Create Account/Login</StyleH1>
       {activeUser.email && (
              <button onClick={handleSignOut}>Sign Out</button>
       )}
