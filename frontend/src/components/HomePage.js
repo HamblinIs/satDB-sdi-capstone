@@ -18,6 +18,51 @@ const imageUrl = "https://mir-s3-cdn-cf.behance.net/project_modules/disp/9e715d1
 //   backgroundColor: `rgba(255, 255, 255, 0.2)`
 // };
 
+const CenterDiv = styled.div`
+display: flex;
+flex-flow: column;
+justify-content: center;
+justify-items: center;
+align-items: center;
+align-content: center;
+`
+
+const CenterTable = styled.table`
+display: flex;
+flex-flow: column;
+justify-content: center;
+justify-items: center;
+align-items: center;
+align-content: center;
+gap: 20px;
+`
+
+const SearchDiv = styled.div`
+display: flex;
+flex-flow: column;
+justify-content: center;
+justify-items: center;
+align-items: center;
+align-content: center;
+background-color: #c4cfff;
+border: 4px solid #4a478a;
+margin-top: 20px;
+width: 400px;
+padding: 20px;
+gap: 5px;
+`
+
+const BackgroundDiv = styled.div`
+justify-content: center;
+justify-items: center;
+align-items: center;
+align-content: center;
+background-color: #c4cfff;
+border: 4px solid #4a478a;
+margin-top: 20px;
+padding: 20px;
+gap: 5px;
+`
 
 const StyledButton = styled.button`
     display: flex;
@@ -33,6 +78,20 @@ const StyledButton = styled.button`
     height: 35px;
 `
 
+const StyledInput = styled.input`
+  height: 35px;
+  width: 200px;
+  border-radius: 3px;
+  border: 2px solid black;
+  background-color: white;
+`
+
+const StyledSelect = styled.select`
+  height: 35px;
+  border-radius: 3px;
+    border: 2px solid black;
+    background-color: #96a6ef;
+`
 
 export default function HomePage() {
 
@@ -103,8 +162,10 @@ export default function HomePage() {
     navigate('/CreateAssessment')
   }
 
-const chooseCategory = () => {
-  setCategory(document.getElementById("search_category").value)
+const chooseCategory = (e) => {
+  // setCategory(document.getElementById("search_category").value);
+  setCategory(e.target.value);
+  // console.log(category);
 }
 
 
@@ -150,43 +211,45 @@ const chooseCategory = () => {
     return 0;
   });
 
-// it returns string
-// its stored in queryData.name
-// we want to modify queryData.name to return <button></button>
-// queryData = {
-  // name: `<button></button>`
-// }
+
 
 
 
   return (
-    <div>
+    <CenterDiv>
 
 
       {/* <h1>Satellite Assessment Center</h1> */}
 
-      <div>
+      <SearchDiv>
 
-        <label>Search for
-          <select id='search_category' name="search_category" onChange={() => chooseCategory()}>
+        <label>Search for:
+          {/* <select id='search_category' name="search_category" onChange={chooseCategory}>
             <option value="">--Please choose an option--</option>
             <option value="satellites">Satellites</option>
             <option value="assessments">Assessments</option>
-          </select>
+          </select> */}
+          <div onChange={chooseCategory}>
+            <label>
+              <input type="radio" value="satellites" name="search_category" /> Satellites
+            </label>
+            <label>
+              <input type="radio" value="assessments" name="search_category" /> Assessments
+            </label>
+          </div>
         </label>
 
         <br />
 
-        <input
+        <StyledInput
           type='text'
           placeholder='Search here for name'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button onClick={() => handleSearch()}>Search</button>
-        <button onClick={() => handleSort()}>Sort</button>
+        <StyledButton onClick={() => handleSearch()}>Search</StyledButton>
 
-      </div>
+      </SearchDiv>
 
 
 
@@ -214,11 +277,10 @@ const chooseCategory = () => {
 
 
 
-
       {sortedItems.length > 0 ?
-
+<BackgroundDiv>
         <div style={{ margin: "0 auto", display: "block", width: "80vw" }}>
-          <input type="text" value={filterText} placeholder="Filter" onChange={(e) => setFilterText(e.target.value)} />
+          {/* <input type="text" value={filterText} placeholder="Filter" onChange={(e) => setFilterText(e.target.value)} /> */}
 
           <table style={{ border: '1px solid black' }}>
             <thead>
@@ -262,18 +324,15 @@ const chooseCategory = () => {
             </tbody>
           </table>
         </div>
-
+        </BackgroundDiv>
         : null
       }
 
 
 
 
-      <div>
-        <StyledButton onClick={() => handleAddSatellite()}>Add Satellite</StyledButton>
-        <StyledButton onClick={() => handleAddAssessment()}>Add Assessment</StyledButton>
-      </div>
 
+{/*
           {/* {imageList.map((image, index) => (
         <img key={index} src={image} alt={`image-${index}`} />
       ))} */}
@@ -284,7 +343,7 @@ const chooseCategory = () => {
           <img src="/satellie.jpg" alt="img"/>
           <img src="https://cdn.defenseone.com/media/img/cd/2023/08/11/GettyImages_1407240226/open-graph.jpg" alt="web picture" /> */}
 
-    </div>
+    </CenterDiv>
   );
 };
 
