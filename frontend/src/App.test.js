@@ -3,10 +3,10 @@ import { render, screen, act, waitFor } from '@testing-library/react';
 import App from './App';
 import { handlers } from './new_mocks/handlers.js';
 import userEvent from '@testing-library/user-event'
-import { TextEncoder } from 'node:util'
+//import { TextEncoder } from 'util'
 //Objexxt.assign(global, { TextEncoder })
 import { setupServer } from 'msw/node'
-import { rest } from 'msw';
+//import { rest } from 'msw';
 import selectEvent from 'react-select-event'
 
 // test('pulls up homepage of the site', () => {
@@ -63,4 +63,48 @@ test('search bar should be present and return data', async() => {
   expect(filt).toBeInTheDocument()
   expect(screen.getByRole('textbox')).toHaveValue('asc')
   //expect(satName).toBeInTheDocument()
+}),
+
+// test('navigating to Satellite Ground Track pulls up the map', async() => {
+//   render(<App/>)
+//   let satViewer = screen.getByText("Satellite Ground Track")
+//   await act(async() => {userEvent.click(satViewer)})
+//   //await waitFor(() => screen.getByRole('img'))
+//   //const satDets = screen.getByText("ATLAS CENTAUR 2")
+//   expect(satViewer).toBeInTheDocument()
+//   //expect(satMap).toBeInTheDocument()
+// })
+
+test('navigating to View Satellites pulls up the material', async() => {
+  render(<App/>)
+  let satView = screen.getByText("View Satellites")
+  await act(async() => {userEvent.click(satView)})
+  await waitFor(() => screen.getByText("MEAN_ANOMALY"))
+  const satDets = screen.getByText("ATLAS CENTAUR 2")
+  expect(satView).toBeInTheDocument()
+  expect(satDets).toBeInTheDocument()
+}),
+
+test('logining in will send to appropriate destination', async() => {
+  render(<App/>)
+  let logInit = screen.getByText("Login")
+  await act(async() => {userEvent.click(logInit)})
+  let logButt = screen.getByRole('button', {name: "Login"})
+  await act(async() => {userEvent.click(logButt)} )
+  let logBoxes = screen.getAllByRole('textbox')
+  // userEvent.type(logBoxes[0], 'ihamblin@yahoo.com')
+  // userEvent.type(logBoxes[1], 'Password123')
+  let eEnter = document.getElementById("username")
+  userEvent.type(eEnter, 'ihamblin@yahoo.com')
+  let passEnter = document.getElementById("password")
+  userEvent.type(passEnter, 'Password123')
+  let tes = screen.getByText("ihamblin@yahoo.com")
+  let subButton = screen.getByRole('button', {name: "Submit"})
+  //await act(async() => {userEvent.click(subButton)})
+  const outSig = screen.getByText("Sign Out")
+  expect(logInit).toBeInTheDocument()
+  expect(logButt).toBeInTheDocument()
+  //expect(passEnter).toBeInTheDocument()
+  expect(logBoxes.length).toEqual(2)
+  //expect(outSig).toBeInTheDocument()
 })
