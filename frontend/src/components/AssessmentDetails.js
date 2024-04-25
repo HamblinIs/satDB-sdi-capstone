@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import SimpleLineChart from './SimpleLineChart';
+import FilesListViewer from './FilesListViewer';
 
 
 export default function AssessmentDetails() {
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [selectedAssessment, setSelectedAssessment] = useState(0)
   const [assessmentInfo, setAssessmentInfo] = useState({})
@@ -69,6 +71,7 @@ export default function AssessmentDetails() {
 
     return (
       <div>
+        <button onClick={() => navigate("/")}>Back to Home</button>
         <h1>Assessment Details</h1>
 
         <label>Name:
@@ -82,19 +85,19 @@ export default function AssessmentDetails() {
         <br />
 
         <label>Associated Satellites:
-        {isEditing ? (
+          {isEditing ? (
             <input type='text' value={associatedSatellite} onChange={(e) => { associatedSatellite(e.target.value) }} />
           ) : (
-            associatedSatellite.map( item => {
-              return(
+            associatedSatellite.map(item => {
+              return (
                 <>
-                <p>Name:{item.name}</p>
-                <p>Tail Number:{item.tail_num}</p>
+                  <p>Name:{item.name}</p>
+                  <p>Tail Number:{item.tail_num}</p>
                 </>
               )
             })
-            
-            )}
+
+          )}
         </label>
 
         <br />
@@ -119,7 +122,7 @@ export default function AssessmentDetails() {
 
         <br />
 
-          {/* Isaac needs to designate whether to make this field "created by" with the user accounts, or remove */}
+        {/* Isaac needs to designate whether to make this field "created by" with the user accounts, or remove */}
         <label>Owner:
           {isEditing ? (
             <input type='text' value={owner} onChange={(e) => { setOwner(e.target.value) }} />
@@ -130,26 +133,23 @@ export default function AssessmentDetails() {
 
         <br />
 
-        <label>Data Files:</label>
-        {dataFiles.map(item => <p>{item.file_path_name}</p>)}
-        {/* <input type="file" name="model_file" onChange={handleFileChange} /> */}
-        
-        <br />
-
-        <label>Simulation Files:</label>
-        {simFiles.map(item => <p>{item.file_path_name}</p>)}
-
-        {/* <input type="file" name="simulation_file" onChange={handleFileChange} /> */}
+        <label>Data Files:
+          <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="data_files" isEditing={isEditing} />
+        </label>
 
         <br />
 
-        <label>Misc Files:</label>
-        {miscFiles.map(item => <p>{item.file_path_name}</p>)}
-
-        {/* <input type="file" name="simulation_file" onChange={handleFileChange} /> */}
+        <label>Simulation Files:
+          <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="sim_files" isEditing={isEditing} />
+        </label>
 
         <br />
 
+        <label>Misc Files:
+          <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="misc_files" isEditing={isEditing} />
+        </label>
+
+        <br />
 
         {isEditing ? (
           <button onClick={() => handleSave()}>Save</button>
@@ -158,9 +158,9 @@ export default function AssessmentDetails() {
         )}
 
         <br />
-          
+
         <h4>Visual Magnitude</h4>
-        <SimpleLineChart/>
+        <SimpleLineChart />
 
       </div>
     );

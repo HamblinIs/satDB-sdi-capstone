@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import FilesListViewer from "./FilesListViewer";
 import ImageViewer from "./ImageViewer";
-const imagesArr=["https://cdn.defenseone.com/media/img/cd/2023/08/11/GettyImages_1407240226/open-graph.jpg", "https://spaceplace.nasa.gov/satellite/en/TEMPO.en.jpg", "https://media.istockphoto.com/id/1339097795/photo/satellite-orbiting-the-earth.jpg?s=612x612&w=0&k=20&c=FMG2NypIT0JuZVs26qSYOq2qTwsO89woydrwZimK21s="];
+const imagesArr = ["https://cdn.defenseone.com/media/img/cd/2023/08/11/GettyImages_1407240226/open-graph.jpg", "https://spaceplace.nasa.gov/satellite/en/TEMPO.en.jpg", "https://media.istockphoto.com/id/1339097795/photo/satellite-orbiting-the-earth.jpg?s=612x612&w=0&k=20&c=FMG2NypIT0JuZVs26qSYOq2qTwsO89woydrwZimK21s="];
 
 export default function SatelliteDetails() {
   const navigate = useNavigate();
@@ -23,8 +24,8 @@ export default function SatelliteDetails() {
 
   useEffect(() => {
     fetch(`http://localhost:8080/satellites/${id}`)
-    .then(response => response.json())
-    .then(data => setSatellite(data))
+      .then(response => response.json())
+      .then(data => setSatellite(data))
   }, []);
 
   const handleToggleEdit = () => {
@@ -74,7 +75,7 @@ export default function SatelliteDetails() {
       <label>
         Satellite Orbit:
         {isEditing ? (
-        <input type="text" name="orbit" value={satellite.orbit} onChange={handleChange} />
+          <input type="text" name="orbit" value={satellite.orbit} onChange={handleChange} />
         ) : (
           <p>{satellite.orbit}</p>
         )}
@@ -85,7 +86,7 @@ export default function SatelliteDetails() {
       <label>
         Satellite Owner:
         {isEditing ? (
-        <input type="text" name="owner" value={satellite.owner} onChange={handleChange} />
+          <input type="text" name="owner" value={satellite.owner} onChange={handleChange} />
         ) : (
           <p>{satellite.owner}</p>
         )}
@@ -96,7 +97,7 @@ export default function SatelliteDetails() {
       <label>
         Satellite Name:
         {isEditing ? (
-        <input type="text" name="name" value={satellite.name} onChange={handleChange} />
+          <input type="text" name="name" value={satellite.name} onChange={handleChange} />
         ) : (
           <p>{satellite.name}</p>
         )}
@@ -107,48 +108,42 @@ export default function SatelliteDetails() {
       <label>
         Tail Number:
         {isEditing ? (
-        <input type="number" name="tail_num" value={satellite.tail_num} onChange={handleChange} />
+          <input type="number" name="tail_num" value={satellite.tail_num} onChange={handleChange} />
         ) : (
           <p>{satellite.tail_num}</p>
         )}
       </label>
 
-      <br/>
+      <br />
+
       <label>
         Associated Assessments:
         {isEditing ? (
-        <input type="text" name="assessments" value={satellite.assessments} onChange={handleChange} />
+          <input type="text" name="assessments" value={satellite.assessments} onChange={handleChange} />
         ) : (
           satellite.assessments.map(item => {
-          return(
-            <>
-            <p>name: {item.name}</p>
-            <p>creation date: {item.creation_date}</p>
-          </>)
+            return (
+              <>
+                <p>name: {item.name}</p>
+                <p>creation date: {item.creation_date}</p>
+              </>)
           }
-        ))}
+          ))}
       </label>
-      <br/>
 
-      <label>
-        CAD Models:
-        {isEditing ? (
-        <input type="text" name="cad_models" value={satellite.cad_models} onChange={handleChange} />
-        ) : (
-          satellite.cad_models.map(item => <p>name: {item.file_path_name}</p>))}
-      </label>
-      <br />
-      
-      <label>
-        Image Files:
-        {isEditing ? (
-        <input type="text" name="images" value={satellite.images} onChange={handleChange} />
-        ) : (
-          satellite.images.map(item => <p>name: {item.file_path_name}</p>))}
-      </label>
       <br />
 
+      <label>CAD Models:
+        <FilesListViewer state={satellite} setState={setSatellite} fileType="cad_models" isEditing={isEditing} />
+      </label>
 
+      <br />
+
+      <label>Image Files:
+        <FilesListViewer state={satellite} setState={setSatellite} fileType="images" isEditing={isEditing} />
+      </label>
+
+      <br />
 
       {isEditing ? (
         <button onClick={() => handleSave()}>Save</button>

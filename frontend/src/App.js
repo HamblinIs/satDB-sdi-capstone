@@ -21,7 +21,7 @@ function App() {
 
   return (
     <div className="App">
-    <BrowserRouter>
+    <Router>
       <UserContext.Provider value={{activeUser, setActiveUser}}>
       <Navbar />
 
@@ -40,7 +40,7 @@ function App() {
 
 
       </UserContext.Provider>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }
