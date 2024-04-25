@@ -16,6 +16,7 @@ export const handlers = [
         }
     ]))
   }),
+
 rest.get(`http://localhost:8080/satellites?name=${searchTerm}`, (req, res, ctx) => {
     return res(ctx.json(  [
         {
@@ -27,6 +28,7 @@ rest.get(`http://localhost:8080/satellites?name=${searchTerm}`, (req, res, ctx) 
         }
     ])
   )}),
+
   rest.get(`http://localhost:8080/satellites/${id}`, (req, res, ctx) => {
     return res(ctx.json( [
         {
@@ -38,6 +40,7 @@ rest.get(`http://localhost:8080/satellites?name=${searchTerm}`, (req, res, ctx) 
         }
     ]))
   }),
+
   rest.get('https://celestrak.org/NORAD/elements/gp.php?GROUP=visual&FORMAT=json', (req, res, ctx) => {
     return res(ctx.json( [
         {
@@ -61,16 +64,28 @@ rest.get(`http://localhost:8080/satellites?name=${searchTerm}`, (req, res, ctx) 
         }
     ]))
   }),
+
   rest.post('http://localhost:8080/auth/login', (req, res, ctx) => {
+    req.bodyUsed = {
+        email: "ihamblin@yahoo.com",
+        password: "Password123"
+    }
+    // ctx.body = {
+    //     id: 1,
+    //     first_name: "Isaac",
+    //     last_name: "Hamblin",
+    //     password: "$2b$10$A2A8/l33XrxF0rBcmwVg0uLhTyHdqKTEBWjcMFdGyR4s56DpCr/ju",
+    //     email: "ihamblin@yahoo.com"
+    // }
     return res(ctx.json( [
         {
             status: "Authenticated", 
             userData: {
-                "id": 1,
-                "first_name": "Isaac",
-                "last_name": "Hamblin",
-                "password": "$2b$10$A2A8/l33XrxF0rBcmwVg0uLhTyHdqKTEBWjcMFdGyR4s56DpCr/ju",
-                "email": "ihamblin@yahoo.com"
+                id: 1,
+                first_name: "Isaac",
+                last_name: "Hamblin",
+                password: "$2b$10$A2A8/l33XrxF0rBcmwVg0uLhTyHdqKTEBWjcMFdGyR4s56DpCr/ju",
+                email: "ihamblin@yahoo.com"
             }
         }
     ]))
