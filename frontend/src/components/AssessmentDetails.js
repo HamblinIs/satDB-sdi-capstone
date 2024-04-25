@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import SimpleLineChart from './SimpleLineChart';
 import FilesListViewer from './FilesListViewer';
+import { UserContext } from '../App';
 
 
 export default function AssessmentDetails() {
   const navigate = useNavigate();
+  const { activeUser, setActiveUser } = useContext(UserContext);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedAssessment, setSelectedAssessment] = useState(0)
   const [assessmentInfo, setAssessmentInfo] = useState({})
@@ -45,9 +47,9 @@ export default function AssessmentDetails() {
       creation_date: creation_date,
       description: description,
       owner: owner,
-      data_files: dataFiles, // question for issac: do we really need to edit these files?
-      sim_files: simFiles,
-      misc_files: miscFiles,
+      data_files: assessmentInfo.data_files,
+      sim_files: assessmentInfo.sim_files,
+      misc_files: assessmentInfo.misc_files,
     };
 
     // todo: need to check the save logic: fetch with PATCH method
@@ -91,7 +93,7 @@ export default function AssessmentDetails() {
             associatedSatellite.map(item => {
               return (
                 <>
-                  <p>Name:{item.name}</p>
+                  <p>Name: <button onClick={() => navigate(`/SatelliteDetails/${item.id}`)}>{item.name}</button></p>
                   <p>Tail Number:{item.tail_num}</p>
                 </>
               )
@@ -151,11 +153,13 @@ export default function AssessmentDetails() {
 
         <br />
 
-        {isEditing ? (
+        {Object.keys(activeUser).length>0 &&
+        (isEditing ? (
           <button onClick={() => handleSave()}>Save</button>
         ) : (
           <button onClick={() => handleToggleEdit()}>Edit</button>
-        )}
+        ))
+        }
 
         <br />
 

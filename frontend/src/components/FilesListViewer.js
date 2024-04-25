@@ -42,9 +42,11 @@ export default function FilesListViewer({ state, setState, fileType, isEditing }
         let new_file_path_array = [...state[fileType]];
         new_file_path_array[index].file_path_name = e.target.value;
         setState(prevState => ({ ...prevState, [fileType]: new_file_path_array }))
+
     }
 
     const handleDelete = (e, index) => {
+        e.preventDefault();
         if (window.confirm("Are you sure you want to delete this file path?")) {
             const filteredArray = [...state[fileType]].filter((obj, i) => index !== i);
             setState(prevState => ({ ...prevState, [fileType]: filteredArray }))
@@ -66,7 +68,7 @@ export default function FilesListViewer({ state, setState, fileType, isEditing }
                                 </>
                             )
                         } else {
-                            return (<p>{obj.file_path_name}</p>)
+                            return (<p key={index} >{obj.file_path_name}</p>)
                         }
 
                     })
