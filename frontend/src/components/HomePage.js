@@ -248,7 +248,6 @@ const chooseCategory = (e) => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <StyledButton onClick={() => handleSearch()}>Search</StyledButton>
-        <StyledButton onClick={() => handleSort()}>Sort</StyledButton>
 
       </SearchDiv>
 

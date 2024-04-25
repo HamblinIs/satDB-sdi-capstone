@@ -176,7 +176,7 @@ export default function Navbar() {
           </DropdownContent>
       </DropdownMenu>
       <CustomLink to='/SatelliteModelOrbit'>Satellite Model Orbit</CustomLink>
-      <CustomLink to='/Satellites'>View Satellites</CustomLink>
+      <CustomLink to='/Satellites'>Celestrak Data</CustomLink>
       <CustomLink to='/SatelliteGroundTrack'>Satellite Ground Track</CustomLink>
     </NavUL>
 
