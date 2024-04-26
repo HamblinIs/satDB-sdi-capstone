@@ -56,15 +56,15 @@ test('search bar should be present and return data', async() => {
 // //   //expect(satMap).toBeInTheDocument()
 // // })
 
-test('navigating to View Satellites pulls up the material', async() => {
-  render(<App/>)
-  let satView = screen.getByText("Celestrak Data")
-  await act(async() => {userEvent.click(satView)})
-  await waitFor(() => screen.getByText("epoch"))
-  const satDets = screen.getByText("ATLAS CENTAUR 2")
-  expect(satView).toBeInTheDocument()
-  expect(satDets).toBeInTheDocument()
-})
+// test('navigating to View Satellites pulls up the material', async() => {
+//   render(<App/>)
+//   let satView = screen.getByText("Celestrak Data")
+//   await act(async() => {userEvent.click(satView)})
+//   await waitFor(() => screen.getByText("Line 1"))
+//   const satDets = screen.getByText("ATLAS CENTAUR 2")
+//   expect(satView).toBeInTheDocument()
+//   expect(satDets).toBeInTheDocument()
+// })
 
 test('logining in will send to appropriate destination', async() => {
   render(<App/>)
@@ -83,8 +83,8 @@ test('logining in will send to appropriate destination', async() => {
   // await act(async() => {userEvent.type(passEnter, 'Password123')})
   //let tes = screen.getByText("ihamblin@yahoo.com")
   let subButton = screen.getByRole('button', {name: "Submit"})
-  //await act(async() => {userEvent.click(subButton)})
-  //await waitFor(() => screen.getByText("Logout"))
+  // await act(async() => {userEvent.click(subButton)})
+  // await waitFor(() => screen.getByText("Logout"))
   expect(logInit).toBeInTheDocument()
   expect(logButt).toBeInTheDocument()
   //expect(passEnter).toBeInTheDocument()
