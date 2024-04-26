@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 export default function Satellites({ setTLEData }) {
     const navigate = useNavigate();
-    const [currentPage, setCurrentPage] = useState(1);
-    const [parsedData, setParsedData] = useState(JSON.parse(localStorage.getItem('myKey')) || []);
+    const [currentPage, setCurrentPage] = useState(parseInt(localStorage.getItem('currentPage')) || 1);
+    const [parsedData, setParsedData] = useState(JSON.parse(localStorage.getItem('parsedData')) || []);
     // localStorage.clear();
 
 
@@ -21,6 +21,31 @@ margin-left: 25%;
 padding: 20px;
 gap: 5px;
 width: 750px;
+`
+
+const StyledButton = styled.button`
+    // display: flex;
+    // justify-content:center;
+    // justify-items:center;
+    // align-items:center;
+    // align-content:center;
+    color: black;
+    margin: 2px;
+    border-radius: 3px;
+    border: 1px solid black;
+    background-color: #96a6ef;
+    width: 60px;
+    height: 30px;
+`
+
+const StyledButton2 = styled.button`
+
+    color: black;
+    border-radius: 3px;
+    border: 1px solid black;
+    background-color: #96a6ef;
+    width: 60px;
+    height: 60px;
 `
 
     // function that transforms the raw TLE data into an array of objects
@@ -70,7 +95,7 @@ width: 750px;
                 })
                 .then(data => { // set the data in the state and local storage
                     setParsedData(data);
-                    localStorage.setItem('myKey', JSON.stringify(data));
+                    localStorage.setItem('parsedData', JSON.stringify(data));
                     console.log("local storage not found... data was fetched");
                 })
         }
@@ -95,7 +120,10 @@ width: 750px;
             <>
                 <BackgroundDiv>
 
-                    <h1>Satellite Table from Celestrak</h1>
+                    <h1>100 Brightest Satellites from Celestrak</h1>
+                    <p>{`${currentPage} / ${totalPages}`}</p>
+                    <StyledButton onClick={prevPage} disabled={currentPage === 1}>Prev</StyledButton>
+                    <StyledButton onClick={nextPage} disabled={currentPage === totalPages}>Next</StyledButton>
 
                     {
                         <table>
@@ -114,12 +142,13 @@ width: 750px;
                                         <td>{data.line1}</td>
                                         <td>{data.line2}</td>
                                         <td>
-                                            <button onClick={() => {
+                                            <StyledButton2 onClick={() => {
                                                 setTLEData(data); // sets one satellite's TLE for SatelliteGroundTrack to display
                                                 navigate('/SatelliteGroundTrack');
+                                                localStorage.setItem('currentPage', currentPage.toString())
                                             }}>
                                                 Ground Track
-                                            </button>
+                                            </StyledButton2>
                                         </td>
                                     </tr>
                                 ))}
@@ -130,9 +159,7 @@ width: 750px;
 
 
                 </BackgroundDiv>
-                <p>{`${currentPage} / ${totalPages}`}</p>
-                <button onClick={prevPage} disabled={currentPage === 1}>Previous Page</button>
-                <button onClick={nextPage} disabled={currentPage === totalPages}>Next Page</button>
+                
             </>
         );
     }
