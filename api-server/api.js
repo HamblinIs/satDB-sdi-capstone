@@ -64,9 +64,10 @@ api.get('/satellites', (req, res) => {
     }
 */
 api.get('/satellites/:id', async (req, res) => {
-    let cad_models = await knex.raw('SELECT cad_model.file_path_name FROM cad_model, cad_model_to_satellite, satellite WHERE satellite.id = cad_model_to_satellite.satellite_id AND cad_model_to_satellite.cad_model_id = cad_model.id;');
-    let images = await knex.raw("SELECT image.file_path_name FROM image, image_to_satellite, satellite WHERE satellite.id = image_to_satellite.satellite_id AND image_to_satellite.image_id = image.id;");
-    let assessments = await knex.raw("SELECT assessment.id, assessment.name, assessment.creation_date FROM assessment, satellite_to_assessment, satellite WHERE satellite.id = satellite_to_assessment.satellite_id AND satellite_to_assessment.assessment_id = assessment.id;");
+    const { id } = req.params;
+    let cad_models = await knex.raw('SELECT DISTINCT cad_model.file_path_name FROM cad_model, cad_model_to_satellite, satellite WHERE ? = cad_model_to_satellite.satellite_id AND cad_model_to_satellite.cad_model_id = cad_model.id;', id);
+    let images = await knex.raw("SELECT DISTINCT image.file_path_name FROM image, image_to_satellite, satellite WHERE ? = image_to_satellite.satellite_id AND image_to_satellite.image_id = image.id;", id);
+    let assessments = await knex.raw("SELECT DISTINCT assessment.id, assessment.name, assessment.creation_date FROM assessment, satellite_to_assessment, satellite WHERE ? = satellite_to_assessment.satellite_id AND satellite_to_assessment.assessment_id = assessment.id;", id);
     let satellites = await knex("satellite").select('*').where({id: req.params.id});
     let satellite = satellites[0];
     satellite.images = images["rows"];
@@ -86,15 +87,19 @@ api.patch('/satellites/:id', async (req, res) => {
     let image_id_array = image_ids_to_delete["rows"].map(image => image.image_id);
     await knex("image_to_satellite").where({satellite_id: id}).del()
     await knex("image").whereIn('id', image_id_array).del()
-    let image_ids_added = await knex("image").insert(images.map(image => ({"file_path_name":image.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
-    await knex("image_to_satellite").insert(image_ids_added.map(image => ({"image_id": image.id, "satellite_id": id})));
+    if (images && images.length != 0) {
+        let image_ids_added = await knex("image").insert(images.map(image => ({"file_path_name":image.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
+        await knex("image_to_satellite").insert(image_ids_added.map(image => ({"image_id": image.id, "satellite_id": id})));
+    }
 
     let cad_model_ids_to_delete = await knex.raw(`select distinct cad_model_to_satellite.cad_model_id FROM cad_model_to_satellite, cad_model WHERE cad_model_to_satellite.satellite_id = ${id};`);
     let cad_model_id_array = cad_model_ids_to_delete["rows"].map(cad_model => cad_model.cad_model_id);
     await knex("cad_model_to_satellite").where({satellite_id: id}).del()
     await knex("cad_model").whereIn('id', cad_model_id_array).del()
-    let cad_model_ids_added = await knex("cad_model").insert(cad_models.map(cad_model => ({file_path_name: cad_model.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
-    await knex("cad_model_to_satellite").insert(cad_model_ids_added.map(cad_model => ({cad_model_id: cad_model.id, satellite_id: id})));
+    if (cad_models && cad_models.length != 0) {
+        let cad_model_ids_added = await knex("cad_model").insert(cad_models.map(cad_model => ({file_path_name: cad_model.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
+        await knex("cad_model_to_satellite").insert(cad_model_ids_added.map(cad_model => ({cad_model_id: cad_model.id, satellite_id: id})));
+    }
 
     await knex("satellite_to_assessment").where({satellite_id: id}).del();
     await knex("satellite_to_assessment").insert(assessments.map(assessment => ({satellite_id: id, assessment_id: assessment.id})));
@@ -114,10 +119,52 @@ api.patch('/satellites/:id', async (req, res) => {
 
 //TODO:
 // PATCH one assessment into assessment table
-api.patch('/assessments/:id', (req, res) => {
+api.patch('/assessments/:id', async (req, res) => {
+
     const { id } = req.params;
 
-    const { name, satellites, creation_date, description, owner, data_files, sim_files, misc_files } = req.body;
+    const { name, satellites, creation_date, description, owner, data_files, sim_files, misc_files, images } = req.body;
+
+    console.log(sim_files);
+
+    let image_ids_to_delete = await knex.raw(`SELECT distinct image_to_assessment.image_id FROM image_to_assessment, image WHERE image_to_assessment.assessment_id = ${id};`);
+    let image_id_array = image_ids_to_delete["rows"].map(image => image.image_id);
+    await knex("image_to_assessment").where({assessment_id: id}).del()
+    await knex("image").whereIn('id', image_id_array).del()
+    if (images && images.length != 0) { // Avoids error from empty array on insert
+        let image_ids_added = await knex("image").insert(images.map(image => ({"file_path_name":image.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
+        await knex("image_to_assessment").insert(image_ids_added.map(image => ({"image_id": image.id, "assessment_id": id})));
+    }
+
+    let data_file_ids_to_delete = await knex.raw(`select distinct data_file_to_assessment.data_file_id FROM data_file_to_assessment, data_file WHERE data_file_to_assessment.assessment_id = ${id};`);
+    let data_file_id_array = data_file_ids_to_delete["rows"].map(data_file => data_file.data_file_id);
+    await knex("data_file_to_assessment").where({assessment_id: id}).del()
+    await knex("data_file").whereIn('id', data_file_id_array).del()
+    if (data_files && data_files.length != 0) {
+        let data_file_ids_added = await knex("data_file").insert(data_files.map(data_file => ({file_path_name: data_file.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
+        await knex("data_file_to_assessment").insert(data_file_ids_added.map(data_file => ({data_file_id: data_file.id, assessment_id: id})));
+    }
+
+    let sim_file_ids_to_delete = await knex.raw(`select distinct sim_file_to_assessment.sim_file_id FROM sim_file_to_assessment, sim_file WHERE sim_file_to_assessment.assessment_id = ${id};`);
+    let sim_file_id_array = sim_file_ids_to_delete["rows"].map(sim_file => sim_file.sim_file_id);
+    await knex("sim_file_to_assessment").where({assessment_id: id}).del()
+    await knex("sim_file").whereIn('id', sim_file_id_array).del()
+    if (sim_files && sim_files.length != 0) {
+        let sim_file_ids_added = await knex("sim_file").insert(sim_files.map(sim_file => ({file_path_name: sim_file.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
+        await knex("sim_file_to_assessment").insert(sim_file_ids_added.map(sim_file => ({sim_file_id: sim_file.id, assessment_id: id})));
+    }
+
+    let misc_file_ids_to_delete = await knex.raw(`select distinct misc_file_to_assessment.misc_file_id FROM misc_file_to_assessment, misc_file WHERE misc_file_to_assessment.assessment_id = ${id};`);
+    let misc_file_id_array = misc_file_ids_to_delete["rows"].map(misc_file => misc_file.misc_file_id);
+    await knex("misc_file_to_assessment").where({assessment_id: id}).del()
+    await knex("misc_file").whereIn('id', misc_file_id_array).del()
+    if (misc_files && misc_files.length != 0) {
+        let misc_file_ids_added = await knex("misc_file").insert(misc_files.map(misc_file => ({file_path_name: misc_file.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
+        await knex("misc_file_to_assessment").insert(misc_file_ids_added.map(misc_file => ({misc_file_id: misc_file.id, assessment_id: id})));
+    }
+
+    await knex("satellite_to_assessment").where({assessment_id: id}).del();
+    await knex("satellite_to_assessment").insert(satellites.map(satellite => ({satellite_id: satellite.id, assessment_id: id})));
 
     knex('assessment')
         .where({id: id})
@@ -170,12 +217,13 @@ api.get('/assessments', (req, res) => {
 
 // GET /assessments/:id
 api.get('/assessments/:id', async (req, res) => {
+        const { id } = req.params;
 
-       let user_accounts = await knex.raw('SELECT user_accounts.first_name, user_accounts.last_name FROM user_accounts, assessment_to_user_account, assessment WHERE user_accounts.id = assessment_to_user_account.user_account_id AND assessment.id = assessment_to_user_account.assessment_id');
-       let sim_files = await knex.raw('SELECT sim_file.file_path_name FROM sim_file, sim_file_to_assessment, assessment WHERE assessment.id = sim_file_to_assessment.assessment_id AND sim_file_to_assessment.sim_file_id = sim_file.id;');
-       let images = await knex.raw("SELECT image.file_path_name FROM image, image_to_assessment, assessment WHERE assessment.id = image_to_assessment.assessment_id AND image_to_assessment.image_id = image.id;");
-       let data_files = await knex.raw('SELECT data_file.file_path_name FROM data_file, data_file_to_assessment, assessment WHERE assessment.id = data_file_to_assessment.assessment_id AND data_file_to_assessment.data_file_id = data_file.id;');
-       let misc_files = await knex.raw('SELECT misc_file.file_path_name FROM misc_file, misc_file_to_assessment, assessment WHERE assessment.id = misc_file_to_assessment.assessment_id AND misc_file_to_assessment.misc_file_id = misc_file.id;');
+       let user_accounts = await knex.raw('SELECT DISTINCT user_accounts.first_name, user_accounts.last_name FROM user_accounts, assessment_to_user_account, assessment WHERE user_accounts.id = assessment_to_user_account.user_account_id AND ? = assessment_to_user_account.assessment_id', id);
+       let sim_files = await knex.raw('SELECT DISTINCT sim_file.file_path_name FROM sim_file, sim_file_to_assessment, assessment WHERE ? = sim_file_to_assessment.assessment_id AND sim_file_to_assessment.sim_file_id = sim_file.id;', id);
+       let images = await knex.raw("SELECT DISTINCT image.file_path_name FROM image, image_to_assessment, assessment WHERE ? = image_to_assessment.assessment_id AND image_to_assessment.image_id = image.id;", id);
+       let data_files = await knex.raw('SELECT DISTINCT data_file.file_path_name FROM data_file, data_file_to_assessment, assessment WHERE ? = data_file_to_assessment.assessment_id AND data_file_to_assessment.data_file_id = data_file.id;', id);
+       let misc_files = await knex.raw('SELECT DISTINCT misc_file.file_path_name FROM misc_file, misc_file_to_assessment, assessment WHERE ? = misc_file_to_assessment.assessment_id AND misc_file_to_assessment.misc_file_id = misc_file.id;', id);
        let assessments = await knex("assessment").select('name', 'description', 'creation_date').where({id: req.params.id});
        let assessment = assessments[0];
        assessment.satellites = await knex("satellite").select('id', 'name', 'tail_num').where({id: req.params.id});

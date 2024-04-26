@@ -1,6 +1,22 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const BackgroundDiv = styled.div`
+display: flex;
+flex-flow: column;
+justify-content: center;
+justify-items: center;
+align-items: center;
+align-content: center;
+background-color: #c4cfff;
+width: 500px;
+margin-left: 35%;
+border: 4px solid #4a478a;
+margin-top: 20px;
+padding: 20px;
+`
 
 export default function CreateAssessment() {
   const navigate = useNavigate();
@@ -78,7 +94,7 @@ export default function CreateAssessment() {
   }
 
   return (
-    <div>
+    <BackgroundDiv>
       <h1>Create Assessment</h1>
       <>
         <label>Name:
@@ -212,7 +228,7 @@ export default function CreateAssessment() {
         <br/>
         <button onClick = {() => handleSubmit()}>Submit</button>
       </>
-    </div>
+    </BackgroundDiv>
   );
 }
 
