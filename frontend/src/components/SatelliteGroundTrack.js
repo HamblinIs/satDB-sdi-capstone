@@ -32,10 +32,12 @@ const StyledH1 = styled.h1`
 `
 
 
-export default function SatelliteGroundTrack( { TLEData } ) {
+export default function SatelliteGroundTrack( { TLEData, setTLEData } ) {
     const navigate = useNavigate();
 
     const { satelliteName, line1, line2 } = TLEData;
+
+    const [periodMultiplier, setPeriodMultiplier] = useState(1);
     
     const tle = `${line1}\n${line2}`;
 
@@ -114,7 +116,7 @@ export default function SatelliteGroundTrack( { TLEData } ) {
         let altitudes = [];
 
         // Loop over one orbital period
-        for (let t = 0; t < 14400; t += step) { // t is in minutes
+        for (let t = 0; t < periodMultiplier * period; t += step) { // t is in minutes
             // Propagate the satellite's position and velocity for the current time step
             // km? and km/s?
             const positionAndVelocity = satellite.propagate(satrec, new Date(currentTime + t * 60000));
@@ -134,7 +136,11 @@ export default function SatelliteGroundTrack( { TLEData } ) {
             const latitude = satellite.degreesLat(positionGd.latitude);
             const altitude = positionGd.height; // Altitude in kilometers
 
-            times.push(t);
+            // Convert t as a datetime object, then convert from UTC to Mountain Time
+            const t_as_datetime = new Date(currentTime + t * 60000);
+            const t_in_mountaintime = t_as_datetime.toLocaleString("en-US", {timeZone: "America/Denver"});
+
+            times.push(t_in_mountaintime);
             longitudes.push(longitude);
             latitudes.push(latitude);
             altitudes.push(altitude);
@@ -151,8 +157,7 @@ export default function SatelliteGroundTrack( { TLEData } ) {
     // positions.sort((a,b) => a[1]-b[1]);
     const splitPositions = splitPolyline(positions);
 
-    // satellite ground stations
-    const markerPositions = [
+    const satelliteControlNetwork = [
                             // [28.488771081049144, -80.57774367921208],
                             //  [41.752538649728784, -70.53856967491647],
                             //  [48.72944168726237, -97.90506870961192],
@@ -164,8 +169,8 @@ export default function SatelliteGroundTrack( { TLEData } ) {
                             //  [-7.32005708056163, 72.42235700418554],
                             //  [76.53562570830366, -68.70218277253136],
                             //  [51.116119077647795, -0.906258544791876],
-                            //  [13.587771184639555, 144.8408133260717],
-                             [34.96420802612262, -106.46368895542169]];
+                            //  [13.587771184639555, 144.8408133260717]
+                        ];
 
     const satelliteIcon = L.icon({
         iconUrl: 'satellite_icon.png',
@@ -179,20 +184,54 @@ export default function SatelliteGroundTrack( { TLEData } ) {
 
 
 
-const starfire = [34.96420802612262, -106.46368895542169, 1.84589928];
+const starfire = [34.96420802612262, -106.46368895542169, 1.84589928]; // [lat, lon, alt] in [deg N, deg E, km]
 const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitudes);
-const closestTime = new Date(currentTime + times[myClosestPoint.index] * 60000);
-const mountainTime = closestTime.toLocaleString("en-US", {timeZone: "America/Denver"});
+// const closestTime = new Date(currentTime + times[myClosestPoint.index] * 60000);
+// const mountainTime = closestTime.toLocaleString("en-US", {timeZone: "America/Denver"});
 // console.log(`Mountain Time: ${mountainTime}`);
 // console.log(`The closest point to ${starfire} is ${myClosestPoint}`);
 
 
+    const handlePeriodMultipler = (e) => {
+        setPeriodMultiplier(e.target.value);
+    }
 
+    const handleCustomTLE = (e) => {
+        e.preventDefault();
+
+        const input = e.target.value;
+        const lines = input.split('\n');
+        const line1 = lines[0]?.trim();
+        const line2 = lines[1]?.trim();
+
+        setTLEData({
+            satelliteName: "Custom TLE",
+            line1: line1,
+            line2: line2
+        });
+        
+    }
+
+    const [showAlternatives, toggleShowAlternatives] = useState(false);
 
     return (
         <div>
             <StyledButton onClick={() => navigate('/Satellites')}>Back to Celestrak Data</StyledButton>
             <StyledButton onClick={toggleMapType}>Toggle Map View</StyledButton>
+
+            <label> Propagate 
+                <input type="number" value={periodMultiplier} onChange={handlePeriodMultipler} min={0} max={10}/>
+                orbital periods
+            </label>
+
+            <button onClick={() => toggleShowAlternatives(!showAlternatives)}>Show alternatives</button>
+
+            <form onSubmit={handleCustomTLE}>
+                <label>TLE:
+                    <textarea value={customTLE} />
+                </label>
+                <button type="submit">Submit</button>
+            </form>
             
         <StyleBox>
             <StyledH1>{satelliteName}</StyledH1>
@@ -211,10 +250,10 @@ const mountainTime = closestTime.toLocaleString("en-US", {timeZone: "America/Den
                 )}
 
                 {splitPositions.map((positions, index) => (
-                    <Polyline positions={splitPositions[index]} color='red' />
+                    <Polyline positions={positions} color='red' />
                 ))}
 
-                {/* {markerPositions.map((position, idx) => (
+                {/* {satelliteControlNetwork.map((position, idx) => (
                     <Marker key={idx} position={position} />
                 ))} */}
 
@@ -222,21 +261,50 @@ const mountainTime = closestTime.toLocaleString("en-US", {timeZone: "America/Den
                         <Popup><h4>Starfire Optical Range</h4></Popup>
                     </Marker>
 
-                    <Polyline positions={[starfire, myClosestPoint.closestPoint]} color='blue' />
-                    <Marker position={myClosestPoint.closestPoint}>
+                    <Polyline positions={[starfire, [latitudes[0], longitudes[0]]]} color='blue' />
+                    <Marker key="satellite_position" position={[latitudes[0], longitudes[0]]} icon={satelliteIcon}>
                         <Popup>
-                        <h4>Target Satellite</h4>
-                        Latitude, Longitude: <br/>
-                        ({myClosestPoint.closestPoint[0]}, {myClosestPoint.closestPoint[1]}) <br/>
-                        Altitude: {parseFloat(myClosestPoint.closestPoint[2].toFixed(4))} km <br/>
-                        Mountain Time: {mountainTime} <br/>
-                        Azimuth: {parseFloat(calculateBearing([starfire[0], starfire[1]], [myClosestPoint.closestPoint[0], myClosestPoint.closestPoint[1]]).toFixed(4))} deg from North <br/>
-                        Elevation: {parseFloat(calculateElevationAngle(starfire, myClosestPoint.closestPoint).toFixed(4))} deg from horizontal <br/>
-                        Distance: {parseFloat(myClosestPoint.shortestDistance.toFixed(4))} km
+                            <h4>Current Location</h4>
+                            Latitude, Longitude: <br/>
+                            ({latitudes[0]}, {longitudes[0]}) <br/>
+                            Altitude: {parseFloat(altitudes[0].toFixed(4))} km <br/>
+                            Mountain Time: {times[0]} <br/>
+                            Azimuth: {parseFloat(calculateAzimuth([starfire[0], starfire[1]], [latitudes[0], longitudes[0]]).toFixed(4))} deg from North <br/>
+                            Elevation: {parseFloat(calculateElevationAngle(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toFixed(4))} deg from horizontal <br/>
+                            Distance: {parseFloat(calculateTotalDistance(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toFixed(4))} km
                         </Popup>
                     </Marker>
 
-                    <Marker key="satellite_position" position={splitPositions[0][0]} icon={satelliteIcon}/>
+                    <Polyline positions={[starfire, myClosestPoint.closestPoint]} color='blue' />
+                    <Marker position={myClosestPoint.closestPoint}>
+                        <Popup>
+                            <h4>Closest Future Location</h4>
+                            Latitude, Longitude: <br/>
+                            ({myClosestPoint.closestPoint[0]}, {myClosestPoint.closestPoint[1]}) <br/>
+                            Altitude: {parseFloat(myClosestPoint.closestPoint[2].toFixed(4))} km <br/>
+                            Mountain Time: {times[myClosestPoint.index]} <br/>
+                            Azimuth: {parseFloat(calculateAzimuth([starfire[0], starfire[1]], [myClosestPoint.closestPoint[0], myClosestPoint.closestPoint[1]]).toFixed(4))} deg from North <br/>
+                            Elevation: {parseFloat(calculateElevationAngle(starfire, myClosestPoint.closestPoint).toFixed(4))} deg from horizontal <br/>
+                            Distance: {parseFloat(calculateTotalDistance(starfire, myClosestPoint.closestPoint).toFixed(4))} km
+                        </Popup>
+                    </Marker>
+
+                    {showAlternatives &&
+                    (alternativesIndecies.map((i, map_index) => (
+                        <Marker key={map_index} position={[latitudes[i], longitudes[i]]} >
+                            <Popup>
+                                <h4>Alternative Location {map_index}/10</h4>
+                                Latitude, Longitude: <br/>
+                                ({latitudes[i]}, {longitudes[i]}) <br/>
+                                Altitude: {parseFloat(altitudes[i].toFixed(4))} km <br/>
+                                Mountain Time: {times[i]} <br/>
+                                Azimuth: {parseFloat(calculateAzimuth([starfire[0], starfire[1]], [latitudes[i], longitudes[i]]).toFixed(4))} deg from North <br/>
+                                Elevation: {parseFloat(calculateElevationAngle(starfire, [latitudes[i], longitudes[i], altitudes[i]]).toFixed(4))} deg from horizontal <br/>
+                                Distance: {parseFloat(calculateTotalDistance(starfire, [latitudes[i], longitudes[i], altitudes[i]]).toFixed(4))} km
+                            </Popup>
+                        </Marker>)
+                        ))}
+
 
                     {/* {mapType === 'satellite' && (
                     <>
@@ -260,7 +328,7 @@ const mountainTime = closestTime.toLocaleString("en-US", {timeZone: "America/Den
 
 
 
-
+// solves the meridian line problem
 function splitPolyline(positions) {
     const splitPolylines = [];
     let tempPolyline = [];
@@ -290,12 +358,11 @@ function splitPolyline(positions) {
 
 
 
-
+// used to calculate surface distance on the earth
 function haversineDistance(lat1, lon1, lat2, lon2) {
     function toRad(x) {
         return x * Math.PI / 180;
     }
-
     const R = 6371; // Radius of the Earth in kilometers
     const dLat = toRad(lat2 - lat1);
     const dLon = toRad(lon2 - lon1);
@@ -307,39 +374,56 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
 }
 
 
-
+// searches through the propagation arrays to find the target satellite closest to starfire 
+// in addition to keeping track of the shortestDistance and its corresponding index,
+// keep the next 10 closest points by storing its indecies in an array called alternativesIndecies
+// where the array is ordered from closest to furthest
 function findClosestPoint(starfire, longitudes, latitudes, altitudes) {
-    let shortestDistance = Infinity;
-    let closestPointIndex;
+    let distances = [];
 
     for (let i = 0; i < longitudes.length; i++) {
         const surfaceDistance = haversineDistance(starfire[0], starfire[1], latitudes[i], longitudes[i]);
         const altitudeDifference = Math.abs(starfire[2] - altitudes[i]);
         const totalDistance = Math.sqrt(surfaceDistance * surfaceDistance + altitudeDifference * altitudeDifference);
 
-        if (totalDistance < shortestDistance) {
-            shortestDistance = totalDistance;
-            closestPointIndex = i;
-        }
+        distances.push({index: i, distance: totalDistance});
     }
+
+    // Sort the distances array in ascending order of distance
+    distances.sort((a, b) => a.distance - b.distance);
+
+    let closestPointIndex = distances[0].index;
+    let shortestDistance = distances[0].distance;
+
+    // Get the indices of the next 10 closest points
+    let alternativesIndices = distances.slice(1, 11).map(d => d.index);
 
     return { 
         closestPoint: [latitudes[closestPointIndex], longitudes[closestPointIndex], altitudes[closestPointIndex]],
         index: closestPointIndex,
-        shortestDistance: shortestDistance
+        shortestDistance: shortestDistance,
+        alternativesIndices: alternativesIndices
     };
 }
 
 
 
-function calculateBearing([lat1, lon1], [lat2, lon2]) {
-    function toRadians(degrees) {
-        return degrees * Math.PI / 180;
-    }
+// calculateTotalDistance calculates the distance between starfire and the satellite
+function calculateTotalDistance(starfire, [longitude, latitude, altitude]) {
+    const surfaceDistance = haversineDistance(starfire[0], starfire[1], latitude, longitude);
+    const altitudeDifference = Math.abs(starfire[2] - altitude);
+    const totalDistance = Math.sqrt(surfaceDistance * surfaceDistance + altitudeDifference * altitudeDifference);
+    return totalDistance;
+}
 
-    function toDegrees(radians) {
-        return radians * 180 / Math.PI;
-    }
+
+
+
+
+// calculates the azimuth angle between starfire and the target satellite
+function calculateAzimuth([lat1, lon1], [lat2, lon2]) {
+    function toRadians(degrees) {return degrees * Math.PI / 180;}
+    function toDegrees(radians) {return radians * 180 / Math.PI;}
 
     // Convert latitudes and longitudes from degrees to radians
     lat1 = toRadians(lat1);
@@ -358,15 +442,13 @@ function calculateBearing([lat1, lon1], [lat2, lon2]) {
     // Normalize the bearing to be between 0 and 360
     bearing = (bearing + 360) % 360;
 
-    return bearing;
+    return bearing; // in degrees from north
 }
 
 
 
 function calculateElevationAngle([lat1, lon1, alt1], [lat2, lon2, alt2]) {
-    function toRadians(degrees) {
-        return degrees * Math.PI / 180;
-    }
+    function toRadians(degrees) {return degrees * Math.PI / 180;}
 
     // Radius of the Earth in kilometers
     const R = 6371;

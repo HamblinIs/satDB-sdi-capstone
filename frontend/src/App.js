@@ -47,7 +47,7 @@ function App() {
         <Route path="/AssessmentDetails/:id" element={<AssessmentDetails />} />
         <Route path="/SatelliteDetails/:id" element={<SatelliteDetails />} />
         <Route path="/Satellites" element={<Satellites setTLEData={setTLEData} />} />
-        <Route path="/SatelliteGroundTrack" element={<SatelliteGroundTrack TLEData={TLEData} />} />
+        <Route path="/SatelliteGroundTrack" element={<SatelliteGroundTrack setTLEData={setTLEData} TLEData={TLEData} />} />
       </Routes>
 
 
