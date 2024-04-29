@@ -186,10 +186,6 @@ export default function SatelliteGroundTrack( { TLEData, setTLEData } ) {
 
 const starfire = [34.96420802612262, -106.46368895542169, 1.84589928]; // [lat, lon, alt] in [deg N, deg E, km]
 const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitudes);
-// const closestTime = new Date(currentTime + times[myClosestPoint.index] * 60000);
-// const mountainTime = closestTime.toLocaleString("en-US", {timeZone: "America/Denver"});
-// console.log(`Mountain Time: ${mountainTime}`);
-// console.log(`The closest point to ${starfire} is ${myClosestPoint}`);
 
 
     const handlePeriodMultipler = (e) => {
@@ -209,7 +205,6 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
         line1: "",
         line2: ""
     }
-
 
     const handleCustomTLE = (e) => {
         const lines = e.target.value.split('\n');
@@ -465,22 +460,24 @@ function calculateAzimuth([lat1, lon1], [lat2, lon2]) {
 
 
 function calculateElevationAngle([lat1, lon1, alt1], [lat2, lon2, alt2]) {
-    function toRadians(degrees) {return degrees * Math.PI / 180;}
+    // function toRadians(degrees) {return degrees * Math.PI / 180;}
 
-    // Radius of the Earth in kilometers
-    const R = 6371;
+    // // Radius of the Earth in kilometers
+    // const R = 6371;
 
-    // Convert latitudes and longitudes from degrees to radians
-    lat1 = toRadians(lat1);
-    lon1 = toRadians(lon1);
-    lat2 = toRadians(lat2);
-    lon2 = toRadians(lon2);
+    // // Convert latitudes and longitudes from degrees to radians
+    // lat1 = toRadians(lat1);
+    // lon1 = toRadians(lon1);
+    // lat2 = toRadians(lat2);
+    // lon2 = toRadians(lon2);
 
-    // Calculate the difference in longitudes
-    const dLon = lon2 - lon1;
+    // // Calculate the difference in longitudes
+    // const dLon = lon2 - lon1;
 
-    // Calculate the distance between the two points on the Earth's surface
-    const d = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(dLon)) * R;
+    // // Calculate the distance between the two points on the Earth's surface
+    // const d = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(dLon)) * R;
+
+    const d = haversineDistance(lat1, lon1, lat2, lon2)
 
     // Calculate the difference in altitudes
     const h = alt2 - alt1;

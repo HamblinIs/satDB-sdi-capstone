@@ -59,66 +59,8 @@ const StyledButton = styled.button`
 `
 
 
-        setData(addData)
-      })
-      .catch(error => console.error('Error:', error));
-  };
-
-//   function parseTLEData(rawData) {
-//     // Split the raw data into lines
-//     const lines = rawData.split('\n');
-//     const satellites = [];
-
-//     // Extract relevant information
-//     for (let i = 0; i < lines.length; i += 3) {
-
-//       if (i + 2 < lines.length) {
-
-
-//       const satelliteName = lines[i].trim();
-//       const line1 = lines[i + 1].trim();
-//       const line2 = lines[i + 2].trim();
-
-//       const parsedData = {
-//         satelliteName: satelliteName,
-//         line1: line1,
-//         line2: line2
-//     };
-
-//     satellites.push(parsedData)
-//     } else {
-//       console.error('Incomplete satellite entry at index', i);
-//     }
-//   }
-
-//     // Construct an object to hold the parsed data
-
-
-//     return satellites;
-// }
-
-//   useEffect(() => {
-//     fetch('https://celestrak.org/NORAD/elements/gp.php?GROUP=visual&FORMAT=tle')
-//     .then(response => response.text())
-//     .then(data => {
-//       const parsedData = parseTLEData(data);
-
-//       console.log(parsedData)
-//     } )
-
-//     .catch(err => {
-//       console.error('Error fetching parsed data:', err)
-//     })
-//   }, [])
-
-
-  const nextPage = () => {
-    setCurrentPage(prevPage => prevPage + 1);
-  };
 
 const StyledButton2 = styled.button`
-
-
     color: black;
     border-radius: 3px;
     border: 1px solid black;
@@ -197,54 +139,53 @@ const StyledButton2 = styled.button`
     if (pagedData.length > 0) {
         return (
             <>
-                <BackgroundDiv>
-                <CenterDiv>
+            <CenterDiv>
+            <BackgroundDiv>
+            
 
-                    <h1>100 Brightest Satellites from Celestrak</h1>
-                    <p>{`${currentPage} / ${totalPages}`}</p>
-                    <StyledButton onClick={prevPage} disabled={currentPage === 1}>Prev</StyledButton>
-                    <StyledButton onClick={nextPage} disabled={currentPage === totalPages}>Next</StyledButton>
-
-                    {
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Satellite Name</th>
-                                    <th>Line 1</th>
-                                    <th>Line 2</th>
-                                    <th>Ground Track</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {pagedData.map((data, index) => (
-                                    <tr key={index}>
-                                        <td>{data.satelliteName}</td>
-                                        <td>{data.line1}</td>
-                                        <td>{data.line2}</td>
-                                        <td>
-                                            <StyledButton2 onClick={() => {
-                                                setTLEData(data); // sets one satellite's TLE for SatelliteGroundTrack to display
-                                                navigate('/SatelliteGroundTrack');
-                                                localStorage.setItem('currentPage', currentPage.toString())
-                                            }}>
-                                                Ground Track
-                                            </StyledButton2>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    }
-
+            <h1>100 Brightest Satellites from Celestrak</h1>
+            <p>{`${currentPage} / ${totalPages}`}</p>
+            <CenterDiv>
             <ButtonsDiv>
-            <StyledButton onClick={prevPage} disabled={currentPage === 1}>Previous Page</StyledButton>
-            <StyledButton onClick={nextPage}>Next Page</StyledButton>
+                <StyledButton onClick={prevPage} disabled={currentPage === 1}>Prev</StyledButton>
+                <StyledButton onClick={nextPage} disabled={currentPage === totalPages}>Next</StyledButton>
             </ButtonsDiv>
             </CenterDiv>
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Satellite Name</th>
+                            <th>Line 1</th>
+                            <th>Line 2</th>
+                            <th>Ground Track</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {pagedData.map((data, index) => (
+                            <tr key={index}>
+                                <td>{data.satelliteName}</td>
+                                <td>{data.line1}</td>
+                                <td>{data.line2}</td>
+                                <td>
+                                    <StyledButton2 onClick={() => {
+                                        setTLEData(data); // sets one satellite's TLE for SatelliteGroundTrack to display
+                                        navigate('/SatelliteGroundTrack');
+                                        localStorage.setItem('currentPage', currentPage.toString())
+                                    }}>
+                                        Ground Track
+                                    </StyledButton2>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            }
 
-           </BackgroundDiv>
-                
+            
+            </BackgroundDiv>
+            </CenterDiv>
             </>
         );
     }
-  }
+}
