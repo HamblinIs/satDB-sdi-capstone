@@ -59,11 +59,6 @@ const StyledButton = styled.button`
 `
 
 
-        setData(addData)
-      })
-      .catch(error => console.error('Error:', error));
-  };
-
 //   function parseTLEData(rawData) {
 //     // Split the raw data into lines
 //     const lines = rawData.split('\n');
@@ -112,9 +107,6 @@ const StyledButton = styled.button`
 //   }, [])
 
 
-  const nextPage = () => {
-    setCurrentPage(prevPage => prevPage + 1);
-  };
 
 const StyledButton2 = styled.button`
 
@@ -197,13 +189,18 @@ const StyledButton2 = styled.button`
     if (pagedData.length > 0) {
         return (
             <>
+                 <CenterDiv>
                 <BackgroundDiv>
-                <CenterDiv>
+
 
                     <h1>100 Brightest Satellites from Celestrak</h1>
                     <p>{`${currentPage} / ${totalPages}`}</p>
-                    <StyledButton onClick={prevPage} disabled={currentPage === 1}>Prev</StyledButton>
-                    <StyledButton onClick={nextPage} disabled={currentPage === totalPages}>Next</StyledButton>
+                    <CenterDiv>
+                    <ButtonsDiv>
+                        <StyledButton onClick={prevPage} disabled={currentPage === 1}>Prev</StyledButton>
+                        <StyledButton onClick={nextPage} disabled={currentPage === totalPages}>Next</StyledButton>
+                    </ButtonsDiv>
+                    </CenterDiv>
 
                     {
                         <table>
@@ -236,14 +233,10 @@ const StyledButton2 = styled.button`
                         </table>
                     }
 
-            <ButtonsDiv>
-            <StyledButton onClick={prevPage} disabled={currentPage === 1}>Previous Page</StyledButton>
-            <StyledButton onClick={nextPage}>Next Page</StyledButton>
-            </ButtonsDiv>
-            </CenterDiv>
-
            </BackgroundDiv>
-                
+           </CenterDiv>
+
+
             </>
         );
     }

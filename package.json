@@ -13,6 +13,10 @@
     "react-select-event": "^5.5.1",
     "recharts": "^2.12.6",
     "styled-components": "^6.1.8",
+    "three": "^0.164.1",
     "util": "^0.12.5"
+  },
+  "devDependencies": {
+    "vite": "^5.2.10"
   }
 }
