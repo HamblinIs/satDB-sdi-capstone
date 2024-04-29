@@ -20,7 +20,7 @@ export const UserContext = createContext();
 const BackgroundDiv = styled.div`
   background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
   width: 100%;
-  height: 1000px;
+  height: 100%;
   `
   const BackgroundDiv2 = styled.div`
   background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');

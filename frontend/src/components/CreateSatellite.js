@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import FilesListViewer from './FilesListViewer';
 
 export default function CreateSatellite() {
   const [satellite, setSatellite] = useState({
@@ -10,14 +11,10 @@ export default function CreateSatellite() {
     orbitalRegime: '',
     // details: '',
     created_by: [{id: 1, name:''}],
-    model_file: '', // todo: need to have an input for model files and simulation files
-    simulation_file: '',
+    cad_model_files: [], // todo: need to have an input for model files and simulation files
+    images: [],
   });
-  const [modelFile, setModelFile] = useState([]);
-  const [cadModelFile, setCadModelFile] = useState([]);
-  const [addCadModelFile, setAddCadModelFile] = useState(false);
-  const [addImageFile, setAddImageFile] = useState(false);
-  const [images, setImages] = useState([]);
+  
   const navigate = useNavigate();
 
 
@@ -46,8 +43,8 @@ export default function CreateSatellite() {
           orbit: satellite.orbitalRegime,
           owner: satellite.owner,
           tail_number: satellite.tailNumber,
-          cad_model_files: cadModelFile,
-          images: images
+          cad_model_files: satellite.cad_model_files,
+          images: satellite.images
         })
       })
       .then(async (res) => {
@@ -97,55 +94,19 @@ export default function CreateSatellite() {
           </select>
         </label>
         <br/>
-        <label>Model File:
-          <ul>
-            {modelFile.map((file, index) => (
-              <li key={index}>{file.file_path_name}</li>
-            ))}
-          </ul>
-          {addCadModelFile ? (
-            <>
-              <input
-                type="text"
-                name="model_file"
-                id="model_file"
-                />
-              <button  onClick = {() => addFileToState('model_file', setModelFile)}>Save</button>
-            </>
-          ): (
-            <>
-              <label>No File Chosen</label>
-              <br/>
-              <button type="button" onClick={() => setAddCadModelFile(!addCadModelFile)}>ADD A FILE</button>
-            </>
-          ) }
+        <br />
+
+        <label>CAD Models:
+          <FilesListViewer state={satellite} setState={setSatellite} fileType="cad_model_files" isEditing={true} />
         </label>
-        <br/>
-        <br/>
-        <br/>
-        <label>Image File:
-          <ul>
-            {images.map((file, index) => (
-              <li key={index}>{file.file_path_name}</li>
-            ))}
-          </ul>
-          {addImageFile ? (
-            <>
-              <input
-                type="text"
-                name="image_file"
-                id="image_file"
-                />
-              <button  onClick = {() => addFileToState('image_file', setImages)}>Save</button>
-            </>
-          ): (
-            <>
-              <label>No File Chosen</label>
-              <br/>
-              <button type="button" onClick={() => setAddImageFile(!addImageFile)}>ADD A FILE</button>
-            </>
-          ) }
+
+        <br />
+
+        <label>Image Files:
+          <FilesListViewer state={satellite} setState={setSatellite} fileType="images" isEditing={true} />
         </label>
+
+        <br />
         <br/>
         <button onClick = {() => handleSubmit()}>Submit</button>
       </>
