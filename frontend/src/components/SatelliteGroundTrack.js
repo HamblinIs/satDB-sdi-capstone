@@ -193,23 +193,34 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
 
 
     const handlePeriodMultipler = (e) => {
+        // e.preventDefault();
         setPeriodMultiplier(e.target.value);
     }
 
-    const handleCustomTLE = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
+        setTLEData(customTLE);
+        
+        
+    }
 
-        const input = e.target.value;
-        const lines = input.split('\n');
+    let customTLE = {
+        satelliteName: "",
+        line1: "",
+        line2: ""
+    }
+
+
+    const handleCustomTLE = (e) => {
+        const lines = e.target.value.split('\n');
         const line1 = lines[0]?.trim();
         const line2 = lines[1]?.trim();
 
-        setTLEData({
+        customTLE = {
             satelliteName: "Custom TLE",
             line1: line1,
             line2: line2
-        });
-        
+        }
     }
 
     const [showAlternatives, toggleShowAlternatives] = useState(false);
@@ -219,16 +230,22 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
             <StyledButton onClick={() => navigate('/Satellites')}>Back to Celestrak Data</StyledButton>
             <StyledButton onClick={toggleMapType}>Toggle Map View</StyledButton>
 
-            <label> Propagate 
-                <input type="number" value={periodMultiplier} onChange={handlePeriodMultipler} min={0} max={10}/>
+            <br/>
+
+            <label style={{color: 'white'}}> Propagate 
+                <input type="number" value={periodMultiplier} onChange={handlePeriodMultipler} min={1} max={20}/>
                 orbital periods
             </label>
 
-            <button onClick={() => toggleShowAlternatives(!showAlternatives)}>Show alternatives</button>
+            <br/>
 
-            <form onSubmit={handleCustomTLE}>
+            <button onClick={() => toggleShowAlternatives(!showAlternatives)}>{showAlternatives? `Hide alternatives` : `Show alternatives`}</button>
+
+            <br/>
+
+            <form onSubmit={handleSubmit}>
                 <label>TLE:
-                    <textarea value={customTLE} />
+                    <textarea defaultValue={`${TLEData.line1}\n${TLEData.line2}`} style={{height: '32px', width: '600px'}} onChange={handleCustomTLE} readOnly={false} />
                 </label>
                 <button type="submit">Submit</button>
             </form>
@@ -265,13 +282,13 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
                     <Marker key="satellite_position" position={[latitudes[0], longitudes[0]]} icon={satelliteIcon}>
                         <Popup>
                             <h4>Current Location</h4>
-                            Latitude, Longitude: <br/>
-                            ({latitudes[0]}, {longitudes[0]}) <br/>
-                            Altitude: {parseFloat(altitudes[0].toFixed(4))} km <br/>
+                            Latitude: {latitudes[0]} °N <br/>
+                            Longitude: {longitudes[0]} °E <br/>
+                            Altitude: {altitudes[0]} km <br/>
                             Mountain Time: {times[0]} <br/>
                             Azimuth: {parseFloat(calculateAzimuth([starfire[0], starfire[1]], [latitudes[0], longitudes[0]]).toFixed(4))} deg from North <br/>
                             Elevation: {parseFloat(calculateElevationAngle(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toFixed(4))} deg from horizontal <br/>
-                            Distance: {parseFloat(calculateTotalDistance(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toFixed(4))} km
+                            Distance: {parseFloat(calculateTotalDistance(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toFixed(0))} km
                         </Popup>
                     </Marker>
 
@@ -279,28 +296,28 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
                     <Marker position={myClosestPoint.closestPoint}>
                         <Popup>
                             <h4>Closest Future Location</h4>
-                            Latitude, Longitude: <br/>
-                            ({myClosestPoint.closestPoint[0]}, {myClosestPoint.closestPoint[1]}) <br/>
-                            Altitude: {parseFloat(myClosestPoint.closestPoint[2].toFixed(4))} km <br/>
+                            Latitude: {myClosestPoint.closestPoint[0]} °N <br/>
+                            Longitude: {myClosestPoint.closestPoint[1]} °E <br/>
+                            Altitude: {myClosestPoint.closestPoint[2]} km <br/>
                             Mountain Time: {times[myClosestPoint.index]} <br/>
                             Azimuth: {parseFloat(calculateAzimuth([starfire[0], starfire[1]], [myClosestPoint.closestPoint[0], myClosestPoint.closestPoint[1]]).toFixed(4))} deg from North <br/>
                             Elevation: {parseFloat(calculateElevationAngle(starfire, myClosestPoint.closestPoint).toFixed(4))} deg from horizontal <br/>
-                            Distance: {parseFloat(calculateTotalDistance(starfire, myClosestPoint.closestPoint).toFixed(4))} km
+                            Distance: {parseFloat(calculateTotalDistance(starfire, myClosestPoint.closestPoint).toFixed(0))} km
                         </Popup>
                     </Marker>
 
                     {showAlternatives &&
-                    (alternativesIndecies.map((i, map_index) => (
+                    (myClosestPoint.alternativesIndices.map((i, map_index) => (
                         <Marker key={map_index} position={[latitudes[i], longitudes[i]]} >
                             <Popup>
-                                <h4>Alternative Location {map_index}/10</h4>
-                                Latitude, Longitude: <br/>
-                                ({latitudes[i]}, {longitudes[i]}) <br/>
-                                Altitude: {parseFloat(altitudes[i].toFixed(4))} km <br/>
+                                <h4>Alternative Location {map_index+1}/10</h4>
+                                Latitude: {latitudes[i]} °N <br/>
+                                Longitude: {longitudes[i]} °E <br/>
+                                Altitude: {altitudes[i]} km <br/>
                                 Mountain Time: {times[i]} <br/>
                                 Azimuth: {parseFloat(calculateAzimuth([starfire[0], starfire[1]], [latitudes[i], longitudes[i]]).toFixed(4))} deg from North <br/>
                                 Elevation: {parseFloat(calculateElevationAngle(starfire, [latitudes[i], longitudes[i], altitudes[i]]).toFixed(4))} deg from horizontal <br/>
-                                Distance: {parseFloat(calculateTotalDistance(starfire, [latitudes[i], longitudes[i], altitudes[i]]).toFixed(4))} km
+                                Distance: {parseFloat(calculateTotalDistance(starfire, [latitudes[i], longitudes[i], altitudes[i]]).toFixed(0))} km
                             </Popup>
                         </Marker>)
                         ))}
