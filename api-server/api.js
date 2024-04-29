@@ -91,7 +91,7 @@ api.patch('/satellites/:id', async (req, res) => {
         let image_ids_added = await knex("image").insert(images.map(image => ({"file_path_name":image.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
         await knex("image_to_satellite").insert(image_ids_added.map(image => ({"image_id": image.id, "satellite_id": id})));
     }
-    
+
     let cad_model_ids_to_delete = await knex.raw(`select distinct cad_model_to_satellite.cad_model_id FROM cad_model_to_satellite, cad_model WHERE cad_model_to_satellite.satellite_id = ${id};`);
     let cad_model_id_array = cad_model_ids_to_delete["rows"].map(cad_model => cad_model.cad_model_id);
     await knex("cad_model_to_satellite").where({satellite_id: id}).del()
@@ -100,7 +100,7 @@ api.patch('/satellites/:id', async (req, res) => {
         let cad_model_ids_added = await knex("cad_model").insert(cad_models.map(cad_model => ({file_path_name: cad_model.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
         await knex("cad_model_to_satellite").insert(cad_model_ids_added.map(cad_model => ({cad_model_id: cad_model.id, satellite_id: id})));
     }
-    
+
     await knex("satellite_to_assessment").where({satellite_id: id}).del();
     await knex("satellite_to_assessment").insert(assessments.map(assessment => ({satellite_id: id, assessment_id: assessment.id})));
 
@@ -135,7 +135,7 @@ api.patch('/assessments/:id', async (req, res) => {
         let image_ids_added = await knex("image").insert(images.map(image => ({"file_path_name":image.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
         await knex("image_to_assessment").insert(image_ids_added.map(image => ({"image_id": image.id, "assessment_id": id})));
     }
-    
+
     let data_file_ids_to_delete = await knex.raw(`select distinct data_file_to_assessment.data_file_id FROM data_file_to_assessment, data_file WHERE data_file_to_assessment.assessment_id = ${id};`);
     let data_file_id_array = data_file_ids_to_delete["rows"].map(data_file => data_file.data_file_id);
     await knex("data_file_to_assessment").where({assessment_id: id}).del()
@@ -162,7 +162,7 @@ api.patch('/assessments/:id', async (req, res) => {
         let misc_file_ids_added = await knex("misc_file").insert(misc_files.map(misc_file => ({file_path_name: misc_file.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
         await knex("misc_file_to_assessment").insert(misc_file_ids_added.map(misc_file => ({misc_file_id: misc_file.id, assessment_id: id})));
     }
-    
+
     await knex("satellite_to_assessment").where({assessment_id: id}).del();
     await knex("satellite_to_assessment").insert(satellites.map(satellite => ({satellite_id: satellite.id, assessment_id: id})));
 
@@ -309,115 +309,57 @@ api.post("/auth/register", (req, res) => {
 */
 api.post('/satellite/new', async (req, res) => {
     // const {name, orbit, owner, tailNumber} = req.body;
-    try{
-    await knex('satellite')
-        .insert({
-            // name, orbit, owner, tailNumber
-            name: req.body.name,
-            orbit: req.body.orbit,
-            owner: req.body.owner,
-            tail_num: parseInt(req.body.tailNumber)
-        });
-        res.status(201).send(`Satellite ${req.body.name} has been created.`)
-    } catch(error) {
-        res.status(500).send(`Failed to add ${req.body.name} satellite.`)
-    }
-})
-
-api.post('/assessment/new', (req, res) => {
     try {
-      knex('assessment')
-        .insert({
-          name: req.body.name,
-          creation_date: req.body.creation_date,
-          description: req.body.description,
-        })
-        .returning(['id'])
-        .then(assessment => {
-            const assessmentId = assessment[0].id;
-            // Insert into satellite_to_assessment table using the returned id
-            return knex('satellite_to_assessment')
-                .insert({
-                satellite_id: req.body.associatedSat,
-                assessment_id: assessmentId
-                })
-            .then(() => {
-              res.status(201).json({ id: assessmentId });
-            });
-        })
-        //ALL MODEL SHIT NEEDS MMOVED TO THE SAT SECTION INSTEAD OF THE ASS SECTION
-        // .then(assessment => {
-        //     const assessmentId = assessment[0].id;
-        //     return knex('cad_model')
-        //     .insert({
-        //       model_file: req.body.model_file,
-        //     })
-        //     .then(() => {
-        //       res.status(201).json({ id: assessmentId });
-        //     });
-        // })
-        .then(assessment => {
-            const assessmentId = assessment[0].id;
-            return knex('sim_file_to_assessment')
-            .insert({
-              simulation_file: req.body.simulation_file,
-            })
-            .then(() => {
-              res.status(201).json({ id: assessmentId });
-            });
-        })
-        .then(assessment => {
-            const assessmentId = assessment[0].id;
-            return knex('misc_file_to_assessment')
-            .insert({
-              misc_files: req.body.misc_files
-            })
-            .then(() => {
-              res.status(201).json({ id: assessmentId });
-            });
-        })
-        .catch(error => {
-          console.error('Error inserting assessment:', error);
-          res.status(500).send(`Unable to add assessment ${req.body.name}.`);
-        });
+        const { name, tail_number, owner, orbit, images, cad_model_files } = req.body;
+
+      const satelliteId = await knex('satellite').insert({name: name, tail_num: tail_number, owner: owner, orbit: orbit}).returning('id');
+
+        if (cad_model_files && cad_model_files.length > 0) {
+            const cad_model_file_ids = await knex('cad_model').insert(cad_model_files).returning('id');
+            await knex('cad_model_to_satellite').insert(cad_model_file_ids.map(cad_model_file_id => ({cad_model_file_id: cad_model_file_id.id, satellite_id: satelliteId[0].id})))
+        }
+
+        if (images && images.length > 0) {
+            const image_ids = await knex('image').insert(images).returning('id');
+            await knex('image_to_satellite').insert(image_ids.map(image_id => ({image_id: image_id.id, satellite_id: satelliteId[0].id})))
+        }
+
+        res.status(201).send({ message: `Satellite Successfuly Created`, id: satelliteId[0].id});
+
     } catch (error) {
-      res.status(500).send(`Unable to add assessment ${req.body.name}.`);
+      res.status(500).send(`Unable to add satellite ${error}.`);
     }
 });
 
+api.post('/assessment/new', async (req, res) => {
+    try {
+        const { name, creation_date, description, sim_files, misc_files, images, data_files } = req.body;
 
+      const assessmentId = await knex('assessment').insert({name: name, creation_date: creation_date, description: description}).returning('id');
 
+        if (sim_files && sim_files.length > 0) {
+            const sim_file_ids = await knex('sim_file').insert(sim_files).returning('id');
+            await knex('sim_file_to_assessment').insert(sim_file_ids.map(sim_file_id => ({sim_file_id: sim_file_id.id, assessment_id: assessmentId[0].id})))
+        }
 
-// return knex('cad_model')
-//             .insert({
-//               model_file: req.body.model_file,
-//             })
-//             knex('sim_file')
-//             .insert({
-//               simulation_file: req.body.simulation_file,
-//             })
-//             knex('misc_file')
-//             .insert({
-//               misc_files: req.body.misc_files
-//             })
+        if (misc_files && misc_files.length > 0) {
+            const misc_file_ids = await knex('misc_file').insert(misc_files).returning('id');
+            await knex('misc_file_to_assessment').insert(misc_file_ids.map(misc_file_id => ({misc_file_id: misc_file_id.id, assessment_id: assessmentId[0].id})))
+        }
 
+        if (data_files && data_files.length > 0) {
+            const data_file_ids = await knex('data_file').insert(data_files).returning('id');
+            await knex('data_file_to_assessment').insert(data_file_ids.map(data_file_id => ({data_file_id: data_file_id.id, assessment_id: assessmentId[0].id})))
+        }
 
+        if (images && images.length > 0) {
+            const image_ids = await knex('image').insert(images).returning('id');
+            await knex('image_to_assessment').insert(image_ids.map(image_id => ({image_id: image_id.id, assessment_id: assessmentId[0].id})))
+        }
 
+        res.status(201).send({message: `Assessment Successfuly Created`, id: assessmentId[0].id});
 
-
-
-
-//POST New Assessment
-/*
-{
-    name: "",
-    description: "",
-    creation_date: "",
-    images: [],
-    sim_file: [],
-    data_file: [],
-    misc_file: []
-}
-
-*/
-
+    } catch (error) {
+      res.status(500).send(`Unable to add assessment ${error}.`);
+    }
+});

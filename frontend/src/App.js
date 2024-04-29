@@ -34,6 +34,8 @@ function App() {
 
   const [ activeUser, setActiveUser ] = useState({});
 
+  const [ TLEData, setTLEData] = useState({});
+
   return (
     <>
       <BackgroundDiv className="App">
@@ -51,8 +53,8 @@ function App() {
         <Route path="/AccountRequestViewer" element={<AccountRequestViewer />} />
         <Route path="/AssessmentDetails/:id" element={<AssessmentDetails />} />
         <Route path="/SatelliteDetails/:id" element={<SatelliteDetails />} />
-        <Route path="/Satellites" element={<Satellites />} />
-        <Route path="/SatelliteGroundTrack" element={<SatelliteGroundTrack/>} />
+        <Route path="/Satellites" element={<Satellites setTLEData={setTLEData} />} />
+        <Route path="/SatelliteGroundTrack" element={<SatelliteGroundTrack TLEData={TLEData} />} />
       </Routes>
 
       </UserContext.Provider>

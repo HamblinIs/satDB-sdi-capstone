@@ -231,7 +231,7 @@ export default function Navbar() {
 
       <CustomLink to='/SatelliteModelOrbit'>Satellite Model Orbit</CustomLink>
       <CustomLink to='/Satellites'>Celestrak Data</CustomLink>
-      <CustomLink to='/SatelliteGroundTrack'>Satellite Ground Track</CustomLink>
+      
     </NavUL>
     </>
   )

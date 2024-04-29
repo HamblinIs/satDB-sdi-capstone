@@ -1,20 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-
-const BackgroundDiv = styled.div`
-display: flex;
-flex-flow: column;
-justify-content: center;
-justify-items: center;
-align-items: center;
-align-content: center;
-background-color: #c4cfff;
-width: 500px;
-margin-left: 35%;
-border: 4px solid #4a478a;
-margin-top: 20px;
-padding: 20px;
-`
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateSatellite() {
   const [satellite, setSatellite] = useState({
@@ -28,6 +13,13 @@ export default function CreateSatellite() {
     model_file: '', // todo: need to have an input for model files and simulation files
     simulation_file: '',
   });
+  const [modelFile, setModelFile] = useState([]);
+  const [cadModelFile, setCadModelFile] = useState([]);
+  const [addCadModelFile, setAddCadModelFile] = useState(false);
+  const [addImageFile, setAddImageFile] = useState(false);
+  const [images, setImages] = useState([]);
+  const navigate = useNavigate();
+
 
   const handleChange = (e) => {
     // name is the key name
@@ -41,7 +33,6 @@ export default function CreateSatellite() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
 
     try {
       fetch ('http://localhost:8080/satellite/new', {
@@ -54,7 +45,9 @@ export default function CreateSatellite() {
           name: satellite.name,
           orbit: satellite.orbitalRegime,
           owner: satellite.owner,
-          tailNumber: satellite.tailNumber
+          tail_number: satellite.tailNumber,
+          cad_model_files: cadModelFile,
+          images: images
         })
       })
       .then(async (res) => {
@@ -62,52 +55,37 @@ export default function CreateSatellite() {
           alert("There was an error creating the item");
         } else {
           window.confirm("Item has been created!");
+          return res.json()
         }
       })
+      .then(res => navigate(`/SatelliteDetails/${res.id}`));
     } catch(error) {
       console.error('Failed to add satellite:', error);
     }
   }
 
-
-
-  // const handleDeleteButtonClick = () => {
-  //   console.log(selectedItemID);
-  //   fetch("http://localhost:8080/delete-item", {
-  //     method: "DELETE",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(delete_data)
-  //   })
-  //   .then((res) => {
-  //     if (res.status === 409) {
-  //       alert("There was an error deleting the item");
-  //     } else {
-  //       window.confirm("Item has been deleted!");
-  //       setRefreshToggle(!refreshToggle);
-  //       setItemSelected(false);
-  //     }
-  //   });
-  // };
-
-
-
-
-
-
+  const addFileToState = (file_type, setState) => {
+    const fileInput = document.getElementById(file_type);
+    const file = fileInput.value;
+    if (file){
+      setState(prevState => ([ ...prevState, {file_path_name: file} ]))
+    }
+  }
 
   return (
-    <BackgroundDiv>
+    <div>
       <h1>Create Satellite</h1>
-      <form onSubmit={handleSubmit}>
-
+      <>
         <label>Name:
           <input type="text" name="name" value={satellite.name} onChange={handleChange} />
         </label>
         <br/>
         <label>Tail Number:
           <input type="text" name="tailNumber" value={satellite.tailNumber} onChange={handleChange} />
+        </label>
+        <br/>
+        <label>Satellite Owner:
+          <input type="text" name="owner" value={satellite.owner} onChange={handleChange} />
         </label>
         <br/>
         <label>Orbital Regime:
@@ -119,25 +97,58 @@ export default function CreateSatellite() {
           </select>
         </label>
         <br/>
-        {/* <label>Details:
-          <textarea name="details" value={satellite.details} onChange={handleChange} />
-        </label>
-        <br/> */}
-        <label>Owner:
-          <input type="text" name="owner" value={satellite.owner} onChange={handleChange} />
-        </label>
-        <br/>
         <label>Model File:
-          <input type="file" name="model_file" onChange={handleFileChange} />
+          <ul>
+            {modelFile.map((file, index) => (
+              <li key={index}>{file.file_path_name}</li>
+            ))}
+          </ul>
+          {addCadModelFile ? (
+            <>
+              <input
+                type="text"
+                name="model_file"
+                id="model_file"
+                />
+              <button  onClick = {() => addFileToState('model_file', setModelFile)}>Save</button>
+            </>
+          ): (
+            <>
+              <label>No File Chosen</label>
+              <br/>
+              <button type="button" onClick={() => setAddCadModelFile(!addCadModelFile)}>ADD A FILE</button>
+            </>
+          ) }
         </label>
         <br/>
-        <label>Simulation File:
-          <input type="file" name="simulation_file" onChange={handleFileChange} />
+        <br/>
+        <br/>
+        <label>Image File:
+          <ul>
+            {images.map((file, index) => (
+              <li key={index}>{file.file_path_name}</li>
+            ))}
+          </ul>
+          {addImageFile ? (
+            <>
+              <input
+                type="text"
+                name="image_file"
+                id="image_file"
+                />
+              <button  onClick = {() => addFileToState('image_file', setImages)}>Save</button>
+            </>
+          ): (
+            <>
+              <label>No File Chosen</label>
+              <br/>
+              <button type="button" onClick={() => setAddImageFile(!addImageFile)}>ADD A FILE</button>
+            </>
+          ) }
         </label>
         <br/>
-        <input type="submit" value="Submit" />
-
-      </form>
-    </BackgroundDiv>
+        <button onClick = {() => handleSubmit()}>Submit</button>
+      </>
+    </div>
   );
 }

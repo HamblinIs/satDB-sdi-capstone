@@ -27,10 +27,16 @@ export default function CreateAssessment() {
     associatedSat: 0,
     creation_date:'',
     description: '',
-    model_file: '',
-    simulation_file: '',
-    misc_files: ''
   });
+  const [modelFile, setModelFile] = useState([]);
+  const [simulationFile, setSimulationFile] = useState([]);
+  const [miscFile, setMiscFile] = useState([]);
+  const [addSimFile, setAddSimFile] = useState(false);
+  const [addMiscFile, setAddMiscFile] = useState(false);
+  const [addDataFile, setAddDataFile] = useState(false);
+  const [addImageFile, setAddImageFile] = useState(false);
+  const [images, setImages] = useState([]);
+  const [dataFile, setDataFile] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,9 +71,11 @@ export default function CreateAssessment() {
           associatedSat: assessment.associatedSat,
           creation_date: assessment.creation_date,
           description: assessment.description,
-          model_file: assessment.model_file,
-          simulation_file: assessment.simulation_file,
-          misc_files: assessment.misc_files
+          //model_file: modelFile,
+          sim_files: simulationFile,
+          misc_files: miscFile,
+          data_files: dataFile,
+          images: images
         })
       })
       .then(res => res.json())
@@ -77,6 +85,13 @@ export default function CreateAssessment() {
     }
   }
 
+  const addFileToState = (file_type, setState) => {
+    const fileInput = document.getElementById(file_type);
+    const file = fileInput.value;
+    if (file){
+      setState(prevState => ([ ...prevState, {file_path_name: file} ]))
+    }
+  }
 
   return (
     <BackgroundDiv>
@@ -108,21 +123,109 @@ export default function CreateAssessment() {
         </label>
         <br/>
 
-        <label>Model File:
-          <input type="text" name="model_file" value={assessment.model_file} onChange={handleChange} />
-        </label>
-        <br/>
-
         <label>Simulation File:
-        <input type="text" name="simulation_file" value={assessment.simulation_file} onChange={handleChange} />
+          <ul>
+            {simulationFile.map((file, index) => (
+              <li key={index}>{file.file_path_name}</li>
+            ))}
+          </ul>
+          {addSimFile ? (
+            <>
+              <input
+                type="text"
+                name="sim_file"
+                id="sim_file"
+                />
+              <button  onClick = {() => addFileToState('sim_file', setSimulationFile)}>Save</button>
+            </>
+          ): (
+            <>
+              <label>No File Chosen</label>
+              <br/>
+              <button type="button" onClick={() => setAddSimFile(!addSimFile)}>ADD A FILE</button>
+            </>
+          ) }
         </label>
         <br/>
-
+        <br/>
+        <br/>
         <label>Misc File:
-        <input type="text" name="misc_files" value={assessment.misc_files} onChange={handleChange} />
+          <ul>
+            {miscFile.map((file, index) => (
+              <li key={index}>{file.file_path_name}</li>
+            ))}
+          </ul>
+          {addMiscFile ? (
+            <>
+              <input
+                type="text"
+                name="misc_file"
+                id="misc_file"
+                />
+              <button  onClick = {() => addFileToState('misc_file', setMiscFile)}>Save</button>
+            </>
+          ): (
+            <>
+              <label>No File Chosen</label>
+              <br/>
+              <button type="button" onClick={() => setAddMiscFile(!addMiscFile)}>ADD A FILE</button>
+            </>
+          ) }
         </label>
         <br/>
-
+        <br/>
+        <br/>
+        <label>Data File:
+          <ul>
+            {dataFile.map((file, index) => (
+              <li key={index}>{file.file_path_name}</li>
+            ))}
+          </ul>
+          {addDataFile ? (
+            <>
+              <input
+                type="text"
+                name="data_file"
+                id="data_file"
+                />
+              <button  onClick = {() => addFileToState('data_file', setDataFile)}>Save</button>
+            </>
+          ): (
+            <>
+              <label>No File Chosen</label>
+              <br/>
+              <button type="button" onClick={() => setAddDataFile(!addDataFile)}>ADD A FILE</button>
+            </>
+          ) }
+        </label>
+        <br/>
+        <br/>
+        <br/>
+        <label>Image File:
+          <ul>
+            {images.map((file, index) => (
+              <li key={index}>{file.file_path_name}</li>
+            ))}
+          </ul>
+          {addImageFile ? (
+            <>
+              <input
+                type="text"
+                name="image_file"
+                id="image_file"
+                />
+              <button  onClick = {() => addFileToState('image_file', setImages)}>Save</button>
+            </>
+          ): (
+            <>
+              <label>No File Chosen</label>
+              <br/>
+              <button type="button" onClick={() => setAddImageFile(!addImageFile)}>ADD A FILE</button>
+            </>
+          ) }
+        </label>
+        <br/>
+        <br/>
         <button onClick = {() => handleSubmit()}>Submit</button>
       </>
     </BackgroundDiv>
