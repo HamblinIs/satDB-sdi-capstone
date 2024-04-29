@@ -59,7 +59,6 @@ const StyledButton = styled.button`
 `
 
 
-
 const StyledButton2 = styled.button`
     color: black;
     border-radius: 3px;
@@ -139,6 +138,46 @@ const StyledButton2 = styled.button`
     if (pagedData.length > 0) {
         return (
             <>
+             <CenterDiv>
+                <BackgroundDiv>
+
+
+                    <h1>100 Brightest Satellites from Celestrak</h1>
+                    <p>{`${currentPage} / ${totalPages}`}</p>
+                    <ButtonsDiv>
+                    <StyledButton onClick={prevPage} disabled={currentPage === 1}>Prev</StyledButton>
+                    <StyledButton onClick={nextPage} disabled={currentPage === totalPages}>Next</StyledButton>
+                    </ButtonsDiv>
+                    {
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Satellite Name</th>
+                                    <th>Line 1</th>
+                                    <th>Line 2</th>
+                                    <th>Ground Track</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {pagedData.map((data, index) => (
+                                    <tr key={index}>
+                                        <td>{data.satelliteName}</td>
+                                        <td>{data.line1}</td>
+                                        <td>{data.line2}</td>
+                                        <td>
+                                            <StyledButton2 onClick={() => {
+                                                setTLEData(data); // sets one satellite's TLE for SatelliteGroundTrack to display
+                                                navigate('/SatelliteGroundTrack');
+                                                localStorage.setItem('currentPage', currentPage.toString())
+                                            }}>
+                                                Ground Track
+                                            </StyledButton2>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    }
             <CenterDiv>
             <BackgroundDiv>
             
@@ -150,40 +189,6 @@ const StyledButton2 = styled.button`
                 <StyledButton onClick={prevPage} disabled={currentPage === 1}>Prev</StyledButton>
                 <StyledButton onClick={nextPage} disabled={currentPage === totalPages}>Next</StyledButton>
             </ButtonsDiv>
-            </CenterDiv>
-            {
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Satellite Name</th>
-                            <th>Line 1</th>
-                            <th>Line 2</th>
-                            <th>Ground Track</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {pagedData.map((data, index) => (
-                            <tr key={index}>
-                                <td>{data.satelliteName}</td>
-                                <td>{data.line1}</td>
-                                <td>{data.line2}</td>
-                                <td>
-                                    <StyledButton2 onClick={() => {
-                                        setTLEData(data); // sets one satellite's TLE for SatelliteGroundTrack to display
-                                        navigate('/SatelliteGroundTrack');
-                                        localStorage.setItem('currentPage', currentPage.toString())
-                                    }}>
-                                        Ground Track
-                                    </StyledButton2>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            }
-
-            
-            </BackgroundDiv>
             </CenterDiv>
             </>
         );
