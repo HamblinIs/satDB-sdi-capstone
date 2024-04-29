@@ -27,7 +27,20 @@ border: 4px solid #4a478a;
 margin-top: 20px;
 padding: 20px;
 `
-
+const StyledButton = styled.button`
+    display: flex;
+    justify-content:center;
+    justify-items:center;
+    align-items:center;
+    align-content:center;
+    color: #081448;
+    border-radius: 3px;
+    border: 2px solid black;
+    background-color: #96a6ef;
+    width: 125px;
+    height: 35px;
+    font-weight: bold;
+`
 
 
 const imagesArr = ["https://cdn.defenseone.com/media/img/cd/2023/08/11/GettyImages_1407240226/open-graph.jpg", "https://spaceplace.nasa.gov/satellite/en/TEMPO.en.jpg", "https://media.istockphoto.com/id/1339097795/photo/satellite-orbiting-the-earth.jpg?s=612x612&w=0&k=20&c=FMG2NypIT0JuZVs26qSYOq2qTwsO89woydrwZimK21s="];
@@ -97,7 +110,7 @@ export default function SatelliteDetails() {
   return (
     <CenterDiv>
     <BackgroundDiv>
-      <button onClick={() => navigate("/search")}>Back to Search</button>
+      <StyledButton onClick={() => navigate("/search")}>Back to Search</StyledButton>
       <h1>Satellite Details</h1>
 
       <br />
@@ -153,10 +166,10 @@ export default function SatelliteDetails() {
         ) : (
           satellite.assessments.map((item, index) => {
             return (
-              <>
-                <p key={`p1${index}`}>name: <button onClick={() => navigate(`/AssessmentDetails/${item.id}`)}>{item.name}</button></p>
-                <p key={`p2${index}`}>creation date: {item.creation_date}</p>
-              </>)
+              <CenterDiv>
+                <p key={`p1${index}`}>Name: {item.name} | Creation Date: {item.creation_date.slice(0,10)} </p>
+                <StyledButton onClick={() => navigate(`/AssessmentDetails/${item.id}`)}>View Details</StyledButton>
+              </CenterDiv>)
           }
           ))}
       </label>
@@ -175,16 +188,13 @@ export default function SatelliteDetails() {
 
       <br />
 
-      {Object.keys(activeUser).length>0 && 
+      {Object.keys(activeUser).length>0 &&
       (isEditing ? (
         <button onClick={() => handleSave()}>Save</button>
       ) : (
         <button onClick={() => handleToggleEdit()}>Edit</button>
       ))
       }
-
-
-      <ImageViewer images={imagesArr} />
 
     </BackgroundDiv>
     </CenterDiv>

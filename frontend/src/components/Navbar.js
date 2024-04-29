@@ -34,13 +34,19 @@ const NavUL = styled.ul`
   margin-bottom: 10px;
 `
 
+const NavbarLink = styled.div`
+  color: white;
+  font-size: 15px; // Fixed font size
+`;
+
 const NavLink = styled(Link)`
-color: inherit;
-text-decoration: none;
-height: 100%;
-display: flex;
-align-items: center;
-padding: .25rem;
+  color: inherit;
+  text-decoration: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  font-size: 15px; // Fixed font size
 `;
 
 const ListItem = styled.li`
@@ -95,13 +101,11 @@ border: none;
 cursor: pointer;
 `;
 
-const NavbarLink = styled.div`
-color:white
-`
 
 const HeaderLinkContainer = styled.div`
 display: flex;
 justify-content: center;
+align-items: center;
 flex-grow: 1;
 `
 
@@ -109,34 +113,75 @@ const HeaderLink = styled(Link)`
 text-decoration: none;
 color: white;
 font-size: 50px;
-`
+display: flex;
+align-items: center;
+`;
+
 const LoginContainer = styled.div`
 text-decoration: none;
 color: white;
-font-size: 15px;
+font-size: 12px;
 background-color:black
 cursor:pointer;
 `
 
+const InitialsContainer = styled.div`
+  background-color: #fff;
+  color: purple;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  z-index: 1;
+`;
+
+const CircleContainer = styled.div`
+  position: relative;
+  width: 40px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const LoggedInContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const LogoutButton = styled.button`
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  margin-top: 4px;
+`;
+
 export default function Navbar() {
   const navigate = useNavigate();
 
-  const { activeUser, setActiveUser} = React.useContext(UserContext)
+  const { activeUser, setActiveUser } = React.useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
-  const[showLoginModel, setShowLoginModal] = useState(false);
+  const [showLoginModel, setShowLoginModal] = useState(false);
 
   const handleToggle = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   const handleLinkClick = () => {
-    setIsOpen(false)
-  }
+    setIsOpen(false);
+  };
 
   const toggleLoginModel = () => {
-    navigate('/login')
-    // setShowLoginModal(!showLoginModel)
-  }
+    navigate('/login');
+  };
 
   const handleSignOut = () => {
     setActiveUser({});
@@ -144,42 +189,50 @@ export default function Navbar() {
   };
 
   const handleMouseLeave = () => {
-    setIsOpen(false); // Close the menu when the mouse leaves
+    setIsOpen(false);
   };
 
   return (
     <>
-    <HeaderStyle>
-      <HeaderLinkContainer>
-        <HeaderLink to='/'>Satellite Assessment Database</HeaderLink>
-      </HeaderLinkContainer>
+      <HeaderStyle>
+        <HeaderLinkContainer>
+          <HeaderLink to="/">Satellite Assessment Database</HeaderLink>
+        </HeaderLinkContainer>
 
-    <LoginContainer>
-  {activeUser.email ? (
-    <NavbarLink onClick={handleSignOut}>Logout</NavbarLink>
-  ) : (
-    <NavLink to="/login">Login/Register</NavLink>
-  )}
-</LoginContainer>
-
-    </HeaderStyle>
+        <LoginContainer>
+          {activeUser.email ? (
+            <LoggedInContainer>
+              <CircleContainer>
+                <InitialsContainer>
+                  {`${activeUser.first_name.charAt(0)}${activeUser.last_name.charAt(0)}`}
+                </InitialsContainer>
+                <LogoutButton onClick={handleSignOut}>Logout</LogoutButton>
+              </CircleContainer>
+            </LoggedInContainer>
+          ) : (
+            <NavLink to="/login">Login/Register</NavLink>
+          )}
+        </LoginContainer>
+      </HeaderStyle>
 
     <NavUL>
-    <CustomLink to='/search'>Search</CustomLink>
-      <DropdownMenu onMouseLeave={handleMouseLeave}>
-        <DropdownButton onMouseOver={handleToggle}>
-          Create {isOpen ? <IoIosArrowUp/> : <IoIosArrowDown/>}
-          </DropdownButton>
-          <DropdownContent isOpen={isOpen}>
-           <DropdownLink to="/CreateAssessment" onClick={handleLinkClick}>Create Assessment</DropdownLink>
-            <DropdownLink to="/CreateSatellite" onClick={handleLinkClick}>Create Satellite</DropdownLink>
-          </DropdownContent>
-      </DropdownMenu>
+      <CustomLink to='/search'>Search</CustomLink>
+        {activeUser.email && (
+          <DropdownMenu onMouseLeave={handleMouseLeave}>
+            <DropdownButton onMouseOver={handleToggle}>
+              Create {isOpen ? <IoIosArrowUp/> : <IoIosArrowDown/>}
+            </DropdownButton>
+            <DropdownContent isOpen={isOpen}>
+              <DropdownLink to="/CreateAssessment" onClick={handleLinkClick}>Create Assessment</DropdownLink>
+              <DropdownLink to="/CreateSatellite" onClick={handleLinkClick}>Create Satellite</DropdownLink>
+            </DropdownContent>
+          </DropdownMenu>
+        )}
+
       <CustomLink to='/SatelliteModelOrbit'>Satellite Model Orbit</CustomLink>
       <CustomLink to='/Satellites'>Celestrak Data</CustomLink>
       
     </NavUL>
-
     </>
   )
 }
