@@ -7,8 +7,6 @@ import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
 const satellite = require('satellite.js');
 
-// import countriesData from './geojson/countries'; 
-// import statesData from './geojson/states_provinces';
 
 const StyleBox = styled.div`
 margin-top: 130px
@@ -38,11 +36,11 @@ export default function SatelliteGroundTrack( { TLEData, setTLEData } ) {
     const { satelliteName, line1, line2 } = TLEData;
 
     const [periodMultiplier, setPeriodMultiplier] = useState(1);
-    
+
     const tle = `${line1}\n${line2}`;
 
-    const [mapType, setMapType] = useState('normal'); 
-    const [countryData, setCountryData] = useState('');
+    const [mapType, setMapType] = useState('normal');
+    const [countryData, setCountryData] = useState(null);
 
     const toggleMapType = () => {
         setMapType(mapType === 'normal' ? 'satellite' : 'normal');
@@ -69,25 +67,25 @@ export default function SatelliteGroundTrack( { TLEData, setTLEData } ) {
 
 
 
-    useEffect(() => {
-        fetchCountryData();
-    }, []);
+        useEffect(() => {
+            fetchCountryData();
+        }, []);
 
-    const fetchCountryData = async () => {
-        try {
-            const response = await fetch('http://geojson.io/#data=data:application/json,%7B%22type%22%3A%22LineString%22%2C%22coordinates%22%3A%5B%5B0%2C0%5D%2C%5B10%2C10%5D%5D%7D');
-            const data = await response.json();
-            setCountryData(data);
-        } catch (error) {
-            console.error('Error fetching country data:', error);
-        }
-    };
+        const fetchCountryData = async () => {
+            try {
+                const response = await fetch('https://nominatim.openstreetmap.org/search?q=country&format=geojson');
+                const data = await response.json();
+                setCountryData(data);
+            } catch (error) {
+                console.error('Error fetching country data:', error);
+            }
+        };
 
     // example TLE
     // const tle = `1 55268U 23009A   24111.21074744  .00000021  00000+0  00000+0 0  9999
     // 2 55268  55.0835 179.4402 0002049 110.4542 258.9080  2.00568186  9448`;
 
-    
+
     const currentTime = (new Date()).getTime();
 
     const calculateGroundTrack = (tle) => {
@@ -174,22 +172,18 @@ export default function SatelliteGroundTrack( { TLEData, setTLEData } ) {
 
     const satelliteIcon = L.icon({
         iconUrl: 'satellite_icon.png',
-        iconSize: [25, 25], 
+        iconSize: [25, 25],
     });
 
 
 
 
-    
+
 
 
 
 const starfire = [34.96420802612262, -106.46368895542169, 1.84589928]; // [lat, lon, alt] in [deg N, deg E, km]
 const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitudes);
-// const closestTime = new Date(currentTime + times[myClosestPoint.index] * 60000);
-// const mountainTime = closestTime.toLocaleString("en-US", {timeZone: "America/Denver"});
-// console.log(`Mountain Time: ${mountainTime}`);
-// console.log(`The closest point to ${starfire} is ${myClosestPoint}`);
 
 
     const handlePeriodMultipler = (e) => {
@@ -200,8 +194,8 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
     const handleSubmit = (e) => {
         e.preventDefault();
         setTLEData(customTLE);
-        
-        
+
+
     }
 
     let customTLE = {
@@ -209,7 +203,6 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
         line1: "",
         line2: ""
     }
-
 
     const handleCustomTLE = (e) => {
         const lines = e.target.value.split('\n');
@@ -232,7 +225,7 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
 
             <br/>
 
-            <label style={{color: 'white'}}> Propagate 
+            <label style={{color: 'white'}}> Propagate
                 <input type="number" value={periodMultiplier} onChange={handlePeriodMultipler} min={1} max={20}/>
                 orbital periods
             </label>
@@ -249,21 +242,38 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
                 </label>
                 <button type="submit">Submit</button>
             </form>
-            
+
         <StyleBox>
             <StyledH1>{satelliteName}</StyledH1>
 
             <MapContainer center={[0, 0]} zoom={2} style={{ height: "90vh", width: "90%", marginLeft: "5%", border: "solid black" }}>
+
+
             {mapType === 'normal' ? (
-                    <TileLayer
+                <>
+                    {/* <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    /> */}
+
+                    <TileLayer
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
+                    attribution='&copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
                     />
+                </>
                 ) : (
+
+                <>
                     <TileLayer
                         url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                         attribution='&copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
                     />
+                    <TileLayer
+                        url="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
+                        attribution='&copy; Esri &mdash; Source: Esri'
+                    />
+
+                </>
                 )}
 
                 {splitPositions.map((positions, index) => (
@@ -323,16 +333,6 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
                         ))}
 
 
-                    {/* {mapType === 'satellite' && (
-                    <>
-                        <GeoJSON data={countriesData} style={{ fillColor: 'transparent', color: '#3388ff', weight: 1 }} />
-                        <GeoJSON data={statesData} style={{ fillColor: 'transparent', color: '#ff8833', weight: 0.5 }} />
-                    </>
-                )} */}
-
-                {mapType === 'satellite' && countryData && (
-                    <GeoJSON data={countryData} style={{ fillColor: 'transparent', color: '#3388ff', weight: 1 }} />
-                )}
 
             </MapContainer>
         </StyleBox>
@@ -391,7 +391,7 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
 }
 
 
-// searches through the propagation arrays to find the target satellite closest to starfire 
+// searches through the propagation arrays to find the target satellite closest to starfire
 // in addition to keeping track of the shortestDistance and its corresponding index,
 // keep the next 10 closest points by storing its indecies in an array called alternativesIndecies
 // where the array is ordered from closest to furthest
@@ -415,7 +415,7 @@ function findClosestPoint(starfire, longitudes, latitudes, altitudes) {
     // Get the indices of the next 10 closest points
     let alternativesIndices = distances.slice(1, 11).map(d => d.index);
 
-    return { 
+    return {
         closestPoint: [latitudes[closestPointIndex], longitudes[closestPointIndex], altitudes[closestPointIndex]],
         index: closestPointIndex,
         shortestDistance: shortestDistance,
@@ -465,22 +465,24 @@ function calculateAzimuth([lat1, lon1], [lat2, lon2]) {
 
 
 function calculateElevationAngle([lat1, lon1, alt1], [lat2, lon2, alt2]) {
-    function toRadians(degrees) {return degrees * Math.PI / 180;}
+    // function toRadians(degrees) {return degrees * Math.PI / 180;}
 
-    // Radius of the Earth in kilometers
-    const R = 6371;
+    // // Radius of the Earth in kilometers
+    // const R = 6371;
 
-    // Convert latitudes and longitudes from degrees to radians
-    lat1 = toRadians(lat1);
-    lon1 = toRadians(lon1);
-    lat2 = toRadians(lat2);
-    lon2 = toRadians(lon2);
+    // // Convert latitudes and longitudes from degrees to radians
+    // lat1 = toRadians(lat1);
+    // lon1 = toRadians(lon1);
+    // lat2 = toRadians(lat2);
+    // lon2 = toRadians(lon2);
 
-    // Calculate the difference in longitudes
-    const dLon = lon2 - lon1;
+    // // Calculate the difference in longitudes
+    // const dLon = lon2 - lon1;
 
-    // Calculate the distance between the two points on the Earth's surface
-    const d = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(dLon)) * R;
+    // // Calculate the distance between the two points on the Earth's surface
+    // const d = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(dLon)) * R;
+
+    const d = haversineDistance(lat1, lon1, lat2, lon2)
 
     // Calculate the difference in altitudes
     const h = alt2 - alt1;

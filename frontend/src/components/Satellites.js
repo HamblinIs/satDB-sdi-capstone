@@ -59,58 +59,7 @@ const StyledButton = styled.button`
 `
 
 
-//   function parseTLEData(rawData) {
-//     // Split the raw data into lines
-//     const lines = rawData.split('\n');
-//     const satellites = [];
-
-//     // Extract relevant information
-//     for (let i = 0; i < lines.length; i += 3) {
-
-//       if (i + 2 < lines.length) {
-
-
-//       const satelliteName = lines[i].trim();
-//       const line1 = lines[i + 1].trim();
-//       const line2 = lines[i + 2].trim();
-
-//       const parsedData = {
-//         satelliteName: satelliteName,
-//         line1: line1,
-//         line2: line2
-//     };
-
-//     satellites.push(parsedData)
-//     } else {
-//       console.error('Incomplete satellite entry at index', i);
-//     }
-//   }
-
-//     // Construct an object to hold the parsed data
-
-
-//     return satellites;
-// }
-
-//   useEffect(() => {
-//     fetch('https://celestrak.org/NORAD/elements/gp.php?GROUP=visual&FORMAT=tle')
-//     .then(response => response.text())
-//     .then(data => {
-//       const parsedData = parseTLEData(data);
-
-//       console.log(parsedData)
-//     } )
-
-//     .catch(err => {
-//       console.error('Error fetching parsed data:', err)
-//     })
-//   }, [])
-
-
-
 const StyledButton2 = styled.button`
-
-
     color: black;
     border-radius: 3px;
     border: 1px solid black;
@@ -240,4 +189,4 @@ const StyledButton2 = styled.button`
             </>
         );
     }
-  }
+}
