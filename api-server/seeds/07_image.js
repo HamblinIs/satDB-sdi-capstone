@@ -6,9 +6,9 @@ exports.seed = async function(knex) {
   // Deletes ALL existing entries
   await knex('image').del()
   await knex('image').insert([
-    {file_path_name: 'S:assessments/COAST_Files/output.png'},
-    {file_path_name: 'S:example 2.png'},
-    {file_path_name: 'S:example 3.jpg'},
+    // {file_path_name: 'S:assessments/COAST_Files/output.png'},
+    // {file_path_name: 'S:example 2.png'},
+    // {file_path_name: 'S:example 3.jpg'},
     {file_path_name: 'https://media.defense.gov/2022/Oct/17/2003097438/500/500/0/220717-F-F3963-1058.JPG'},
     {file_path_name: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Rxte.jpg/300px-Rxte.jpg'},
     {file_path_name: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/HST-SM4.jpeg/300px-HST-SM4.jpeg'},
