@@ -44,23 +44,6 @@ function App() {
   return (
     <>
       {/* <BackgroundDiv className="App"> */}
-        <Router>
-          <UserContext.Provider value={{activeUser, setActiveUser}}>
-            {/* <Navbar /> */}
-            <Routes>
-              <Route exact path ="/" element={<WelcomePage />} />
-              <Route exact path="/search" element={<HomePage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/CreateAssessment" element={<CreateAssessment />} />
-              <Route path="/CreateSatellite" element={<CreateSatellite />} />
-              <Route path="/SatelliteModelOrbit" element={<SatelliteModelOrbit />} />
-              <Route path="/AccountRequestViewer" element={<AccountRequestViewer />} />
-              <Route path="/AssessmentDetails/:id" element={<AssessmentDetails />} />
-              <Route path="/SatelliteDetails/:id" element={<SatelliteDetails />} />
-              <Route path="/Satellites" element={<Satellites setTLEData={setTLEData} />} />
-              <Route path="/SatelliteGroundTrack" element={<SatelliteGroundTrack setTLEData={setTLEData} TLEData={TLEData} />} />
-              <Route exact path ="/MainPage" element={<MainPage />} />
-              <Route exact path ="/Background" element={<Background />} />
 
     <Router>
       <UserContext.Provider value={{activeUser, setActiveUser}}>
