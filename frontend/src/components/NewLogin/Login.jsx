@@ -145,24 +145,24 @@ export default function Login() {
             <br/>
             <h1 className='create-text-header'>Create New Account</h1>
             <br></br>
-            <label className='login-text'> First Name:
-              <input type="text" className='searchbar2' id="first" placeholder='Enter first name' onChange={(event) => handleChange(event, "first_name")} />
+            <label className='login-text'> First Name
+              <input type="text" className='searchbar' id="first" placeholder='Enter first name' onChange={(event) => handleChange(event, "first_name")} />
             </label>
             <br/>
-            <label className='login-text'> Last Name:
-              <input type="text" className='searchbar2' id="last" placeholder='Enter last name' onChange={(event) => handleChange(event, "last_name")} />
+            <label className='login-text'> Last Name
+              <input type="text" className='searchbar' id="last" placeholder='Enter last name' onChange={(event) => handleChange(event, "last_name")} />
             </label>
             <br/>
-            <label className='login-text'> Email:
-              <input type="text" className='searchbar2' id="email" placeholder='Enter email address' onChange={(event) => handleChange(event, "email")} />
+            <label className='login-text'> Email
+              <input type="text" className='searchbar' id="email" placeholder='Enter email address' onChange={(event) => handleChange(event, "email")} />
             </label>
             <br/>
-            <label className='login-text'> Password:
-              <input type="password" className='searchbar2' id="password" placeholder='Enter password' onChange={(event) => handleChange(event, "password")} />
+            <label className='login-text'> Password
+              <input type="password" className='searchbar' id="password" placeholder='Enter password' onChange={(event) => handleChange(event, "password")} />
             </label>
             <br/>
-            <label className='login-text'> Purpose for Account:
-              <textarea className ='searchbar2' id="purpose" onChange={(event) => handleChange(event, "purpose")} />
+            <label className='login-text'> Purpose for Account
+              <textarea className ='searchbar' id="purpose" onChange={(event) => handleChange(event, "purpose")} />
             </label>
             <div className='password-parameters'>
               <p className='password-param'>Password must:</p>

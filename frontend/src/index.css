@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Merriweather:wght@900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +7,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+    padding: 0;
+    height: 100%; /* Adjust based on content */
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 code {
@@ -16,3 +22,100 @@ code {
   text-decoration: none;
   list-style: none;
 }
+
+button {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  text-transform: uppercase;
+  border: none;
+  background-color: #4a478a;
+  color: white;
+  padding-inline: 40px;
+  padding-block: 10px;
+  border-radius: 10px;
+}
+
+.roboto-regular {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.roboto-bold {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.assessment-container {
+  align-self: center;
+  margin-top: 3%;
+  margin-inline: auto;
+  height: auto;
+  width: 50vw;
+  background: rgb(245, 246, 255);
+  border-radius: 34px;
+  box-shadow: inset 5px 5px 9px 0px #FFFFFF, 15px 15px 8px 0px rgba(0, 0, 0, 0.3);
+  /* overflow: hidden; */
+  display: flex;
+  align-items: start;
+  align-content: stretch;
+  justify-items: start;
+  justify-content: center;
+  padding: 75px 75px 75px 75px;
+  z-index: 0;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  text-align: center;
+  /* margin: auto; */
+}
+
+.create-satellite-text {
+  font-size: 40px;
+  color: black;
+  margin: auto;
+  padding-bottom:20px;
+}
+
+.searchbar3 {
+  padding-left:30px;
+  margin-left: 5px;
+  font-size: 20px;
+  color: black;
+  border-radius: 29px;
+  min-height: 25px;
+  max-height: 30px;
+  background-color: white;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  border-color: #4a478a;
+}
+
+label select {
+  padding-left: 10px;
+  font-size: 20px;
+  color: black;
+  outline-color: black;
+  border-radius: 29px;
+  min-height: 25px;
+  max-height: 30px;
+  background-color: white;
+  border-color: #4a478a;
+}
+
+label {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  text-align: left;
+  width: 100%;
+}
+

@@ -4,7 +4,7 @@ import HomePage from './components/HomePage';
 import AssessmentDetails from './components/AssessmentDetails';
 import SatelliteDetails from './components/SatelliteDetails';
 import CreateSatellite from './components/CreateSatellite';
-import CreateAssessment from './components/CreateAssessment';
+import CreateAssessment from './components/CreateAssessment/CreateAssessment'
 import CreateAccountLogin from './components/CreateAccountLogin';
 import SatelliteModelOrbit from './components/SatelliteModelOrbit';
 import AccountRequestViewer from './components/AccountRequestViewer';
@@ -17,7 +17,9 @@ import styled from 'styled-components';
 import MainPage from './routes/MainPage'
 import Login from './components/NewLogin/Login'
 import Background from './routes/Background'
-
+import CreateNewSatellite from './components/NewCreateSatellites/CreateNewSatellite'
+import Celestrak from './components/NewSatellites/Celestrak'
+// import SatelliteResults from './components/SatelliteResults/SatelliteResults'
 
 export const UserContext = createContext();
 
@@ -51,15 +53,16 @@ function App() {
               <Route exact path="/search" element={<HomePage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/CreateAssessment" element={<CreateAssessment />} />
-              <Route path="/CreateSatellite" element={<CreateSatellite />} />
+              <Route path="/CreateNewSatellite" element={<CreateNewSatellite />} />
               <Route path="/SatelliteModelOrbit" element={<SatelliteModelOrbit />} />
               <Route path="/AccountRequestViewer" element={<AccountRequestViewer />} />
               <Route path="/AssessmentDetails/:id" element={<AssessmentDetails />} />
               <Route path="/SatelliteDetails/:id" element={<SatelliteDetails />} />
-              <Route path="/Satellites" element={<Satellites setTLEData={setTLEData} />} />
+              <Route path="/Satellites" element={<Celestrak setTLEData={setTLEData} />} />
               <Route path="/SatelliteGroundTrack" element={<SatelliteGroundTrack setTLEData={setTLEData} TLEData={TLEData} />} />
               <Route exact path ="/MainPage" element={<MainPage />} />
               <Route exact path ="/Background" element={<Background />} />
+              {/* <Route exact path ="/SatelliteResults" element={<SatelliteResults />} /> */}
 
             </Routes>
           </UserContext.Provider>
