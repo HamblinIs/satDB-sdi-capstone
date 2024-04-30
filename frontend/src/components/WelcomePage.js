@@ -11,7 +11,7 @@ justify-items: center;
 align-items: center;
 align-content: center;
 background-color: #c4cfff;
-width: 500px;
+width: 75%;
 border: 4px solid #4a478a;
 margin-top: 20px;
 padding: 20px;
@@ -57,6 +57,7 @@ const ULDiv = styled.ul`
   align-items: left;
   align-content: left;
   list-style: square;
+  gap: 5px;
   li {
     justify-items: left;
     justify-content: left;
@@ -65,8 +66,6 @@ const ULDiv = styled.ul`
     margin-bottom: 8px;
   };
 `
-
-const imagesArr = ["https://cdn.defenseone.com/media/img/cd/2023/08/11/GettyImages_1407240226/open-graph.jpg", "https://spaceplace.nasa.gov/satellite/en/TEMPO.en.jpg", "https://media.istockphoto.com/id/1339097795/photo/satellite-orbiting-the-earth.jpg?s=612x612&w=0&k=20&c=FMG2NypIT0JuZVs26qSYOq2qTwsO89woydrwZimK21s="];
 
 const starfireImages = [
   'https://afresearchlab.com/wp-content/uploads/2021/07/150505-F-ZZ999-001-scaled.jpeg',
@@ -101,30 +100,32 @@ const WelcomePage = () =>{
 
         <br/>
         <h3>Create Satellites/Assessments:</h3>
-        <li> Must be logged in with user account to create a satellite/assessment. </li>
-        <li>Click feature and fill out form, all file data should be the file paths of the associated files.</li>
-
+        <ULDiv>
+          <li> Must be logged in with user account to create a satellite/assessment. </li>
+          <li>Click feature and fill out form, all file data should be the file paths of the associated files.</li>
+        </ULDiv>
          <br/>
          <h3>Celestrak Data: </h3>
-         <li>View through pages of Celestrak Satellite Data using the page navigation buttons. </li>
-         <li>Click the "Ground Track" button of the desired satellite to view the map view of the ground track. </li>
-         <li>Click the "Toggle Map View" to change to a satellite view. </li>
-         <li>By default, this feature will show 1 orbital period, change this by entering the desired amount of orbital periods. </li>
-         <li>Click "Show Alternatives" to view alternate data points for the ground track.</li>
-         <li>Customize the Two Line Element (TLEs) by editing the text box.</li>
+         <ULDiv>
+          <li>View through pages of Celestrak Satellite Data using the page navigation buttons. </li>
+          <li>Click the "Ground Track" button of the desired satellite to view the map view of the ground track. </li>
+          <li>Click the "Toggle Map View" to change to a satellite view. </li>
+          <li>By default, this feature will show 1 orbital period, change this by entering the desired amount of orbital periods. </li>
+          <li>Click "Show Alternatives" to view alternate data points for the ground track.</li>
+          <li>Customize the Two Line Element (TLEs) by editing the text box.</li>
+         </ULDiv>
+         <br />
          </>
       : info === 2 ?
       <>
         <h3>Starfire Optical Range</h3>
       <p>As part of AFRL’s Directed Energy, Space Electro-Optics Division, the Starfire Optical Range (SOR) is a vital resource in achieving the Department of the Air Force’s mission to operate freely in space.This world-class research facility is located on a hilltop 1,900 meters (6,240 feet) above sea level on Kirtland Air Force Base, New Mexico. SOR’s primary mission is to develop optical sensing, imaging, and atmospheric compensation technologies to support aerospace missions.</p>
       <p>The SOR operates one of the world’s premier telescopes capable of tracking low-earth orbiting satellites. It has a 3.5-meter (11.5-feet) diameter primary mirror and is protected by a retracting cylindrical enclosure that allows the telescope to operate in the open air. Using adaptive optics, the telescope can distinguish basketball-sized objects at a distance of 1,600 kilometers (1,000 miles) into space. In addition to the 3.5-meter telescope, the SOR includes four other optical mounts: a 1.5-meter telescope, two 1.0-meter telescopes, and a 1.0-meter laser beam director. All are capable of tracking low-earth orbit satellites and most are equipped with high performance adaptive optics systems and highly sensitive scientific cameras.</p>
+      <br/>
       </>
       :
       <></>
         }
-
-
-
 
         <ImageViewer images={starfireImages}/>
       </BackgroundDiv>
