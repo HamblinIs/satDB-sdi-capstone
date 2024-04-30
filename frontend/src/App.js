@@ -14,20 +14,24 @@ import WelcomePage from './components/WelcomePage'
 import { useState, createContext } from 'react';
 import Navbar from './components/Navbar';
 import styled from 'styled-components';
+import MainPage from './routes/MainPage'
+import Login from './components/NewLogin/Login'
+import Background from './routes/Background'
+
 
 export const UserContext = createContext();
 
-const BackgroundDiv = styled.div`
-  background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
-  width: 100%;
-  height: 1000px;
-  `
-  const BackgroundDiv2 = styled.div`
-  background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
-  width: 100%;
-  height:1000px;
-  transform: scaleY(-1);
-  `
+// const BackgroundDiv = styled.div`
+//   background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
+//   width: 100%;
+//   height: 1000px;
+//   `
+//   const BackgroundDiv2 = styled.div`
+//   background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
+//   width: 100%;
+//   height:1000px;
+//   transform: scaleY(-1);
+//   `
 
 
 function App() {
@@ -38,31 +42,31 @@ function App() {
 
   return (
     <>
-      <BackgroundDiv className="App">
+      {/* <BackgroundDiv className="App"> */}
+        <Router>
+          <UserContext.Provider value={{activeUser, setActiveUser}}>
+            {/* <Navbar /> */}
+            <Routes>
+              <Route exact path ="/" element={<WelcomePage />} />
+              <Route exact path="/search" element={<HomePage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/CreateAssessment" element={<CreateAssessment />} />
+              <Route path="/CreateSatellite" element={<CreateSatellite />} />
+              <Route path="/SatelliteModelOrbit" element={<SatelliteModelOrbit />} />
+              <Route path="/AccountRequestViewer" element={<AccountRequestViewer />} />
+              <Route path="/AssessmentDetails/:id" element={<AssessmentDetails />} />
+              <Route path="/SatelliteDetails/:id" element={<SatelliteDetails />} />
+              <Route path="/Satellites" element={<Satellites setTLEData={setTLEData} />} />
+              <Route path="/SatelliteGroundTrack" element={<SatelliteGroundTrack setTLEData={setTLEData} TLEData={TLEData} />} />
+              <Route exact path ="/MainPage" element={<MainPage />} />
+              <Route exact path ="/Background" element={<Background />} />
 
-    <Router>
-      <UserContext.Provider value={{activeUser, setActiveUser}}>
-      <Navbar />
-      <Routes>
-        <Route exact path ="/" element={<WelcomePage />} />
-        <Route exact path="/search" element={<HomePage />} />
-        <Route path="/login" element={<CreateAccountLogin />} />
-        <Route path="/CreateAssessment" element={<CreateAssessment />} />
-        <Route path="/CreateSatellite" element={<CreateSatellite />} />
-        <Route path="/SatelliteModelOrbit" element={<SatelliteModelOrbit />} />
-        <Route path="/AccountRequestViewer" element={<AccountRequestViewer />} />
-        <Route path="/AssessmentDetails/:id" element={<AssessmentDetails />} />
-        <Route path="/SatelliteDetails/:id" element={<SatelliteDetails />} />
-        <Route path="/Satellites" element={<Satellites setTLEData={setTLEData} />} />
-        <Route path="/SatelliteGroundTrack" element={<SatelliteGroundTrack setTLEData={setTLEData} TLEData={TLEData} />} />
-      </Routes>
-
-      </UserContext.Provider>
-      </Router>
-      </BackgroundDiv>
+            </Routes>
+          </UserContext.Provider>
+        </Router>
+      {/* </BackgroundDiv>
       <BackgroundDiv2>
-
-      </BackgroundDiv2>
+      </BackgroundDiv2> */}
     </>
   );
 }

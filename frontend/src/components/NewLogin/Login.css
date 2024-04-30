@@ -1,0 +1,110 @@
+.login-container {
+  align-self: center;
+  margin-top: 3%;
+  margin-inline: auto;
+  height: auto;
+  width: 50vw;
+  background: #1A2C80;
+  border: 1px solid #000000;
+  border-radius: 34px;
+  box-shadow: inset 5px 5px 9px 0px #FFFFFF, 15px 15px 8px 0px rgba(0, 0, 0, 0.3);
+  /* overflow: hidden; */
+  display: flex;
+  align-items: start;
+  align-content: stretch;
+  justify-items: start;
+  justify-content: center;
+  padding: 75px 75px 75px 75px;
+  z-index: 0;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  /* margin: auto; */
+}
+
+
+.searchbar {
+  padding-left:30px;
+  font-size: 20px;
+  color: black;
+  border-radius: 29px;
+  min-height: 56px;
+  max-height: 56px;
+  background-color: white;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+}
+
+.searchbar2 {
+  padding-left:30px;
+  font-size: 20px;
+  color: black;
+  border-radius: 29px;
+  min-height: 40px;
+  max-height: 56px;
+  background-color: white;
+  position: relative;
+  width: 750px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+}
+
+.login-text {
+  font-size: 30px;
+  color: white;
+}
+
+.login-text-header {
+  font-size: 50px;
+  color: white;
+  margin: auto
+}
+
+.create-text-header {
+  font-size: 40px;
+  color: white;
+  margin: auto
+}
+/* .button-container{
+  display: flex;
+  justify-items: center;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+} */
+
+.login-button{
+  font-size: 20px;
+  margin-top: 40px;
+  width: 15vw;
+  height: 5vh;
+  border-radius: 30px;
+  flex-shrink: 0;
+  align-self: center;
+  /* color: rgba(255, 255, 255, 1); */
+}
+
+
+.valid {
+  color: green;
+}
+
+.invalid {
+  color: red;
+}
+
+.password-param {
+color: white;
+}
