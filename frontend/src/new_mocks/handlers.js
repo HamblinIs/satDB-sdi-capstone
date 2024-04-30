@@ -41,28 +41,12 @@ rest.get(`http://localhost:8080/satellites?name=${searchTerm}`, (req, res, ctx) 
     ]))
   }),
 
-  rest.get('https://celestrak.org/NORAD/elements/gp.php?GROUP=visual&FORMAT=json', (req, res, ctx) => {
-    return res(ctx.json( [
-        {
-            "OBJECT_NAME": "ATLAS CENTAUR 2",
-            "OBJECT_ID": "1963-047A",
-            "EPOCH": "2024-04-25T02:44:15.837216",
-            "MEAN_MOTION": 14.07309149,
-            "ECCENTRICITY": 0.0566856,
-            "INCLINATION": 30.358,
-            "RA_OF_ASC_NODE": 43.3597,
-            "ARG_OF_PERICENTER": 195.6054,
-            "MEAN_ANOMALY": 162.6387,
-            "EPHEMERIS_TYPE": 0,
-            "CLASSIFICATION_TYPE": "U",
-            "NORAD_CAT_ID": 694,
-            "ELEMENT_SET_NO": 999,
-            "REV_AT_EPOCH": 3469,
-            "BSTAR": 0.00039272,
-            "MEAN_MOTION_DOT": 3.205e-5,
-            "MEAN_MOTION_DDOT": 0
-        }
-    ]))
+  rest.get('https://celestrak.org/NORAD/elements/gp.php?GROUP=visual&FORMAT=tle', (req, res, ctx) => {
+    return res(ctx.text( 
+        // ATLAS CENTAUR 2 
+        // 1 00694U 63047A   24117.46158150  .00002833  00000+0  34479-3 0  9999 
+        // 2 00694  30.3592  35.8850 0566900 207.3977 149.5617 14.07317170 35263
+    ))
   }),
 
   rest.post('http://localhost:8080/auth/login', (req, res, ctx) => {

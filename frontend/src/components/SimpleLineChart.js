@@ -33,9 +33,30 @@ export default function SimpleLineChart() {
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="time" id="Time" />
-                <Label value="Time(s)" offset={0} position="insideBottom" />
-                <YAxis type="number" id="Magnitude" domain={[0, Math.max(...csvData.map(obj => obj.magnitude))+50]} />
+                <XAxis dataKey="time" id="Time" >
+                    <Label
+                        value="Time(s)"
+                        dy={10}
+                        position="insideBottom"
+                        style={{
+                            textAnchor: "middle",
+                            fontSize: "125%",
+                            fill: "black",
+                        }}
+                        />
+                </XAxis>
+                <YAxis type="number" id="Magnitude" domain={[0, Math.max(...csvData.map(obj => obj.magnitude))+50]} >
+                    <Label
+                        value="Visual Magnitude (unitless)"
+                        angle={270}
+                        position="insideLeft"
+                        style={{
+                            textAnchor: "middle",
+                            fontSize: "125%",
+                            fill: "black",
+                        }}
+                        />
+                </YAxis>
                 <Tooltip />
                 <Legend />
                 <Line type="monotone"  dataKey="magnitude" stroke="#1a2c80" strokeWidth={3} activeDot={{ r: 8 }} />
