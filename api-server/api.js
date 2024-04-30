@@ -127,11 +127,11 @@ api.patch('/assessments/:id', async (req, res) => {
 
     console.log(sim_files);
 
-    let image_ids_to_delete = await knex.raw(`SELECT distinct image_to_assessment.image_id FROM image_to_assessment, image WHERE image_to_assessment.assessment_id = ${id};`);
-    let image_id_array = image_ids_to_delete["rows"].map(image => image.image_id);
-    await knex("image_to_assessment").where({assessment_id: id}).del()
-    await knex("image").whereIn('id', image_id_array).del()
     if (images && images.length != 0) { // Avoids error from empty array on insert
+        let image_ids_to_delete = await knex.raw(`SELECT distinct image_to_assessment.image_id FROM image_to_assessment, image WHERE image_to_assessment.assessment_id = ${id};`);
+        let image_id_array = image_ids_to_delete["rows"].map(image => image.image_id);
+        await knex("image_to_assessment").where({assessment_id: id}).del()
+        await knex("image").whereIn('id', image_id_array).del()
         let image_ids_added = await knex("image").insert(images.map(image => ({"file_path_name":image.file_path_name}))).returning('id'); // [ {id: 1}, {id: 2}, {id: 3}]
         await knex("image_to_assessment").insert(image_ids_added.map(image => ({"image_id": image.id, "assessment_id": id})));
     }
@@ -164,6 +164,7 @@ api.patch('/assessments/:id', async (req, res) => {
     }
 
     await knex("satellite_to_assessment").where({assessment_id: id}).del();
+    console.log(satellites)
     await knex("satellite_to_assessment").insert(satellites.map(satellite => ({satellite_id: satellite.id, assessment_id: id})));
 
     knex('assessment')
@@ -226,7 +227,8 @@ api.get('/assessments/:id', async (req, res) => {
        let misc_files = await knex.raw('SELECT DISTINCT misc_file.file_path_name FROM misc_file, misc_file_to_assessment, assessment WHERE ? = misc_file_to_assessment.assessment_id AND misc_file_to_assessment.misc_file_id = misc_file.id;', id);
        let assessments = await knex("assessment").select('name', 'description', 'creation_date').where({id: req.params.id});
        let assessment = assessments[0];
-       assessment.satellites = await knex("satellite").select('id', 'name', 'tail_num').where({id: req.params.id});
+       let satQuery = await knex.raw("SELECT satellite.* FROM satellite, satellite_to_assessment WHERE satellite_to_assessment.satellite_id = satellite.id AND satellite_to_assessment.assessment_id = 1;");
+       assessment.satellites = satQuery["rows"];
        assessment.images = images["rows"];
        assessment.data_files = data_files["rows"];
        assessment.misc_files = misc_files["rows"];
@@ -316,7 +318,7 @@ api.post('/satellite/new', async (req, res) => {
 
         if (cad_model_files && cad_model_files.length > 0) {
             const cad_model_file_ids = await knex('cad_model').insert(cad_model_files).returning('id');
-            await knex('cad_model_to_satellite').insert(cad_model_file_ids.map(cad_model_file_id => ({cad_model_file_id: cad_model_file_id.id, satellite_id: satelliteId[0].id})))
+            await knex('cad_model_to_satellite').insert(cad_model_file_ids.map(cad_model_file_id => ({cad_model_id: cad_model_file_id.id, satellite_id: satelliteId[0].id})))
         }
 
         if (images && images.length > 0) {

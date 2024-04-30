@@ -107,6 +107,8 @@ export default function SatelliteDetails() {
     setSatellite((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  const myImagesArray = satellite.images.map(image => image.file_path_name);
+
   return (
     <CenterDiv>
     <BackgroundDiv>
@@ -186,6 +188,11 @@ export default function SatelliteDetails() {
         <FilesListViewer state={satellite} setState={setSatellite} fileType="images" isEditing={isEditing} />
       </label>
 
+      {myImagesArray.length > 0 ?
+      <ImageViewer images={myImagesArray} />
+      : null
+      }
+
       <br />
 
       {Object.keys(activeUser).length>0 &&
@@ -195,6 +202,8 @@ export default function SatelliteDetails() {
         <button onClick={() => handleToggleEdit()}>Edit</button>
       ))
       }
+
+    
 
     </BackgroundDiv>
     </CenterDiv>

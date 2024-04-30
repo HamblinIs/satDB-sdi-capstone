@@ -52,6 +52,7 @@ export default function AssessmentDetails() {
 
   const [name, setName] = useState("");
   const [associatedSatellite, setAssociatedSatellite] = useState([]);
+  const [associatedSatList, setAssociatedSatList] = useState([]);
   const [creation_date, setCreationDate] = useState("");
   const [description, setDescription] = useState("");
   const [owner, setOwner] = useState("");
@@ -74,7 +75,23 @@ export default function AssessmentDetails() {
         setSimFiles(res.sim_files);
         setMiscFiles(res.misc_files);
       })
-  }, [assessmentId.id]);
+  }, [assessmentId.id, isEditing]);
+
+  useEffect(() => {
+    const satList = async () =>{
+      try {
+        await fetch('http://localhost:8080/satellites?name')
+        .then(response => response.json())
+        .then(data => {
+          setAssociatedSatList(data)
+        })
+      } catch (error) {
+        console.error('Failed to add assessment:', error);
+      }
+    }
+    satList();
+    }, [])
+  
 
   const handleSave = () => {
 
@@ -88,6 +105,8 @@ export default function AssessmentDetails() {
       sim_files: assessmentInfo.sim_files,
       misc_files: assessmentInfo.misc_files,
     };
+
+    console.log(associatedSatellite)
 
     // todo: need to check the save logic: fetch with PATCH method
     fetch(`http://localhost:8080/assessments/${assessmentId.id}`, {
@@ -126,7 +145,18 @@ export default function AssessmentDetails() {
 
         <label>Associated Satellites:
           {isEditing ? (
-            <input type='text' value={associatedSatellite} onChange={(e) => { associatedSatellite(e.target.value) }} />
+            // <input type='text' value={associatedSatellite} onChange={(e) => { associatedSatellite(e.target.value) }} />
+            <label>Associated Satellite:
+              <select id="associatedSat" name="associatedSat"  onChange={(e) => {
+                console.log(e.target.value)
+                setAssociatedSatellite([{id: e.target.value}])}}>
+                <option value="">--Please choose an option--</option>
+                {associatedSatList.map(sat =>
+                  <option key={sat.tail_num} value={sat.id}>{`${sat.name}, Tail #: ${sat.tail_num}`}</option>
+                )}
+                  <option value="N/A">No Associated Satellites</option>
+              </select>
+            </label>
           ) : (
             associatedSatellite.map(item => {
               return (

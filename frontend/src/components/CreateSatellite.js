@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-<<<<<<< HEAD
 import styled from 'styled-components';
-=======
 import FilesListViewer from './FilesListViewer';
->>>>>>> main
+
 
 const BackgroundDiv = styled.div`
 display: flex;
@@ -32,7 +30,7 @@ export default function CreateSatellite() {
     cad_model_files: [], // todo: need to have an input for model files and simulation files
     images: [],
   });
-  
+
   const navigate = useNavigate();
 
 

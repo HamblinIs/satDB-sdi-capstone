@@ -25,6 +25,7 @@
     "react-scripts": "5.0.1",
     "recharts": "^2.12.6",
     "satellite.js": "^5.0.0",
+    "shadcn-ui": "^0.8.0",
     "styled-components": "^6.1.8",
     "three": "^0.164.1",
     "web-vitals": "^2.1.4"
