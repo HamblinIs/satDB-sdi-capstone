@@ -178,17 +178,15 @@ const StyledButton2 = styled.button`
                             </tbody>
                         </table>
                     }
-            <CenterDiv>
-            <BackgroundDiv>
-            
+
 
             <h1>100 Brightest Satellites from Celestrak</h1>
             <p>{`${currentPage} / ${totalPages}`}</p>
-            <CenterDiv>
             <ButtonsDiv>
                 <StyledButton onClick={prevPage} disabled={currentPage === 1}>Prev</StyledButton>
                 <StyledButton onClick={nextPage} disabled={currentPage === totalPages}>Next</StyledButton>
             </ButtonsDiv>
+            </BackgroundDiv>
             </CenterDiv>
             </>
         );
