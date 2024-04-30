@@ -185,8 +185,8 @@ export default function SatelliteGroundTrack( { TLEData, setTLEData } ) {
 const starfire = [34.96420802612262, -106.46368895542169, 1.84589928]; // [lat, lon, alt] in [deg N, deg E, km]
 const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitudes);
 
-const myLineOfSight = hasLineOfSight(starfire, [latitudes[0], longitudes[0], altitudes[0]]);
-console.log(myLineOfSight)
+// const myLineOfSight = hasLineOfSight(starfire, [latitudes[0], longitudes[0], altitudes[0]]);
+// console.log(myLineOfSight)
 
     const handlePeriodMultipler = (e) => {
         // e.preventDefault();
@@ -302,11 +302,14 @@ console.log(myLineOfSight)
                             Mountain Time: {times[0]} <br/>
                             Azimuth: {parseFloat(calculateAzimuth([starfire[0], starfire[1]], [latitudes[0], longitudes[0]]).toFixed(4))} deg from North <br/>
                             Elevation: {parseFloat(calculateElevationAngle(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toFixed(4))} deg from horizontal <br/>
-                            Distance: {parseFloat(calculateTotalDistance(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toFixed(0))} km
+                            Distance: {parseFloat(calculateTotalDistance(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toFixed(0))} km <br/>
+                            hasLineOfSight: {hasLineOfSight(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toString()} 
                         </Popup>
                     </Marker>
 
-                    <Polyline positions={[starfire, myClosestPoint.closestPoint]} color='blue' />
+                    {hasLineOfSight(starfire, myClosestPoint.closestPoint) &&
+                    ( <Polyline positions={[starfire, myClosestPoint.closestPoint]} color='blue' /> )
+                    }
                     <Marker position={myClosestPoint.closestPoint}>
                         <Popup>
                             <h4>Closest Future Location</h4>
@@ -316,7 +319,8 @@ console.log(myLineOfSight)
                             Mountain Time: {times[myClosestPoint.index]} <br/>
                             Azimuth: {parseFloat(calculateAzimuth([starfire[0], starfire[1]], [myClosestPoint.closestPoint[0], myClosestPoint.closestPoint[1]]).toFixed(4))} deg from North <br/>
                             Elevation: {parseFloat(calculateElevationAngle(starfire, myClosestPoint.closestPoint).toFixed(4))} deg from horizontal <br/>
-                            Distance: {parseFloat(calculateTotalDistance(starfire, myClosestPoint.closestPoint).toFixed(0))} km
+                            Distance: {parseFloat(calculateTotalDistance(starfire, myClosestPoint.closestPoint).toFixed(0))} km <br/>
+                            hasLineOfSight: {hasLineOfSight(starfire, myClosestPoint.closestPoint).toString()}
                         </Popup>
                     </Marker>
 
@@ -469,16 +473,29 @@ function calculateAzimuth([lat1, lon1], [lat2, lon2]) {
 
 
 function calculateElevationAngle([lat1, lon1, alt1], [lat2, lon2, alt2]) {
-    var d = haversineDistance(lat1, lon1, lat2, lon2); // Distance in km
-    var deltaAlt = alt2 - alt1; // Altitude difference in km
-    var angleRad = Math.atan2(deltaAlt, d); // Angle in radians
-    var angleDeg = angleRad * (180/Math.PI); // Convert to degrees
-    return angleDeg;
+    const R = 6371; // Radius of the Earth in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    const los = Math.sqrt((alt1 + R) ** 2 + (alt2 + R) ** 2 - 2 * (alt1 + R) * (alt2 + R) * Math.cos(c));
+
+    const B = Math.acos(((alt1 + R) ** 2 + los ** 2 - (alt2 + R) ** 2) / (2 * (alt1 + R) * los));
+
+    const B_deg = B * 180 / Math.PI;
+
+    const elevationAngle = B_deg - 90;
+
+    return elevationAngle;
 }
 
 
 
-
+// todo: doublecheck the math on hasLineOfSight
 function hasLineOfSight([lat1, lon1, alt1], [lat2, lon2, alt2]) {
     const R = 6371; // Radius of the Earth in km
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -489,13 +506,28 @@ function hasLineOfSight([lat1, lon1, alt1], [lat2, lon2, alt2]) {
               Math.sin(dLon/2) * Math.sin(dLon/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-    const d = R * c; // Distance between points in km
-    console.log("d", d)
+    const d = R * c; // Distance between points in km, (this is haversine distance)
+    console.log("d", d);
+    // const d2 = haversineDistance(lat1, lon1, lat2, lon2);
+    // console.log("d2", d2);
 
 
-    // Calculate the line of sight distance
+    // Calculate the line of sight distance (this is law of cosines, is this valid?)
     const los = Math.sqrt((alt1 + R) ** 2 + (alt2 + R) ** 2 - 2 * (alt1 + R) * (alt2 + R) * Math.cos(c));
-    console.log("los", los)
+    // console.log("los", los)
+    // console.log("d <= los", d <= los)
+
+    // // Calculate the other two angles
+    // const A = Math.acos(((alt2 + R) ** 2 + los ** 2 - (alt1 + R) ** 2) / (2 * (alt2 + R) * los));
+    // const B = Math.acos(((alt1 + R) ** 2 + los ** 2 - (alt2 + R) ** 2) / (2 * (alt1 + R) * los));
+
+    // // Convert the angles to degrees
+    // const A_deg = A * 180 / Math.PI;
+    // const B_deg = B * 180 / Math.PI;
+
+    // const elevationAngle = B_deg - 90;
+
+    // console.log("elevation angle", elevationAngle);
 
     return d <= los;
 }
