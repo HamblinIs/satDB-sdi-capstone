@@ -1,22 +1,40 @@
 import React from 'react';
+import {useState} from 'react';
 import styled from 'styled-components'
 import Tracker from '../satellite-tracker/Tracker.js'
 
-const BackgroundDiv = styled.div`
+const CenterDiv = styled.div`
     justify-content: center;
     justify-items: center;
     align-items: center;
     align-content: center;
-    background-color: #c4cfff;
-    border: 4px solid #4a478a;
-    margin-top: 20px;
-    padding: 20px;
-    gap: 5px;
-    height: 70%;
-    width: 70%;
 `
+
+
 export default function SatelliteModelOrbit() {
+
+    const [constellation, setConstellation] = useState(false);
+    const [selected, setSelected] = useState("");
+
+    const handleClick = () => {
+        setSelected(document.getElementById("constellation-select").value);
+        console.log("selected", selected)
+        setConstellation(true);
+    }
+
     return (
-            <Tracker />
+        <CenterDiv>
+            {constellation ?
+
+            <Tracker constellation = {selected} />
+            :
+            <>
+            <h1>Select Constellation to View</h1>
+            <input type="text" id="constellation-select" placeholder="Type Constellation"></input>
+            <button type="submit" onClick={() => handleClick()}>Submit</button>
+            </>
+        }
+
+        </CenterDiv>
     )
 }
