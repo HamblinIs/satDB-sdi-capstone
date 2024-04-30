@@ -178,12 +178,12 @@ const StyledButton2 = styled.button`
                             </tbody>
                         </table>
                     }
-            
+
                 </BackgroundDiv>
             </CenterDiv>
-            
 
-            
+
+
             </>
         );
     }
