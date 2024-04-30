@@ -185,6 +185,8 @@ export default function SatelliteGroundTrack( { TLEData, setTLEData } ) {
 const starfire = [34.96420802612262, -106.46368895542169, 1.84589928]; // [lat, lon, alt] in [deg N, deg E, km]
 const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitudes);
 
+const myLineOfSight = hasLineOfSight(starfire, [latitudes[0], longitudes[0], altitudes[0]]);
+console.log(myLineOfSight)
 
     const handlePeriodMultipler = (e) => {
         // e.preventDefault();
@@ -288,7 +290,9 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
                         <Popup><h4>Starfire Optical Range</h4></Popup>
                     </Marker>
 
-                    <Polyline positions={[starfire, [latitudes[0], longitudes[0]]]} color='blue' />
+                    {hasLineOfSight(starfire, [latitudes[0], longitudes[0], altitudes[0]]) && 
+                    ( <Polyline positions={[starfire, [latitudes[0], longitudes[0]]]} color='blue' /> )
+                    }
                     <Marker key="satellite_position" position={[latitudes[0], longitudes[0]]} icon={satelliteIcon}>
                         <Popup>
                             <h4>Current Location</h4>
@@ -465,33 +469,33 @@ function calculateAzimuth([lat1, lon1], [lat2, lon2]) {
 
 
 function calculateElevationAngle([lat1, lon1, alt1], [lat2, lon2, alt2]) {
-    // function toRadians(degrees) {return degrees * Math.PI / 180;}
+    var d = haversineDistance(lat1, lon1, lat2, lon2); // Distance in km
+    var deltaAlt = alt2 - alt1; // Altitude difference in km
+    var angleRad = Math.atan2(deltaAlt, d); // Angle in radians
+    var angleDeg = angleRad * (180/Math.PI); // Convert to degrees
+    return angleDeg;
+}
 
-    // // Radius of the Earth in kilometers
-    // const R = 6371;
 
-    // // Convert latitudes and longitudes from degrees to radians
-    // lat1 = toRadians(lat1);
-    // lon1 = toRadians(lon1);
-    // lat2 = toRadians(lat2);
-    // lon2 = toRadians(lon2);
 
-    // // Calculate the difference in longitudes
-    // const dLon = lon2 - lon1;
 
-    // // Calculate the distance between the two points on the Earth's surface
-    // const d = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(dLon)) * R;
+function hasLineOfSight([lat1, lon1, alt1], [lat2, lon2, alt2]) {
+    const R = 6371; // Radius of the Earth in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
 
-    const d = haversineDistance(lat1, lon1, lat2, lon2)
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-    // Calculate the difference in altitudes
-    const h = alt2 - alt1;
+    const d = R * c; // Distance between points in km
+    console.log("d", d)
 
-    // Calculate the elevation angle
-    const elevationAngle = Math.atan2(h, d);
 
-    // Convert the elevation angle from radians to degrees
-    const elevationAngleInDegrees = elevationAngle * 180 / Math.PI;
+    // Calculate the line of sight distance
+    const los = Math.sqrt((alt1 + R) ** 2 + (alt2 + R) ** 2 - 2 * (alt1 + R) * (alt2 + R) * Math.cos(c));
+    console.log("los", los)
 
-    return elevationAngleInDegrees;
+    return d <= los;
 }
