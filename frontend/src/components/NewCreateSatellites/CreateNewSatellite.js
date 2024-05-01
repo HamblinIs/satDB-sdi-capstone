@@ -62,7 +62,7 @@ export default function CreateNewSatellite () {
           return res.json()
         }
       })
-      .then(res => navigate(`/SatelliteDetails/${res.id}`));
+      .then(res => navigate(`../SatelliteDetails/${res.id}`));
     } catch(error) {
       console.error('Failed to add satellite:', error);
     }
@@ -84,7 +84,7 @@ return (
 <>
 
 <div className='assessment-container'>
-<button onClick={() => navigate('../')}>Back</button>
+<button onClick={() => navigate('../search')}>Back</button>
   <h1 className='create-satellite-text roboto-regular'>Create Satellite</h1>
       <>
         <label>Name

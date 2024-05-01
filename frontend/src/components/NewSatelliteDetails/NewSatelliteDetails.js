@@ -133,7 +133,7 @@ export default function SatelliteDetails() {
     <div className="assessment-container">
         <CenterDiv>
 
-        <StyledButton onClick={() => navigate("../")}>Back</StyledButton>
+        <StyledButton onClick={() => navigate("../search")}>Back</StyledButton>
         <h1 className='roboto-regular'>Satellite Details</h1>
         <div className="grid-3x2">
         <label>Satellite Orbit
@@ -178,7 +178,7 @@ export default function SatelliteDetails() {
                 return (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <p key={`p1${index}`}>Name: {item.name} | Creation Date: {item.creation_date.slice(0,10)} </p>
-                    <StyledButton style={{marginLeft:'10px'}} onClick={() => navigate(`/AssessmentDetails/${item.id}`)}>Details</StyledButton>
+                    <StyledButton style={{marginLeft:'10px'}} onClick={() => navigate(`../AssessmentDetails/${item.id}`)}>Details</StyledButton>
                 </div>
                 )
             }

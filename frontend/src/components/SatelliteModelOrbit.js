@@ -26,6 +26,7 @@ export default function SatelliteModelOrbit() {
         <div className = "tracker-container">
             {constellation ?
         <div className = "globe-container">
+
             <Tracker constellation = {selected} />
         </div>
             :
@@ -35,7 +36,7 @@ export default function SatelliteModelOrbit() {
             <button type="submit" onClick={() => handleClick()}>Submit</button>
             </>
         }
-        
+
         </div>
     )
 }

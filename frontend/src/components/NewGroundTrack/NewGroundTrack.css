@@ -16,7 +16,7 @@
   justify-items: start;
   justify-content: center;
   padding: 75px 75px 75px 75px;
-  z-index: 0;
+  z-index: 3;
   flex-direction: column;
   flex-wrap: nowrap;
   flex-grow: 1;

@@ -1,53 +1,30 @@
-/* body, h1, h2, p, div, span, li, ul {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background-color: #041119;
-    font-family: Montserrat, sans-serif;
-    font-size: 12px;
-}
-
-h1 {
-    text-transform: uppercase;
-} */
-
-/* .tracker-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    width: 100%;
-    height: 100%;
-} */
-
 
 .SearchBox {
     border: none;
+    border-radius: 0px;
+    padding: 5px 0;
+    width: 100%;
     border-bottom: 2px solid white;
     background-color: white;
     font-size: 2em;
     outline: none;
-    width: 400px;
-    margin: 10px;
 }
 
 .Result {
+    display:flex;
+    flex-flow: row;
+    flex-wrap: wrap;
     margin: 3px 6px 3px 0;
     border: 1px solid rgba(102, 113, 136, 0.39);
     border-left: 3px solid #ffbfa3;
-    background-color: rgba(48, 67, 104, 0.5);
+    background-color: white;
     border-top-right-radius: 10px;
-    padding: 4px 10px;
-    width: 125px;
-    height: 20px;
+    width: 110px;
+    height: 30px;
     font-size: small;
     cursor: pointer;
+    overflow: hidden;
     white-space: nowrap;
-    background-color: white;
-    align-items: center;
-    align-content: center;
 }
 
 
@@ -61,18 +38,10 @@ h1 {
     font-size: 0.8em;
 }
 
-/* .Highlights {
+.Highlights {
     text-align: center;
 }
 
-.ResultsWrapper {
-    margin-top: 10px;
-    position:relative;
-    z-index:10;
-    height: 300px;
-    width: 500px;
-    overflow-y: scroll;
-} */
 
 /* @media only screen and (max-width: 999px) {
     .Info {
@@ -80,20 +49,18 @@ h1 {
         top: 10px;
         left: 10px;
     }
-    
+
     .Search {
-        display: flex;
-        flex-flow: column;
-        justify-items: left;
-        align-items: left;
-        justify-content: left;
-        align-content: left;
+        position: absolute;
+        top: 60px;
+        left: 10px;
+        width: 120px
     }
-        
+
     .Selected {
-        display: flex;
-        flex-flow: row;
-        flex-wrap: wrap;
+        position: absolute;
+        right: 10px;
+        top: 40px;
         width: 120px;
     }
 
@@ -107,52 +74,71 @@ h1 {
     .Highlight { font-size: 3em;}
 
     .ResultsWrapper {
-        max-height: 30vh;
-        overflow-y: scroll;
-        width: 30px;
+        max-height: 80vh;
+        overflow: hidden;
+        width: 150px;
     }
-} */
+}
 
-/* @media screen and (min-width: 1000px) { */
+@media screen and (min-width: 1000px) { */
 
-    
+    .Info {
+        position: absolute;
+        top: 100px;
+        left: 50px;
+    }
+
     .Search {
-        max-height: 50px;
-        margin: 10px;
-        width: 100%;
+        max-width: 100px;
+        max-height: 100px;
+        overflow: hide;
+        margin-top: 10px;
+        gap: 15px;
     }
-        
+
     .Selected {
+        margin-top: 10px;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         flex-wrap: wrap;
-        justify-content: right;
-        align-items: right;
-        width: 100%;
-        max-height: 300px;
+        justify-content: center;
+        align-items: center;
+        max-width: 100%;
+        gap: 15px;
     }
-    
+
     .Highlights {
         position: absolute;
         top: 10px;
         width: 100%;
-
     }
 
     .Hint { font-size: 0.9em;}
     .Highlight { font-size: 3em;}
-       
+
     .ResultsWrapper {
+        margin-top: 10px;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: flex-start;
         align-items: flex-start;
-        max-height: 10vh;
-        width: 100%;
-        position: relative;
-        z-index: 99;
-        max-height: 500px;
-        
+        height: 60vh;
+        max-width: 100%;
+        max-height: 35px;
+        gap: 15px;
     }
-/* } */
+
+.firstsection{
+    display: flex;
+}
+
+.extras{
+    display:flex;
+    flex-flow: column;
+}
+
+.environment{
+    display:flex;
+    flex-flow:row;
+}

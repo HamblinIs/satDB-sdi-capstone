@@ -58,7 +58,7 @@ export default function CreateAssessment() {
         })
       })
       .then(res => res.json())
-      .then(res => navigate(`/AssessmentDetails/${res.id}`));
+      .then(res => navigate(`../AssessmentDetails/${res.id}`));
     } catch (error) {
       console.error('Failed to add assessment:', error);
     }
@@ -74,7 +74,7 @@ export default function CreateAssessment() {
 
   return (
     <div className="assessment-container" >
-      <button onClick={() => navigate('../')}>Back</button>
+      <button onClick={() => navigate('../search')}>Back</button>
       <h1 className='create-satellite-text roboto-regular'>Create Assessment</h1>
       <>
         <label>Name:

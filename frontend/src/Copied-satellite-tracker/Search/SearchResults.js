@@ -18,7 +18,7 @@ const filterResults = (stations, searchText) => {
 
     const regex = new RegExp(searchText, 'i');
 
-    return stations.filter(station => regex.test(station.name)).slice(0, MaxSearchResults);
+    return stations.filter(station => regex.test(station.name)).slice(0, 5);
 }
 
 

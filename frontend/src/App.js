@@ -62,14 +62,15 @@ function App() {
                 <Route path="SatelliteDetails/:id" element={<SatelliteDetails />} />
                 <Route path="Satellites" element={<Celestrak setTLEData={setTLEData} />} />
                 <Route path="NewGroundTrack" element={<NewGroundTrack setTLEData={setTLEData} TLEData={TLEData} />} />
+                <Route path="SatelliteModelOrbit" element={<SatelliteModelOrbit />} />
               </Route>
-              
-              
-              <Route path="/SatelliteModelOrbit" element={<SatelliteModelOrbit />} />
+
+
+
               <Route path="/AccountRequestViewer" element={<AccountRequestViewer />} />
-              
-              
-              
+
+
+
               <Route exact path ="/Background" element={<Background />} />
               <Route exact path ="/SatelliteResults" element={<SatelliteResults />} />
             </Routes>

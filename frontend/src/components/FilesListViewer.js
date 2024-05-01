@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './FileListViewer.css'
 
 export default function FilesListViewer({ state, setState, fileType, isEditing }) {
 
@@ -56,16 +57,15 @@ export default function FilesListViewer({ state, setState, fileType, isEditing }
 
     if (state[fileType]) {
         return (
-            <div>
+            <div className="file-list-wrapper">
                 {
                     state[fileType].map((obj, index) => {
                         if (isEditing) {
                             return (
-                                <>
+                                <div className='file-line'>
                                 <input type="text" key={index} value={obj.file_path_name} onChange={(e) => handleChange(e, index)} size='35' />
-                                <button style={{marginLeft:'3px', backgroundColor: 'red', color:'white', border:'none', borderRadius:'2px'}} onClick={(e) => handleDelete(e, index)}>×</button>
-                                <br />
-                                </>
+                                <button className="remove-button" onClick={(e) => handleDelete(e, index)}>×</button>
+                                </div>
                             )
                         } else {
                             return (<p key={index} >{obj.file_path_name}</p>)

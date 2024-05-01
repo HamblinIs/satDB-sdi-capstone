@@ -20,13 +20,14 @@ export default function MainPage() {
           <li><Link to="AssessmentDetails/1" >AssessmentDetails</Link></li>
           <li><Link to="SatelliteDetails/1" >SatelliteDetails</Link></li>
           <li><Link to="Satellites" >Celestrak</Link></li>
+          <li><Link to="SatelliteModelOrbit" >SatelliteModelOrbit</Link></li>
         </ul>
       </nav>
 
 
       <Nav/>
       {/* <NewCreateSatellite/> */}
-      
+
     </div>
   )
 }
