@@ -129,7 +129,7 @@ export default function AssessmentDetails() {
 
     return (
       <CenterDiv>
-      <BackgroundDiv>
+      <div className="assessment-container" >
         <StyledButton onClick={() => navigate("/search")}>Back to Search</StyledButton>
         <h1>Assessment Details</h1>
 
@@ -234,7 +234,7 @@ export default function AssessmentDetails() {
         <h4>Visual Magnitude</h4>
         <SimpleLineChart />
 
-      </BackgroundDiv>
+      </div>
       </CenterDiv>
     );
   }

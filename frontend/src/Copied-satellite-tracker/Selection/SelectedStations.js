@@ -17,7 +17,7 @@ export default function({selected, onRemoveStation, onRemoveAll, onStationClick}
     if (!selected || selected.length === 0) return null;
 
     return (
-        <LowerDiv className='Selected'>
+        <div className='Selected'>
             <h2>Selected</h2>
             <p className='SmallButton' onClick={onRemoveAll}>Clear all</p>
             {selected.map((station, i) => {
@@ -28,6 +28,6 @@ export default function({selected, onRemoveStation, onRemoveAll, onStationClick}
                     onClick={onStationClick}
                 />
             })}
-        </LowerDiv>
+        </div>
     )
 }
