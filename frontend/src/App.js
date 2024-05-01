@@ -25,17 +25,18 @@ import NewGroundTrack from './components/NewGroundTrack/NewGroundTrack'
 
 export const UserContext = createContext();
 
-// const BackgroundDiv = styled.div`
-//   background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
-//   width: 100%;
-//   height: 1000px;
-//   `
-//   const BackgroundDiv2 = styled.div`
-//   background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
-//   width: 100%;
-//   height:1000px;
-//   transform: scaleY(-1);
-//   `
+
+const BackgroundDiv = styled.div`
+  background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
+  width: 100%;
+  height: 100%;
+  `
+  const BackgroundDiv2 = styled.div`
+  background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
+  width: 100%;
+  height:1000px;
+  transform: scaleY(-1);
+  `
 
 
 function App() {
@@ -65,13 +66,10 @@ function App() {
               <Route exact path ="/MainPage" element={<MainPage />} />
               <Route exact path ="/Background" element={<Background />} />
               {/* <Route exact path ="/SatelliteResults" element={<SatelliteResults />} /> */}
-
             </Routes>
           </UserContext.Provider>
         </Router>
-      {/* </BackgroundDiv>
-      <BackgroundDiv2>
-      </BackgroundDiv2> */}
+      {/* </BackgroundDiv> */}
     </>
   );
 }

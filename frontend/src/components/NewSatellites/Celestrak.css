@@ -4,7 +4,7 @@
   padding-right: 20%;
   margin-inline: auto;
   height: auto;
-  width: 50vw;
+  max-width: 50vw;
   background: #1A2C80;
   border: 1px solid #000000;
   border-radius: 34px;

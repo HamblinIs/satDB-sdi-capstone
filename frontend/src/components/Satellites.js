@@ -138,16 +138,19 @@ const StyledButton2 = styled.button`
     if (pagedData.length > 0) {
         return (
             <>
-             <CenterDiv>
+                 <CenterDiv>
                 <BackgroundDiv>
 
 
                     <h1>100 Brightest Satellites from Celestrak</h1>
                     <p>{`${currentPage} / ${totalPages}`}</p>
+                    <CenterDiv>
                     <ButtonsDiv>
-                    <StyledButton onClick={prevPage} disabled={currentPage === 1}>Prev</StyledButton>
-                    <StyledButton onClick={nextPage} disabled={currentPage === totalPages}>Next</StyledButton>
+                        <StyledButton onClick={prevPage} disabled={currentPage === 1}>Prev</StyledButton>
+                        <StyledButton onClick={nextPage} disabled={currentPage === totalPages}>Next</StyledButton>
                     </ButtonsDiv>
+                    </CenterDiv>
+
                     {
                         <table>
                             <thead>
@@ -178,12 +181,11 @@ const StyledButton2 = styled.button`
                             </tbody>
                         </table>
                     }
-            
-                </BackgroundDiv>
-            </CenterDiv>
-            
 
-            
+           </BackgroundDiv>
+           </CenterDiv>
+
+
             </>
         );
     }
