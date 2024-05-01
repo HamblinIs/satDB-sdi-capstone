@@ -227,13 +227,14 @@ class Tracker extends Component {
             <>
             <h1>Showing {this.props.constellation} Constellation</h1>
                 {/* <Info stations={stations} refMode={this.state.referenceFrame} /> */}
-                
+
                 {UseDateSlider && <DateSlider min={initialDate} max={maxMs} value={currentDate} onChange={this.handleDateChange} onRender={this.renderDate} />}
                 <div ref={c => this.el = c} style={{ width: '99%', height: '99%' }} />
-                
+                <div className="extras">
                 <Search stations={this.state.stations} onResultClick={this.handleSearchResultClick} />
 
                 <SelectedStations selected={selected} onRemoveStation={this.handleRemoveSelected} onRemoveAll={this.handleRemoveAllSelected} />
+                </div>
             </>
         )
     }

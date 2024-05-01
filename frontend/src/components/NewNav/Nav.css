@@ -45,6 +45,15 @@
   flex-shrink: 0;
 }
 
+.home {
+  position: relative;
+  width: 100px;
+  height: 35px;
+  flex-shrink: 0;
+  margin-bottom: 5px;
+  margin-left: ;
+}
+
 .title {
   margin: 0;
   align-items: center;

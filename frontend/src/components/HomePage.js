@@ -123,7 +123,7 @@ export default function HomePage() {
       .then(data => {
         const addLink = data.map(item => {
           item.view = <DetailsButton onClick = {() => {
-              navigate(`/SatelliteDetails/${item.id}`);
+              navigate(`../SatelliteDetails/${item.id}`);
           }}>Details</DetailsButton>
 
           return (item)
@@ -137,7 +137,7 @@ export default function HomePage() {
       .then(data => {
         var addLink = data.map(item => {
           item.view = <DetailsButton onClick = {() => {
-              navigate(`/AssessmentDetails/${item.id}`);
+              navigate(`../AssessmentDetails/${item.id}`);
           }}>Details</DetailsButton>
           item.creation_date = item.creation_date.slice(0,10)
           return (item)

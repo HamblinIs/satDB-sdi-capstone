@@ -1,0 +1,25 @@
+.remove-button {
+    margin-left: 3px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: x-large;
+    padding: 2px 10px;
+}
+
+.file-list-wrapper {
+    border: 5px;
+    border-color: black;
+    /* background-color: black; */
+}
+
+input {
+    font-size: large;
+    padding-inline: 15px;
+    border-radius: 10px;
+}
+
+.file-line {
+
+}

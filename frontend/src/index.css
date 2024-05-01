@@ -119,7 +119,29 @@ label {
   margin-inline: auto;
   height: 1000px;;
   width: 75vh;
+.tracker-container{
+  width: 50vw;
   background: rgb(245, 246, 255);
+  border-radius: 34px;
+  box-shadow: inset 5px 5px 9px 0px #FFFFFF, 15px 15px 8px 0px rgba(0, 0, 0, 0.3);
+  /* overflow: hidden; */
+  display: flex;
+  align-items: flex-end;
+  align-content: flex-end;
+  justify-items: flex-end;
+  justify-content: flex-end;
+  padding-top: 100px;
+  flex-direction: column;
+  text-align: center;
+  gap: 20px;
+  max-height:2000px;
+}
+
+
+.globe-container{
+  width: 100%;
+  height: 700px;
+}  background: rgb(245, 246, 255);
   border-radius: 34px;
   box-shadow: inset 5px 5px 9px 0px #FFFFFF, 15px 15px 8px 0px rgba(0, 0, 0, 0.3);
   /* overflow: hidden; */

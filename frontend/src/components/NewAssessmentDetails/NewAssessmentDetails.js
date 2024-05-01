@@ -122,12 +122,11 @@ export default function AssessmentDetails() {
   if (assessmentInfo) {
 
     return (
-    <div className='assessment-container'>
+    <BackgroundDiv>
         <CenterDiv>
-        <StyledButton onClick={() => navigate("../")}>Back</StyledButton>
+        <StyledButton onClick={() => navigate("../search")}>Back</StyledButton>
         <h1 className='roboto-regular'>Assessment Details</h1>
 
-        <div className='grid-3col'>
         <label>Name:
           {isEditing ? (
             <input className='searchbar3' type='text'  value={name} onChange={(e) => { setName(e.target.value) }} />
@@ -136,23 +135,7 @@ export default function AssessmentDetails() {
           )}
         </label>
 
-        <label>Creation Date:
-          {isEditing ? (
-            <input className='searchbar3' type='text' value={creation_date} onChange={(e) => { setCreationDate(e.target.value) }} />
-          ) : (
-            <p>{creation_date}</p>
-          )}
-        </label>
-
-        <label>Description:
-          {isEditing ? (
-            <textarea value={description} onChange={(e) => { setDescription(e.target.value) }} />
-          ) : (
-            <p>{description}</p>
-          )}
-        </label>
-        </div>
-
+        <br />
 
         <label>Associated Satellites:
           {isEditing ? (
@@ -162,7 +145,7 @@ export default function AssessmentDetails() {
               return (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <p>Name: {item.name} | Tail Number: {item.tail_num}</p>
-                  <StyledButton style={{marginLeft:'10px'}} onClick={() => navigate(`/SatelliteDetails/${item.id}`)}>Details</StyledButton>
+                  <StyledButton style={{marginLeft:'10px'}} onClick={() => navigate(`../SatelliteDetails/${item.id}`)}>Details</StyledButton>
                 </div>
               )
             })
@@ -170,8 +153,24 @@ export default function AssessmentDetails() {
           )}
         </label>
 
+        <br/>
+        <label>Creation Date:
+          {isEditing ? (
+            <input className='searchbar3' type='text' value={creation_date} onChange={(e) => { setCreationDate(e.target.value) }} />
+          ) : (
+            <p>{creation_date}</p>
+          )}
+        </label>
 
+        <br />
 
+        <label>Description:
+          {isEditing ? (
+            <textarea value={description} onChange={(e) => { setDescription(e.target.value) }} />
+          ) : (
+            <p>{description}</p>
+          )}
+        </label>
 
         <br />
 
@@ -185,23 +184,21 @@ export default function AssessmentDetails() {
         </label>
 
         <br /> */}
-        <div className='grid-3col'>
-        <label>Data Files
+
+        <label>Data Files:
           <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="data_files" isEditing={isEditing} />
         </label>
 
-    
-
-        <label>Simulation Files
+        <br />
+        <label>Simulation Files:
           <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="sim_files" isEditing={isEditing} />
         </label>
 
-    
-
-        <label>Misc Files
+        <br />
+        <label>Misc Files:
           <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="misc_files" isEditing={isEditing} />
         </label>
-        </div>
+
         <br />
 
         {Object.keys(activeUser).length>0 &&
@@ -219,7 +216,7 @@ export default function AssessmentDetails() {
 
         </CenterDiv>
 
-    </div>
+    </BackgroundDiv>
     );
   }
 }

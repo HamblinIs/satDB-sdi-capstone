@@ -70,7 +70,7 @@ export default function Login() {
           setActiveUser(response.userData)
           console.log(response.userData)
           alert('Login Successful!')
-          navigate('/')
+          navigate('/MainPage')
         }else{
           alert('Incorrect Username or Password.')
           console.log(response.status)
@@ -107,7 +107,7 @@ export default function Login() {
           alert('Created Account')
           setActiveUser(response.userData)
           console.log(response.userData)
-          navigate('/')
+          navigate('/MainPage')
         }else{
           alert('Failed to create account')
         }
@@ -135,7 +135,7 @@ export default function Login() {
             <p className='login-text'>Email</p>
             <input type='text' id='username' className='searchbar' placeholder='Email'></input>
             <p className='login-text'>Password</p>
-            <input type="text" id='password' className='searchbar' placeholder='Password'></input>
+            <input type="password" id='password' className='searchbar' placeholder='Password'></input>
             <button className='login-button' onClick={ () => checkLogin()}>Submit</button>
             <button className='login-button' onClick= {() => showChoice(2)}>Create Account</button>
           </>

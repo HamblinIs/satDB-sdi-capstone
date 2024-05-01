@@ -18,8 +18,10 @@ export default function({selected, onRemoveStation, onRemoveAll, onStationClick}
 
     return (
         <div className='Selected'>
+            <div className="SelectedHeader">
             <h2>Selected</h2>
             <p className='SmallButton' onClick={onRemoveAll}>Clear all</p>
+            </div>
             {selected.map((station, i) => {
                 return <StationCard
                     station={station}

@@ -2,9 +2,11 @@ import React, { useState, useContext } from 'react';
 import './Nav.css'
 import { Link, useMatch, useResolvedPath, useNavigate, Outlet } from 'react-router-dom';
 import { IoIosArrowDown, IoIosArrowUp, IoIosMenu } from "react-icons/io";
+import { UserContext } from '../../App.js'
 // import styled from 'styled-components'
 
 import { TfiMenu } from "react-icons/tfi"
+import { FaHome } from "react-icons/fa"
 
 // const DropdownContent = styled.div`
 //   display: ${props => (props.isOpen ? 'block' : 'none')};
@@ -17,6 +19,8 @@ import { TfiMenu } from "react-icons/tfi"
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
+  const [ openMenu, setOpenMenu ] = useState(false);
+  let { activeUser, setActiveUser } = React.useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -24,47 +28,99 @@ export default function Nav() {
     setIsOpen(!isOpen);
   };
 
-  const handleMouseLeave = () => {
-    // Check if the mouse is not over either the button or the dropdown
-    if (!document.querySelector('.create-button:hover') && !document.querySelector('.dropdown:hover')) {
-      setIsOpen(false);
-    }
-  };
+  // const handleMouseLeave = () => {
+  //   // Check if the mouse is not over either the button or the dropdown
+  //   if (!document.querySelector('.create-button:hover') && !document.querySelector('.dropdown:hover')) {
+  //     setIsOpen(false);
+  //   }
+  // };
 
   const handleLinkClick = () => {
     setIsOpen(false);
   };
 
   const viewDetails = () => {
-    navigate('/search')
+    navigate('search')
   }
 
   const viewGroundTrack = () => {
-    navigate('/satellites')
+    navigate('Satellites')
   }
 
+  const handleOpen = () => {
+    setOpenMenu(!openMenu)
+  }
+
+  const handleLogOut = () => {
+    setIsOpen(false);
+    setActiveUser({})
+  };
+
+  const handleHome = () => {
+    navigate('/MainPage')
+  }
+
+  const [category, setCategory] = useState('')
+
+
   return (
+
+    <>
+
     <div className='navbar'>
-      <TfiMenu className='hamburger'/>
+
+      <TfiMenu className='hamburger' onClick={handleOpen} style={{ position: 'relative' }}/>
+      {openMenu && (
+            <div className='dropdown' style={{ bottom: 'calc(100% + 5px)', left: 0 }}>
+              {activeUser.email ? (
+                <Link to="" onClick={handleLogOut}>Logout</Link>
+              ) : (
+                <Link to="Login" onClick={handleLinkClick}>Login</Link>
+              )}
+            </div>
+          )}
+
       <div className='linkcontainer'>
-        <div onMouseLeave={handleMouseLeave} style={{ position: 'relative' }}>
+      {activeUser.email ? (
+        <div style={{ position: 'relative' }}>
           <span class='create-button' onClick={handleToggle} style={{ position: 'relative' }}>
             Create {isOpen ? <IoIosArrowUp/> : <IoIosArrowDown/>}
           </span>
           {isOpen && (
             <div className='dropdown' style={{ bottom: 'calc(100% + 5px)', left: 0 }}>
-              <Link to="/CreateAssessment" onClick={handleLinkClick}>Create Assessment</Link>
-              <Link to="/CreateNewSatellite" onClick={handleLinkClick}>Create Satellite</Link>
+              <Link to="CreateAssessment" onClick={handleLinkClick}>Create Assessment</Link>
+              <Link to="CreateNewSatellite" onClick={handleLinkClick}>Create Satellite</Link>
             </div>
           )}
           </div>
-          <p onClick={viewDetails}>View</p>
+      ) : (
+        <div>
+        </div>
+      )}
+          <p onClick={viewDetails}>Search</p>
           <p onClick={viewGroundTrack}>Ground-Track</p>
-          <p>Satellite Orbit</p>
+          <p onClick={() => navigate('SatelliteModelOrbit')}>Satellite Orbit</p>
+          <FaHome className='home' onClick={handleHome} style={{ position: 'relative' }}/>
       </div>
       <p className='title'>Satellite Assessment Center</p>
-      <input type="search" className='searchbar' placeholder='Search for a Satellite or Assessment'></input>
-      
+
+
+
+      <input type="search" className='searchbar' placeholder='Search for a Satellite or Assessment' onChange></input>
+      <br/>
+      <div onChange={(e) => setCategory(e.target.value)}>
+      <label>
+        <input type="radio" value="satellites" name="search_category" /> Satellites
+      </label>
+      <label>
+        <input type="radio" value="assessments" name="search_category" /> Assessments
+      </label>
+      </div>
+
+
+
     </div>
+    </>
   )
+
 }

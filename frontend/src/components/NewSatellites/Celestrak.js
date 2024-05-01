@@ -153,7 +153,7 @@ export default function Celestrak({ setTLEData }) {
             <CenterDiv>
             <StyledButton onClick={() => navigate('../')}>Back</StyledButton>
             <h1>100 Brightest Satellites from Celestrak</h1>
-            
+
             <p>{`${currentPage} / ${totalPages}`}</p>
             <ButtonsDiv>
                 <StyledButton onClick={prevPage} disabled={currentPage === 1}>Prev</StyledButton>
@@ -161,22 +161,22 @@ export default function Celestrak({ setTLEData }) {
             </ButtonsDiv>
             </CenterDiv>
             {
-                <table>
+                <table className='table-mess'>
                     <thead>
                         <tr>
-                            <th>Satellite Name</th>
-                            <th>Line 1</th>
-                            <th>Line 2</th>
-                            <th>Ground Track</th>
+                            <th className='tada'>Satellite Name</th>
+                            <th className='tada'>Line 1</th>
+                            <th className='tada'>Line 2</th>
+                            <th className='tada'>Ground Track</th>
                         </tr>
                     </thead>
                     <tbody>
                         {pagedData.map((data, index) => (
                             <tr key={index}>
-                                <td>{data.satelliteName}</td>
-                                <td>{data.line1}</td>
-                                <td>{data.line2}</td>
-                                <td>
+                                <td className='tadaa'>{data.satelliteName}</td>
+                                <td className='tadaa'>{data.line1}</td>
+                                <td className='tadaa'>{data.line2}</td>
+                                <td className='tadaa'>
                                     <StyledButton2 onClick={() => {
                                         setTLEData(data); // sets one satellite's TLE for SatelliteGroundTrack to display
                                         navigate('../NewGroundTrack');

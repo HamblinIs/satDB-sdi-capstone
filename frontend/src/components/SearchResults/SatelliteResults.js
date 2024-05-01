@@ -98,7 +98,6 @@ const chooseCategory = (e) => {
 
 
 
-
   return (
     <CenterDiv>
       <SearchDiv>
@@ -129,14 +128,17 @@ const chooseCategory = (e) => {
 
 
           <div className='results-container' >
-          <h1 className='header'>Satellite Results</h1>
+          <h1 className='header'>
+              {category === 'satellites' ? 'Satellite Results' : 'Assessment Results'}
+            </h1>
           <table style={{ border: '1px solid black' }}>
 
-            <thead className='column-labels'>
-              <tr>
+            <thead>
+              <tr >
               {/* <h1>1</h1> */}
                 {Object.keys(sortedItems[0]).map((header, index) => (
                   <th key={index}><FilterButton onClick={() => handleSort2(header)}>{header.toUpperCase()}</FilterButton></th>
+                  // <th key={index} className="purple-header">{header.toUpperCase()}</th>
                 ))}
                   {/* <h1>h2</h1> */}
               </tr>
