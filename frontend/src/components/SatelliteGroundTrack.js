@@ -18,8 +18,8 @@ const StyledButton = styled.button`
     // justify-items:center;
     // align-items:center;
     // align-content:center;
-    color: black;
-    border-radius: 7px;
+    // or: black;
+    // der-radius: 7px;
     border: 1px solid black;
     background-color: #96a6ef;
     width: 170px;
@@ -290,7 +290,7 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
                         <Popup><h4>Starfire Optical Range</h4></Popup>
                     </Marker>
 
-                    {hasLineOfSight(starfire, [latitudes[0], longitudes[0], altitudes[0]]) && 
+                    {hasLineOfSight(starfire, [latitudes[0], longitudes[0], altitudes[0]]) &&
                     ( <Polyline positions={[starfire, [latitudes[0], longitudes[0]]]} color='blue' /> )
                     }
                     <Marker key="satellite_position" position={[latitudes[0], longitudes[0]]} icon={satelliteIcon}>
@@ -303,7 +303,7 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
                             Azimuth: {parseFloat(calculateAzimuth([starfire[0], starfire[1]], [latitudes[0], longitudes[0]]).toFixed(4))} deg from North <br/>
                             Elevation: {parseFloat(calculateElevationAngle(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toFixed(4))} deg from horizontal <br/>
                             Distance: {parseFloat(calculateTotalDistance(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toFixed(0))} km <br/>
-                            hasLineOfSight: {hasLineOfSight(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toString()} 
+                            hasLineOfSight: {hasLineOfSight(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toString()}
                         </Popup>
                     </Marker>
 

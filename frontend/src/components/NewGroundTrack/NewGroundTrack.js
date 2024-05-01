@@ -4,29 +4,9 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Polyline, Popup, GeoJSON} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
-const satellite = require('Celesktrak.js');
+import'./NewGroundTrack.css'
+const satellite = require('satellite.js');
 
-
-const StyleBox = styled.div`
-margin-top: 130px
-`
-
-const StyledButton = styled.button`
-    // display: flex;
-    // justify-content:center;
-    // justify-items:center;
-    // align-items:center;
-    // align-content:center;
-    color: black;
-    border-radius: 7px;
-    border: 1px solid black;
-    background-color: #96a6ef;
-    width: 170px;
-    height: 30px;
-`
-const StyledH1 = styled.h1`
-    color: white;
-`
 
 
 export default function SatelliteGroundTrack( { TLEData, setTLEData } ) {
@@ -218,34 +198,35 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
     const [showAlternatives, toggleShowAlternatives] = useState(false);
 
     return (
-
-      <div className='groundtrack-container'>
+<>
+      <span className='groundtrack-container'>
         <div>
-            <StyledButton onClick={() => navigate('/Satellites')}>Back to Celestrak Data</StyledButton>
-            <StyledButton onClick={toggleMapType}>Toggle Map View</StyledButton>
+            <button className='groundtrack-button' onClick={() => navigate('/Satellites')}>Back</button>
+            <button className='groundtrack-button' onClick={toggleMapType}>Toggle Map View</button>
 
             <br/>
-
-            <label style={{color: 'white'}}> Propagate
-                <input type="number" value={periodMultiplier} onChange={handlePeriodMultipler} min={1} max={20}/>
-                orbital periods
+            <div className='prop-container'>
+            <label className='prop-text'>{"Propagate "}
+                <input className='prop-input' type="number" value={periodMultiplier} onChange={handlePeriodMultipler} min={1} max={20}/>
+                {" orbital periods"}
             </label>
 
             <br/>
 
-            <button onClick={() => toggleShowAlternatives(!showAlternatives)}>{showAlternatives? `Hide alternatives` : `Show alternatives`}</button>
+            <button onClick={() => toggleShowAlternatives(!showAlternatives)}>{showAlternatives ? `Hide alternatives` : `Show alternatives`}</button>
 
             <br/>
+            </div>
 
             <form onSubmit={handleSubmit}>
-                <label>TLE:
+                <label className='prop-text'>TLE:
                     <textarea defaultValue={`${TLEData.line1}\n${TLEData.line2}`} style={{height: '32px', width: '600px'}} onChange={handleCustomTLE} readOnly={false} />
                 </label>
-                <button type="submit">Submit</button>
+                <button className='submit-button' type="submit">Submit</button>
             </form>
 
-        <StyleBox>
-            <StyledH1>{satelliteName}</StyledH1>
+            <div className='map-container'>
+            <h1 className='prop-text'>{satelliteName}</h1>
 
             <MapContainer center={[0, 0]} zoom={2} style={{ height: "90vh", width: "90%", marginLeft: "5%", border: "solid black" }}>
 
@@ -336,9 +317,10 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
 
 
             </MapContainer>
-        </StyleBox>
+            </div>
         </div>
-</div>
+</span>
+</>
     );
 
 };

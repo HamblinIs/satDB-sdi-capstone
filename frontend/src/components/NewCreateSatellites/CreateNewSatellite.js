@@ -101,7 +101,7 @@ return (
         <label>Orbital Regime
         <br/>
           <select name="orbitalRegime" value={satellite.orbitalRegime} onChange={handleChange}>
-            <option value="">--Please choose an option--</option>
+            <option value="">Select...</option>
             <option value="LEO">Low Earth Orbit (LEO)</option>
             <option value="MEO">Medium Earth Orbit (MEO)</option>
             <option value="GEO">Geostationary Orbit (GEO)</option>

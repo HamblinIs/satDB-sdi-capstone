@@ -1,7 +1,8 @@
 .groundtrack-container {
   align-self: center;
-  margin-top: 3%;
-  margin-inline: auto;
+  margin-top: 30px;
+  margin-left: 300px;
+  margin-bottom:30px;
   height: auto;
   width: 50vw;
   background: #1A2C80;
@@ -20,4 +21,56 @@
   flex-wrap: nowrap;
   flex-grow: 1;
   /* margin: auto; */
+}
+
+.groundtrack-button{
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 20vw;
+  height: 6vh;
+  border-radius: 30px;
+  flex-shrink: 0;
+  margin-left: 55px;
+  /* color: rgba(255, 255, 255, 1); */
+}
+
+.submit-button{
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 20vw;
+  height: 4vh;
+  border-radius: 30px;
+  flex-shrink: 0;
+  margin-left: 220px;
+  /* color: rgba(255, 255, 255, 1); */
+}
+
+.prop-container{
+margin-bottom: 30px;
+display: flex;
+flex-direction: column;
+text-align: center;
+align-items: center;
+align-content: center;
+justify-content: center;
+}
+
+.prop-text {
+  text-align: center;
+  font-size: 30px;
+  color: white;
+}
+
+.prop-input {
+margin-left: 7px;
+margin-right: 7px;
+min-height: 25px;
+max-height: 40px;
+font-size: large;
+}
+
+.map-container{
+  padding-bottom: 20px;
 }

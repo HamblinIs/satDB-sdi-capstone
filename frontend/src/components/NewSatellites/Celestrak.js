@@ -151,8 +151,8 @@ export default function Celestrak({ setTLEData }) {
 
 
             <h1>100 Brightest Satellites from Celestrak</h1>
-            <p>{`${currentPage} / ${totalPages}`}</p>
             <CenterDiv>
+            <p>{`${currentPage} / ${totalPages}`}</p>
             <ButtonsDiv>
                 <StyledButton onClick={prevPage} disabled={currentPage === 1}>Prev</StyledButton>
                 <StyledButton onClick={nextPage} disabled={currentPage === totalPages}>Next</StyledButton>
@@ -177,7 +177,7 @@ export default function Celestrak({ setTLEData }) {
                                 <td>
                                     <StyledButton2 onClick={() => {
                                         setTLEData(data); // sets one satellite's TLE for SatelliteGroundTrack to display
-                                        navigate('/SatelliteGroundTrack');
+                                        navigate('/NewGroundTrack');
                                         localStorage.setItem('currentPage', currentPage.toString())
                                     }}>
                                         Ground Track

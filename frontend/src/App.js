@@ -1,8 +1,8 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import HomePage from './components/HomePage';
-import AssessmentDetails from './components/AssessmentDetails';
-import SatelliteDetails from './components/SatelliteDetails';
+import AssessmentDetails from './components/NewAssessmentDetails/NewAssessmentDetails';
+import SatelliteDetails from './components/NewSatelliteDetails/NewSatelliteDetails';
 import CreateSatellite from './components/CreateSatellite';
 import CreateAssessment from './components/CreateAssessment/CreateAssessment'
 import CreateAccountLogin from './components/CreateAccountLogin';
@@ -19,6 +19,8 @@ import Login from './components/NewLogin/Login'
 import Background from './routes/Background'
 import CreateNewSatellite from './components/NewCreateSatellites/CreateNewSatellite'
 import Celestrak from './components/NewSatellites/Celestrak'
+import NewGroundTrack from './components/NewGroundTrack/NewGroundTrack'
+
 // import SatelliteResults from './components/SatelliteResults/SatelliteResults'
 
 export const UserContext = createContext();
@@ -59,7 +61,7 @@ function App() {
               <Route path="/AssessmentDetails/:id" element={<AssessmentDetails />} />
               <Route path="/SatelliteDetails/:id" element={<SatelliteDetails />} />
               <Route path="/Satellites" element={<Celestrak setTLEData={setTLEData} />} />
-              <Route path="/SatelliteGroundTrack" element={<SatelliteGroundTrack setTLEData={setTLEData} TLEData={TLEData} />} />
+              <Route path="/NewGroundTrack" element={<NewGroundTrack setTLEData={setTLEData} TLEData={TLEData} />} />
               <Route exact path ="/MainPage" element={<MainPage />} />
               <Route exact path ="/Background" element={<Background />} />
               {/* <Route exact path ="/SatelliteResults" element={<SatelliteResults />} /> */}

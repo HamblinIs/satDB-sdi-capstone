@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import FilesListViewer from '../FilesListViewer';
 
 
+
+
 export default function CreateAssessment() {
   const navigate = useNavigate();
   const[satellite, setSatellite] = useState('');
@@ -72,56 +74,56 @@ export default function CreateAssessment() {
 
   return (
     <div className="assessment-container" >
-      <h1>Create Assessment</h1>
+      <h1 className='create-satellite-text roboto-regular'>Create Assessment</h1>
       <>
         <label>Name:
-          <input type="text" name="name" value={assessment.name} onChange={handleChange} />
+          <input className='searchbar3' type="text" name="name" value={assessment.name} onChange={handleChange} size='24' />
         </label>
         <br/>
 
         <label>Associated Satellite:
-          <select id="associatedSat" name="associatedSat" value={assessment.associatedSat}  onChange={handleChange}>
-            <option value="">--Please choose an option--</option>
+          <br/>
+          <select id="associatedSat" name="associatedSat" value={assessment.associatedSat} onChange={handleChange}>
+            <option value="">Select...</option>
+            <option value="N/A">No Associated Satellites</option>
             {associatedSatList.map(sat =>
               <option key={sat.tail_num} value={sat.id}>{`${sat.name}, Tail #: ${sat.tail_num}`}</option>
             )}
-              <option value="N/A">No Associated Satellites</option>
           </select>
         </label>
         <br/>
 
         <label>Date:
-          <input type="date" name="creation_date" value={assessment.creation_date} onChange={handleChange} />
+          <input className='searchbar3' type="date" name="creation_date" value={assessment.creation_date} onChange={handleChange} />
         </label>
         <br/>
 
         <label>Description:
-          <textarea name="description" value={assessment.description} onChange={handleChange} />
+          <br/>
+          <textarea name="description"  value={assessment.description} onChange={handleChange} style={{height: '64px', width: '320px'}}/>
         </label>
         <br/>
 
         <label>Data Files:
           <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="data_files" isEditing={true} />
         </label>
-
         <br />
 
         <label>Simulation Files:
           <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="sim_files" isEditing={true} />
         </label>
-
         <br />
 
         <label>Misc Files:
           <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="misc_files" isEditing={true} />
         </label>
-
         <br />
 
         <label>Images:
           <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="images" isEditing={true} />
         </label>
 
+        <br/>
         <br/>
         <br/>
         <button onClick = {() => handleSubmit()}>Submit</button>
