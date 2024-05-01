@@ -182,14 +182,8 @@ const StyledButton2 = styled.button`
                         </table>
                     }
 
-<<<<<<< HEAD
            </BackgroundDiv>
            </CenterDiv>
-=======
-                </BackgroundDiv>
-            </CenterDiv>
-
->>>>>>> b1472a480ddae7bea47568fd7acfc2db9125fc7a
 
 
             </>

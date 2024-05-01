@@ -204,7 +204,7 @@ export class Engine {
 
         if (!this.geometry) {
 
-            this.geometry = new THREE.BoxBufferGeometry(size, size, size);
+            this.geometry = new THREE.BoxGeometry(size, size, size);
             this.material = new THREE.MeshPhongMaterial({
                 color: color,
                 emissive: 0xFF4040,

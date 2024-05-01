@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState} from 'react';
 import styled from 'styled-components'
-import Tracker from '../satellite-tracker/Tracker.js'
+import Tracker from '../Copied-satellite-tracker/Tracker.js'
 
 const CenterDiv = styled.div`
     justify-content: center;

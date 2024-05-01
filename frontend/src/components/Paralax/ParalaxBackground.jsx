@@ -1,5 +1,5 @@
 import React from 'react'
-import background from './background'
+import background from './background.png'
 
 const ParalaxBackground = () => {
   return (
