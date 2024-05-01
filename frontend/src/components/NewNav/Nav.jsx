@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import './Nav.css'
-import { Link, useMatch, useResolvedPath, useNavigate } from 'react-router-dom';
+import { Link, useMatch, useResolvedPath, useNavigate, Outlet } from 'react-router-dom';
 import { IoIosArrowDown, IoIosArrowUp, IoIosMenu } from "react-icons/io";
 // import styled from 'styled-components'
 
@@ -64,6 +64,7 @@ export default function Nav() {
       </div>
       <p className='title'>Satellite Assessment Center</p>
       <input type="search" className='searchbar' placeholder='Search for a Satellite or Assessment'></input>
+      
     </div>
   )
 }

@@ -28,10 +28,10 @@ class Search extends Component {
         const { stations, onResultClick } = this.props;
 
         return (
-            <LowerDiv className='Search'>
+            <>
                 <SearchBox value={this.state.searchText} onChange={this.handleSearchChanged} />
                 <SearchResults stations={stations} searchText={this.state.searchText} onResultClick={onResultClick} />
-            </LowerDiv>
+            </>
         )
     }
 }

@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Outlet } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import AssessmentDetails from './components/NewAssessmentDetails/NewAssessmentDetails';
 import SatelliteDetails from './components/NewSatelliteDetails/NewSatelliteDetails';
@@ -53,17 +53,23 @@ function App() {
             {/* <Navbar /> */}
             <Routes>
               <Route exact path ="/" element={<WelcomePage />} />
-              <Route exact path="/search" element={<HomePage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/CreateAssessment" element={<CreateAssessment />} />
-              <Route path="/CreateNewSatellite" element={<CreateNewSatellite />} />
+              <Route exact path ="/MainPage" element={<MainPage />} >
+                <Route path="login" element={<Login />} />
+                <Route path="search" element={<HomePage />} />
+                <Route path="CreateAssessment" element={<CreateAssessment />} />
+                <Route path="CreateNewSatellite" element={<CreateNewSatellite />} />
+                <Route path="AssessmentDetails/:id" element={<AssessmentDetails />} />
+                <Route path="SatelliteDetails/:id" element={<SatelliteDetails />} />
+                <Route path="Satellites" element={<Celestrak setTLEData={setTLEData} />} />
+                <Route path="NewGroundTrack" element={<NewGroundTrack setTLEData={setTLEData} TLEData={TLEData} />} />
+              </Route>
+              
+              
               <Route path="/SatelliteModelOrbit" element={<SatelliteModelOrbit />} />
               <Route path="/AccountRequestViewer" element={<AccountRequestViewer />} />
-              <Route path="/AssessmentDetails/:id" element={<AssessmentDetails />} />
-              <Route path="/SatelliteDetails/:id" element={<SatelliteDetails />} />
-              <Route path="/Satellites" element={<Celestrak setTLEData={setTLEData} />} />
-              <Route path="/NewGroundTrack" element={<NewGroundTrack setTLEData={setTLEData} TLEData={TLEData} />} />
-              <Route exact path ="/MainPage" element={<MainPage />} />
+              
+              
+              
               <Route exact path ="/Background" element={<Background />} />
               <Route exact path ="/SatelliteResults" element={<SatelliteResults />} />
             </Routes>

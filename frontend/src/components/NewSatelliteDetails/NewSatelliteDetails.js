@@ -125,49 +125,49 @@ export default function SatelliteDetails() {
   };
 
 
+  const myImagesArray = satellite.images.map(image => image.file_path_name);
+
 
 
   return (
-    <BackgroundDiv>
+    <div className="assessment-container">
         <CenterDiv>
 
-        <StyledButton onClick={() => navigate("/search")}>Back</StyledButton>
+        <StyledButton onClick={() => navigate("../")}>Back</StyledButton>
         <h1 className='roboto-regular'>Satellite Details</h1>
-
-        <label>Satellite Orbit:
+        <div className="grid-3x2">
+        <label>Satellite Orbit
             {isEditing ? (
             <input className='searchbar3' type="text" name="orbit" value={satellite.orbit} onChange={handleChange} />
             ) : (
             <p>{satellite.orbit}</p>
             )}
         </label>
-        <br />
 
-        <label>Satellite Owner:
+        <label>Satellite Owner
             {isEditing ? (
             <input className='searchbar3' type="text" name="owner" value={satellite.owner} onChange={handleChange} />
             ) : (
             <p>{satellite.owner}</p>
             )}
         </label>
-        <br />
 
-        <label>Satellite Name:
+        <label>Satellite Name
             {isEditing ? (
             <input className='searchbar3' type="text" name="name" value={satellite.name} onChange={handleChange} />
             ) : (
             <p>{satellite.name}</p>
             )}
         </label>
-        <br />
 
-        <label>Tail Number:
+        <label>Tail Number
             {isEditing ? (
             <input className='searchbar3' type="number" name="tail_num" value={satellite.tail_num} onChange={handleChange} />
             ) : (
             <p>{satellite.tail_num}</p>
             )}
         </label>
+        </div>
         <br />
 
         <label>Associated Assessments:
@@ -186,15 +186,19 @@ export default function SatelliteDetails() {
         </label>
         <br />
 
+        <div className="grid-2col">
         <label>CAD Models:
             <FilesListViewer state={satellite} setState={setSatellite} fileType="cad_models" isEditing={isEditing} />
         </label>
-        <br />
 
         <label>Image Files:
             <FilesListViewer state={satellite} setState={setSatellite} fileType="images" isEditing={isEditing} />
         </label>
-        <br />
+        </div>
+        {myImagesArray.length > 0 ?
+          <ImageViewer images={myImagesArray} />
+          : null
+        }
 
         {Object.keys(activeUser).length>0 &&
             (isEditing ? (
@@ -206,6 +210,6 @@ export default function SatelliteDetails() {
 
 
     </CenterDiv>
-    </BackgroundDiv>
+    </div>
   );
 }

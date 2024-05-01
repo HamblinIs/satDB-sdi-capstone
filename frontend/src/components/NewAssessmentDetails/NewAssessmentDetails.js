@@ -122,11 +122,12 @@ export default function AssessmentDetails() {
   if (assessmentInfo) {
 
     return (
-    <BackgroundDiv>
+    <div className='assessment-container'>
         <CenterDiv>
-        <StyledButton onClick={() => navigate("/search")}>Back</StyledButton>
+        <StyledButton onClick={() => navigate("../")}>Back</StyledButton>
         <h1 className='roboto-regular'>Assessment Details</h1>
 
+        <div className='grid-3col'>
         <label>Name:
           {isEditing ? (
             <input className='searchbar3' type='text'  value={name} onChange={(e) => { setName(e.target.value) }} />
@@ -135,7 +136,23 @@ export default function AssessmentDetails() {
           )}
         </label>
 
-        <br />
+        <label>Creation Date:
+          {isEditing ? (
+            <input className='searchbar3' type='text' value={creation_date} onChange={(e) => { setCreationDate(e.target.value) }} />
+          ) : (
+            <p>{creation_date}</p>
+          )}
+        </label>
+
+        <label>Description:
+          {isEditing ? (
+            <textarea value={description} onChange={(e) => { setDescription(e.target.value) }} />
+          ) : (
+            <p>{description}</p>
+          )}
+        </label>
+        </div>
+
 
         <label>Associated Satellites:
           {isEditing ? (
@@ -153,24 +170,8 @@ export default function AssessmentDetails() {
           )}
         </label>
 
-        <br/>
-        <label>Creation Date:
-          {isEditing ? (
-            <input className='searchbar3' type='text' value={creation_date} onChange={(e) => { setCreationDate(e.target.value) }} />
-          ) : (
-            <p>{creation_date}</p>
-          )}
-        </label>
 
-        <br />
 
-        <label>Description:
-          {isEditing ? (
-            <textarea value={description} onChange={(e) => { setDescription(e.target.value) }} />
-          ) : (
-            <p>{description}</p>
-          )}
-        </label>
 
         <br />
 
@@ -184,23 +185,23 @@ export default function AssessmentDetails() {
         </label>
 
         <br /> */}
-
-        <label>Data Files:
+        <div className='grid-3col'>
+        <label>Data Files
           <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="data_files" isEditing={isEditing} />
         </label>
 
-        <br />
+    
 
-        <label>Simulation Files:
+        <label>Simulation Files
           <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="sim_files" isEditing={isEditing} />
         </label>
 
-        <br />
+    
 
-        <label>Misc Files:
+        <label>Misc Files
           <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="misc_files" isEditing={isEditing} />
         </label>
-
+        </div>
         <br />
 
         {Object.keys(activeUser).length>0 &&
@@ -218,7 +219,7 @@ export default function AssessmentDetails() {
 
         </CenterDiv>
 
-    </BackgroundDiv>
+    </div>
     );
   }
 }
