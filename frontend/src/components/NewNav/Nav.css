@@ -4,7 +4,7 @@
   background: #1A2C80;
   border-radius: 22px;
   box-shadow: inset 5px 5px 9px 0px #FFFFFF, 15px 15px 8px 0px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
+  /* overflow: hidden; */
   display: grid;
   align-items: start;
   align-content: stretch;
@@ -26,7 +26,7 @@
   position: relative;
   width: 100%;
   background: rgba(255, 255, 255, 0);
-  overflow: hidden;
+  /* overflow: hidden; */
   display: flex;
   align-items: center;
   align-content: stretch;
@@ -67,7 +67,7 @@
   background-color: white;
   position: relative;
   width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
   display: flex;
   align-items: center;
   align-content: stretch;
@@ -77,4 +77,14 @@
   flex-grow: 1;
   grid-column: 2;
   grid-row: 2;
+}
+
+.dropdown {
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 200px;
+  border: 1px solid black;
+  z-index: 2;
 }

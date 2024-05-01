@@ -27,29 +27,44 @@ img {
 // images = ["filepath/image.png", "myimage.jpg"]
 
 
-class ImageViewer extends Component{
-  constructor(props){
-    super(props)
-    this.images = props.images
-  }
+// class ImageViewer extends Component{
+//   constructor(props){
+//     super(props)
+//     this.images = props.images
+//   }
 
-  render () {
-      return (
-        <>
+//   render () {
+//       return (
+//         <>
 
-            <StyledCarousel showArrows={true} >
-            {this.images.map( (item, index) => {
-            return (<div key={index}>
-              <img src={item} alt='satellite'/>
+//             <StyledCarousel showArrows={true} >
+//             {this.images.map( (item, index) => {
+//             return (<div key={index}>
+//               <img src={item} alt='satellite'/>
 
-            </div>
-            )})}
+//             </div>
+//             )})}
 
-            </StyledCarousel>
+//             </StyledCarousel>
 
-        </>
-        )
-      }
-    }
+//         </>
+//         )
+//       }
+//     }
+
+// export default ImageViewer;
+
+const ImageViewer = ({ images }) => {
+  return (
+    <StyledCarousel showArrows={true}>
+      {images && images.map((item, index) => (
+        <div key={index}>
+          <img src={item} alt='satellite' />
+        </div>
+      ))}
+    </StyledCarousel>
+  );
+}
 
 export default ImageViewer;
+

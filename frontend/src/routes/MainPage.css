@@ -1,0 +1,10 @@
+.nav { /* corrected class name */
+  position: relative;
+}
+
+.images {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}

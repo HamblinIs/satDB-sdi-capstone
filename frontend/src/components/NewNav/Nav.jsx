@@ -18,32 +18,48 @@ import { TfiMenu } from "react-icons/tfi"
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
   const handleMouseLeave = () => {
-    setIsOpen(false);
+    // Check if the mouse is not over either the button or the dropdown
+    if (!document.querySelector('.create-button:hover') && !document.querySelector('.dropdown:hover')) {
+      setIsOpen(false);
+    }
   };
 
   const handleLinkClick = () => {
     setIsOpen(false);
   };
 
+  const viewDetails = () => {
+    navigate('/search')
+  }
+
+  const viewGroundTrack = () => {
+    navigate('/satellites')
+  }
 
   return (
     <div className='navbar'>
       <TfiMenu className='hamburger'/>
       <div className='linkcontainer'>
-            <button className='button3' onMouseOver={handleToggle} onMouseLeave={handleMouseLeave}>
-              Create {isOpen ? <IoIosArrowUp/> : <IoIosArrowDown/>}
-            </button>
-            <div isOpen={isOpen}>
+        <div onMouseLeave={handleMouseLeave} style={{ position: 'relative' }}>
+          <span class='create-button' onClick={handleToggle} style={{ position: 'relative' }}>
+            Create {isOpen ? <IoIosArrowUp/> : <IoIosArrowDown/>}
+          </span>
+          {isOpen && (
+            <div className='dropdown' style={{ bottom: 'calc(100% + 5px)', left: 0 }}>
               <Link to="/CreateAssessment" onClick={handleLinkClick}>Create Assessment</Link>
-              <Link to="/CreateSatellite" onClick={handleLinkClick}>Create Satellite</Link>
+              <Link to="/CreateNewSatellite" onClick={handleLinkClick}>Create Satellite</Link>
             </div>
-          <p>View</p>
-          <p>Ground-Track</p>
+          )}
+          </div>
+          <p onClick={viewDetails}>View</p>
+          <p onClick={viewGroundTrack}>Ground-Track</p>
           <p>Satellite Orbit</p>
       </div>
       <p className='title'>Satellite Assessment Center</p>

@@ -146,6 +146,7 @@ export default function Celestrak({ setTLEData }) {
         return (
             <>
 <div className='satellite-container'>
+    <div className='content-wrapper'>
             <CenterDiv>
             <BackgroundDiv>
 
@@ -192,6 +193,7 @@ export default function Celestrak({ setTLEData }) {
 
             </BackgroundDiv>
             </CenterDiv>
+            </div>
 </div>
             </>
         );
