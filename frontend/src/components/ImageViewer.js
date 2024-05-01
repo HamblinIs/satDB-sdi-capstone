@@ -6,14 +6,18 @@ import styled from 'styled-components'
 
 
 const StyledCarousel = styled(Carousel)`
-margin: 10px;
+margin: auto;
+margin-top: 50px;
 height: 10%;
-width: 80%;
+width: 30%;
 
 .carousel .slide {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.thumb {
+display: none;
 }
 
 img {

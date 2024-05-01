@@ -1,10 +1,10 @@
 import React from 'react'
-import ParalaxBackground from '../components/Paralax/ParalaxBackground';
+import BackgroundParallax from '../components/Paralax/Parallax';
 
 const Background = () => {
   return (
     <div>
-        <ParalaxBackground/>
+        <BackgroundParallax />
     </div>
   )
 }
