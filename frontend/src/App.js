@@ -20,23 +20,24 @@ import Background from './routes/Background'
 import CreateNewSatellite from './components/NewCreateSatellites/CreateNewSatellite'
 import Celestrak from './components/NewSatellites/Celestrak'
 import NewGroundTrack from './components/NewGroundTrack/NewGroundTrack'
+import Parallax from './components/Paralax/Parallax'
 
 import SatelliteResults from './components/SearchResults/SatelliteResults'
 
 export const UserContext = createContext();
 
 
-const BackgroundDiv = styled.div`
-  background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
-  width: 100%;
-  height: 100%;
-  `
-  const BackgroundDiv2 = styled.div`
-  background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
-  width: 100%;
-  height:1000px;
-  transform: scaleY(-1);
-  `
+// const BackgroundDiv = styled.div`
+//   background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
+//   width: 100%;
+//   height: 100%;
+//   `
+  // const BackgroundDiv2 = styled.div`
+  // background-image: url('https://images.hdqwalls.com/download/space-art-minimal-na-1920x1080.jpg');
+  // width: 100%;
+  // height:1000px;
+  // transform: scaleY(-1);
+  // `
 
 
 function App() {
@@ -47,13 +48,13 @@ function App() {
 
   return (
     <>
-      {/* <BackgroundDiv className="App"> */}
+      <div className="App">
         <Router>
           <UserContext.Provider value={{activeUser, setActiveUser}}>
             {/* <Navbar /> */}
             <Routes>
-              <Route exact path ="/" element={<WelcomePage />} />
-              <Route exact path ="/MainPage" element={<MainPage />} >
+              <Route exact path ="/" element={<Parallax />} />
+              <Route exact path ="/home" element={<MainPage />} >
                 <Route path="login" element={<Login />} />
                 <Route path="search" element={<HomePage />} />
                 <Route path="CreateAssessment" element={<CreateAssessment />} />
@@ -75,7 +76,7 @@ function App() {
             </Routes>
           </UserContext.Provider>
         </Router>
-      {/* </BackgroundDiv> */}
+      </div>
     </>
   );
 }
