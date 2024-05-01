@@ -21,7 +21,7 @@ import CreateNewSatellite from './components/NewCreateSatellites/CreateNewSatell
 import Celestrak from './components/NewSatellites/Celestrak'
 import NewGroundTrack from './components/NewGroundTrack/NewGroundTrack'
 
-// import SatelliteResults from './components/SatelliteResults/SatelliteResults'
+import SatelliteResults from './components/SearchResults/SatelliteResults'
 
 export const UserContext = createContext();
 
@@ -65,7 +65,7 @@ function App() {
               <Route path="/NewGroundTrack" element={<NewGroundTrack setTLEData={setTLEData} TLEData={TLEData} />} />
               <Route exact path ="/MainPage" element={<MainPage />} />
               <Route exact path ="/Background" element={<Background />} />
-              {/* <Route exact path ="/SatelliteResults" element={<SatelliteResults />} /> */}
+              <Route exact path ="/SatelliteResults" element={<SatelliteResults />} />
             </Routes>
           </UserContext.Provider>
         </Router>

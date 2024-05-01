@@ -1,24 +1,53 @@
 .satellite-container {
+  position: relative;
   align-self: center;
   margin-top: 3%;
+  color: black;
   padding-right: 20%;
   margin-inline: auto;
   height: auto;
-  max-width: 50vw;
+  max-width: 70vw;
   background: #1A2C80;
   border: 1px solid #000000;
   border-radius: 34px;
   box-shadow: inset 5px 5px 9px 0px #FFFFFF, 15px 15px 8px 0px rgba(0, 0, 0, 0.3);
-  /* overflow: hidden; */
+  overflow: hidden;
   display: flex;
   align-items: start;
-  align-content: stretch;
-  justify-items: start;
   justify-content: center;
-  padding: 75px 75px 75px 75px;
+  padding: 5%;
   z-index: 0;
   /* flex-direction: column;
   flex-wrap: nowrap;
   flex-grow: 1; */
   /* margin: auto; */
+}
+
+.content-wrapper {
+  position: relative; /* Set position to relative */
+  width: 100%; /* Take up full width of the satellite container */
+}
+
+table {
+  width: 100%; /* Make the table width 100% of its container */
+  border-collapse: collapse; /* Collapse table borders */
+  table-layout: fixed; /* Fixed table layout */
+}
+
+th, td {
+  padding: 10px; /* Add padding to table cells */
+  text-align: left; /* Align text to the left */
+  border: 1px solid black; /* Add borders to table cells */
+  max-width: 25%; /* Limit maximum width of table cells */
+  word-wrap: break-word; /* Wrap long words */
+  white-space: normal;
+}
+
+th {
+  background-color: #1A2C80; /* Set background color for table header */
+  color: white; /* Set text color for table header */
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2; /* Alternate row background color */
 }
