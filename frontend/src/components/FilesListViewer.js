@@ -63,12 +63,14 @@ export default function FilesListViewer({ state, setState, fileType, isEditing }
                         if (isEditing) {
                             return (
                                 <div className='file-line'>
-                                <input type="text" key={index} value={obj.file_path_name} onChange={(e) => handleChange(e, index)} size='35' />
-                                <button className="remove-button" onClick={(e) => handleDelete(e, index)}>×</button>
+                                    <input type="text" key={index} value={obj.file_path_name} onChange={(e) => handleChange(e, index)} size='35' />
+                                    <button className="remove-button" onClick={(e) => handleDelete(e, index)}>×</button>
                                 </div>
                             )
                         } else {
-                            return (<p key={index} >{obj.file_path_name}</p>)
+                            return (
+                            <p className="file-p" key={index} >{obj.file_path_name}</p>
+                        )
                         }
 
                     })

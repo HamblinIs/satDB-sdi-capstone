@@ -1,6 +1,6 @@
 import React , { useState, useEffect, PureComponent } from 'react';
 import Papa from 'papaparse';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label, ResponsiveContainer } from 'recharts';
 // import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend} from 'recharts';
 
 
@@ -25,10 +25,10 @@ export default function SimpleLineChart() {
         return (
 
 
-
+            <ResponsiveContainer width="100%" height="100%">
             <LineChart
-                width={800}
-                height={600}
+                // width={800}
+                // height={600}
                 data={csvData}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                 style={{backgroundColor: 'white'}}
@@ -62,7 +62,7 @@ export default function SimpleLineChart() {
                 <Legend />
                 <Line type="monotone"  dataKey="magnitude" stroke="#1a2c80" strokeWidth={3} activeDot={{ r: 8 }} />
             </LineChart>
-
+            </ResponsiveContainer>
         // <AreaChart
         //   width={500}
         //   height={400}

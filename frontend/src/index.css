@@ -1,16 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Merriweather:wght@900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 body {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.9)), url('./components/Paralax/background.png');
+  background-size: contain;
+  background-repeat: repeat;
+  background-position: center;
+
+  height: 100%;
   margin: 0px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-    padding: 0;
-    height: 100%; /* Adjust based on content */
-    overflow-x: hidden;
-    overflow-y: auto;
+  padding-bottom: 200px;
 }
 
 code {
@@ -34,6 +37,13 @@ button {
   padding-inline: 40px;
   padding-block: 10px;
   border-radius: 10px;
+  cursor: pointer;
+  flex-grow: 0;
+}
+
+.back-button {
+  text-align: left;
+  width: fit-content;
 }
 
 .roboto-regular {
@@ -50,18 +60,15 @@ button {
 
 .assessment-container {
   align-self: center;
-  margin-top: 3%;
   margin-inline: auto;
   height: auto;
-  background: rgb(245, 246, 255);
+  background: rgb(232, 221, 252);
   border-radius: 34px;
   box-shadow: inset 5px 5px 9px 0px #FFFFFF, 15px 15px 8px 0px rgba(0, 0, 0, 0.3);
+  padding: 20px 75px 20px 75px;
   display: flex;
-  padding: 20px 75px 0px 75px;
-  z-index: 0;
   flex-direction: column;
-  flex-wrap: nowrap;
-  flex-grow: 1;
+  gap: 15px;
   text-align: center;
 }
 
@@ -89,6 +96,14 @@ button {
   flex-direction: row;
   flex-wrap: nowrap;
   flex-grow: 1;
+  border-color: #4a478a;
+}
+
+textarea {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  padding: 5px;
   border-color: #4a478a;
 }
 

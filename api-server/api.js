@@ -227,7 +227,7 @@ api.get('/assessments/:id', async (req, res) => {
        let misc_files = await knex.raw('SELECT DISTINCT misc_file.file_path_name FROM misc_file, misc_file_to_assessment, assessment WHERE ? = misc_file_to_assessment.assessment_id AND misc_file_to_assessment.misc_file_id = misc_file.id;', id);
        let assessments = await knex("assessment").select('name', 'description', 'creation_date').where({id: req.params.id});
        let assessment = assessments[0];
-       let satQuery = await knex.raw("SELECT satellite.* FROM satellite, satellite_to_assessment WHERE satellite_to_assessment.satellite_id = satellite.id AND satellite_to_assessment.assessment_id = 1;");
+       let satQuery = await knex.raw("SELECT satellite.* FROM satellite, satellite_to_assessment WHERE satellite_to_assessment.satellite_id = satellite.id AND satellite_to_assessment.assessment_id = ?;", id);
        assessment.satellites = satQuery["rows"];
        assessment.images = images["rows"];
        assessment.data_files = data_files["rows"];
@@ -235,6 +235,7 @@ api.get('/assessments/:id', async (req, res) => {
        assessment.sim_files = sim_files["rows"];
        assessment.user_accounts = user_accounts["rows"];
     //    assessment.assessments = assessments["rows"];
+    console.log(assessment.satellites)
        res.status(200).json(assessment)
     })
 /*

@@ -9,8 +9,11 @@
 }
 
 .file-list-wrapper {
+    display: flex;
+    flex-direction: column;
     border: 5px;
     border-color: black;
+    gap: 2px;
     /* background-color: black; */
 }
 
@@ -20,6 +23,18 @@ input {
     border-radius: 10px;
 }
 
-.file-line {
+.file-line input {
+    width: 20vw;
+}
 
+.file-line {
+    /* background-color: black; */
+    display: flex;
+
+}
+
+.file-p {
+    background-color: rgb(196, 173, 240);
+    padding: 3px;
+    margin: 0;
 }

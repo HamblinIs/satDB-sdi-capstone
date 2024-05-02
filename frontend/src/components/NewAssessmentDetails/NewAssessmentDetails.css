@@ -3,3 +3,18 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 40px;
 }
+
+.display-panel {
+    width: 400px;
+    height: 400px;
+}
+
+.chart-area {
+    width: fit-content;
+}
+
+.flex-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}

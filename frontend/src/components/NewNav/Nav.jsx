@@ -59,7 +59,7 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
   };
 
   const handleHome = () => {
-    navigate('/Home')
+    navigate('/home')
   }
 
 

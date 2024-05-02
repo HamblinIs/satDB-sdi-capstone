@@ -70,7 +70,7 @@ export default function Login() {
           setActiveUser(response.userData)
           console.log(response.userData)
           alert('Login Successful!')
-          navigate('/MainPage')
+          navigate('/home')
         }else{
           alert('Incorrect Username or Password.')
           console.log(response.status)
@@ -107,7 +107,7 @@ export default function Login() {
           alert('Created Account')
           setActiveUser(response.userData)
           console.log(response.userData)
-          navigate('/MainPage')
+          navigate('/home')
         }else{
           alert('Failed to create account')
         }
