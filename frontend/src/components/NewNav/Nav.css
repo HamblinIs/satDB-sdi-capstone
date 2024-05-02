@@ -17,6 +17,10 @@
   margin-inline: auto;
 }
 
+.create-button {
+  cursor: pointer;
+}
+
 .linkcontainer {
   font-size: 20px;
   position: relative;
@@ -39,6 +43,7 @@
   width: 100px;
   height: 41.5px;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .home {
@@ -47,7 +52,7 @@
   height: 35px;
   flex-shrink: 0;
   margin-bottom: 5px;
-  margin-left: ;
+  cursor: pointer;
 }
 
 .title {
@@ -92,4 +97,8 @@
   min-width: 200px;
   border: 1px solid black;
   z-index: 2;
+}
+
+.pointer {
+  cursor: pointer;
 }

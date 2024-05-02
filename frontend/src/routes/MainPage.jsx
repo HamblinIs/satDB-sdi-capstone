@@ -11,7 +11,7 @@ export default function MainPage( { setCategory, setSearchBarInput } ) {
   return (
     <div className='main-page'>
       {/* <nav> */}
-        
+
         {/* <ul>
           <li><Link to="login" >login</Link></li>
           <li><Link to="search" >search</Link></li>

@@ -70,7 +70,7 @@ export default function Login() {
           setActiveUser(response.userData)
           console.log(response.userData)
           alert('Login Successful!')
-          navigate('/home')
+          navigate('/home/SatelliteResults')
         }else{
           alert('Incorrect Username or Password.')
           console.log(response.status)

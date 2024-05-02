@@ -1,7 +1,7 @@
-.header {
+.result-header {
   font-size: 50px;
   color: white;
-  margin: auto;
+  margin: 20px;
   text-align: center;
 }
 
@@ -12,14 +12,18 @@
   height: auto;
   width: 90%;
   max-width: 800px;
-  background: #828595;
+  background: rgb(232, 221, 252);
   border: 1px solid #000000;
   border-radius: 34px;
   box-shadow: inset 5px 5px 9px 0px #FFFFFF, 15px 15px 8px 0px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5vw;
+  justify-items: center;
+  align-content: center;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  padding-bottom: 5vw;
   z-index: 0;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -27,6 +31,9 @@
   position: center;
 }
 
+.results-container FilterButton{
+  color: black;
+}
 .column-labels {
   background-color: purple;
   color: white;
