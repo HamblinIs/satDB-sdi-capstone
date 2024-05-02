@@ -28,7 +28,7 @@ export default function MainPage( { setCategory, setSearchBarInput } ) {
 
 
       <Nav setCategory={setCategory} setSearchBarInput={setSearchBarInput} />
-      <div className='page-container'>
+      <div>
           <Outlet/>
         </div>
       {/* <NewCreateSatellite/> */}

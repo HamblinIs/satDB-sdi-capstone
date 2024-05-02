@@ -1,19 +1,16 @@
 .navbar {
   color: white;
-  width: 75vw;
+  width: 100vw;
+  height:80px;
   background: #1A2C80;
-  border-radius: 22px;
-  box-shadow: inset 5px 5px 9px 0px #FFFFFF, 15px 15px 8px 0px rgba(0, 0, 0, 0.3);
-  /* overflow: hidden; */
-  display: grid;
-  align-items: start;
-  align-content: stretch;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
   justify-items: start;
-  justify-content: stretch;
+  justify-content: space-between;
   padding: 19px 54px 19px 54px;
   z-index: 0;
-  grid-template-rows: 1fr 1fr;
-  grid-template-columns: 1fr 1fr;
+
   margin-inline: auto;
 }
 
@@ -24,26 +21,26 @@
 .linkcontainer {
   font-size: 20px;
   position: relative;
-  width: 100%;
+  width: 100px;
   background: rgba(255, 255, 255, 0);
   /* overflow: hidden; */
   display: flex;
   align-items: center;
   align-content: stretch;
-  justify-content: space-around;
+  justify-content: space-evenly;
   flex-direction: row;
   flex-wrap: nowrap;
   flex-grow: 1;
-  grid-column: 2;
+  grid-column: 3;
   grid-row: 1;
 }
 
-.hamburger {
-  position: relative;
-  width: 100px;
-  height: 41.5px;
-  flex-shrink: 0;
-  cursor: pointer;
+.login {
+  grid-column: 4;
+  grid-row: 1;
+  align-self: center;
+  font-size: 20px;
+  color: white
 }
 
 .home {
@@ -52,7 +49,6 @@
   height: 35px;
   flex-shrink: 0;
   margin-bottom: 5px;
-  cursor: pointer;
 }
 
 .title {
@@ -62,10 +58,10 @@
   font-weight: 400;
   line-height: 1.2;
   width: 502px;
-  height: 39px;
+  height: 45px;
   align-self: center;
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 1;
 }
 
 .searchbar {
@@ -86,7 +82,14 @@
   flex-wrap: nowrap;
   flex-grow: 1;
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 1;
+}
+
+.radio {
+  margin-left: 20px;
+  grid-column: 2;
+  grid-row: 1;
+  justify-content: space-between;
 }
 
 .dropdown {
