@@ -4,12 +4,11 @@ Presentation
     1.1 Problem Statement
 
 2. Landing Page - Conan
-3. Homepage - HG
-4. Search - Liz
-5. Details - Liz
-6. Login/Create Account - Jacob
-7. Create - Jamiel
-8. Ground Track - Henry
-9. Satellite Orbit - Avery
+3. Homepage/Search - HG
+4. Details - Liz
+5. Login/Create Account - Jacob
+6. Create - Jamiel
+7. Ground Track - Henry
+8. Satellite Orbit - Avery
 
 This concludes our briefing. Are there any questions?
