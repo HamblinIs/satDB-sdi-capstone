@@ -137,7 +137,7 @@ export default function SatelliteResults( { category, searchTerm } ) {
 
           <div className='results-container' >
           <h1 className='result-header'>
-              {category === 'satellites' ? 'Satellite Results' : 'Assessment Results'}
+              {category === 'satellites' ? 'Satellites' : 'Assessments'}
             </h1>
           <table style={{ border: '1px solid black' }}>
 
