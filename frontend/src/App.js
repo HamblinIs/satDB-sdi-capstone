@@ -46,7 +46,7 @@ function App() {
 
   const [ TLEData, setTLEData] = useState({});
 
-  const [category, setCategory] = useState('satellites'); // for "satellites" or "assessments" search
+  const [category, setCategory] = useState('assessments'); // for "satellites" or "assessments" search
   const [searchBarInput, setSearchBarInput] = useState(''); // for Nav for changing search input
 
   return (

@@ -1,25 +1,22 @@
 .groundtrack-container {
+  position: relative;
   align-self: center;
-  margin-top: 30px;
-  margin-left: 300px;
-  margin-bottom:30px;
+  margin-top: 3%;
+  color: black;
+  padding-right: 20%;
+  margin-inline: auto;
   height: auto;
-  width: 50vw;
-  background: #1A2C80;
+  max-width: 70vw;
+  background: rgb(232, 221, 252);
   border: 1px solid #000000;
   border-radius: 34px;
   box-shadow: inset 5px 5px 9px 0px #FFFFFF, 15px 15px 8px 0px rgba(0, 0, 0, 0.3);
-  /* overflow: hidden; */
+  overflow: hidden;
   display: flex;
   align-items: start;
-  align-content: stretch;
-  justify-items: start;
   justify-content: center;
-  padding: 75px 75px 75px 75px;
-  z-index: 3;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  flex-grow: 1;
+  padding: 5%;
+  z-index: 0;
   /* margin: auto; */
 }
 
@@ -31,7 +28,8 @@
   height: 6vh;
   border-radius: 30px;
   flex-shrink: 0;
-  margin-left: 55px;
+  margin-left: 115px;
+  cursor: pointer;
   /* color: rgba(255, 255, 255, 1); */
 }
 
@@ -43,7 +41,7 @@
   height: 4vh;
   border-radius: 30px;
   flex-shrink: 0;
-  margin-left: 220px;
+  margin-left: 35%;
   /* color: rgba(255, 255, 255, 1); */
 }
 
@@ -60,7 +58,7 @@ justify-content: center;
 .prop-text {
   text-align: center;
   font-size: 30px;
-  color: white;
+  color: black;
 }
 
 .prop-input {

@@ -225,7 +225,7 @@ class Tracker extends Component {
 
         return (
             <>
-            <h1>Showing {this.props.constellation} Constellation</h1>
+            <h1 className = "constellation-header">Showing {this.props.constellation} Constellation</h1>
                 {/* <Info stations={stations} refMode={this.state.referenceFrame} /> */}
 
                 {UseDateSlider && <DateSlider min={initialDate} max={maxMs} value={currentDate} onChange={this.handleDateChange} onRender={this.renderDate} />}

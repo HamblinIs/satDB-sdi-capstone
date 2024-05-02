@@ -145,62 +145,8 @@ label {
   color: #4a478a;
 }
 
-.tracker-container {
-  align-self: center;
-  margin-top: 3%;
-  margin-inline: auto;
-  height: 1000px;;
-  width: 75vh;
-.tracker-container{
-  width: 50vw;
-  background: rgb(245, 246, 255);
-  border-radius: 34px;
-  box-shadow: inset 5px 5px 9px 0px #FFFFFF, 15px 15px 8px 0px rgba(0, 0, 0, 0.3);
-  /* overflow: hidden; */
-  display: flex;
-  align-items: flex-end;
-  align-content: flex-end;
-  justify-items: flex-end;
-  justify-content: flex-end;
-  padding-top: 100px;
-  flex-direction: column;
-  text-align: center;
-  gap: 20px;
-  max-height:2000px;
-}
-
-
-.globe-container{
+.globe-container {
   width: 100%;
   height: 700px;
-}  background: rgb(245, 246, 255);
-  border-radius: 34px;
-  box-shadow: inset 5px 5px 9px 0px #FFFFFF, 15px 15px 8px 0px rgba(0, 0, 0, 0.3);
-  /* overflow: hidden; */
-  color:  #4a478a;
-  display: flex;
-  flex-flow: column;
-  align-content: center;
   justify-items: center;
-  padding: 75px 75px 75px 75px;
-  z-index: 0;
-  flex-wrap: wrap;
-  flex-grow: 1;
-  text-align: center;
-  /* margin: auto; */
-}
-
-.globe-container {
-  /* height: 30vw;
-  width: 50vw; */
-  /* position: relative; */
-  /* display: flex; */
-  align-items: center;
-  align-content: center;
-  justify-items: center;
-  justify-content: center;
-
-  height: 500px;
-  width: 500px;
-  gap: 100px;
 }

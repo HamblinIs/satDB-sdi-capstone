@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
-import { MapContainer, TileLayer, Marker, Polyline, Popup, GeoJSON} from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Polyline, Popup, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
 import'./NewGroundTrack.css'
+
+
 const satellite = require('satellite.js');
 
 
@@ -150,13 +152,17 @@ export default function SatelliteGroundTrack( { TLEData, setTLEData } ) {
                         ];
 
     const satelliteIcon = L.icon({
-        iconUrl: 'satellite_icon.png',
+        iconUrl: '/satellite_icon.png',
         iconSize: [25, 25],
     });
 
 
-
-
+    // this fixed the marker icon issue
+    L.Icon.Default.mergeOptions({
+        iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+        iconUrl: require('leaflet/dist/images/marker-icon.png'),
+        shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+      });
 
 
 
@@ -195,13 +201,17 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
         }
     }
 
+    const handleBack = () => {
+        navigate('/home/Satellites')
+    }
+
     const [showAlternatives, toggleShowAlternatives] = useState(false);
 
     return (
 <>
-      <span className='groundtrack-container'>
+      <div className='groundtrack-container'>
         <div>
-            <button className='groundtrack-button' onClick={() => navigate('../Satellites')}>Back</button>
+            <button className='groundtrack-button' onClick={handleBack}>Back</button>
             <button className='groundtrack-button' onClick={toggleMapType}>Toggle Map View</button>
 
             <br/>
@@ -266,13 +276,11 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
                     <Marker key={idx} position={position} />
                 ))} */}
 
-                    <Marker key="starfire" position={starfire}>
+                    <Marker key="starfire" position={starfire} >
                         <Popup><h4>Starfire Optical Range</h4></Popup>
                     </Marker>
 
-                    {hasLineOfSight(starfire, [latitudes[0], longitudes[0], altitudes[0]]) &&
-                    ( <Polyline positions={[starfire, [latitudes[0], longitudes[0]]]} color='blue' /> )
-                    }
+                    <Polyline positions={[starfire, [latitudes[0], longitudes[0]]]} color='blue' />
                     <Marker key="satellite_position" position={[latitudes[0], longitudes[0]]} icon={satelliteIcon}>
                         <Popup>
                             <h4>Current Location</h4>
@@ -282,15 +290,12 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
                             Mountain Time: {times[0]} <br/>
                             Azimuth: {parseFloat(calculateAzimuth([starfire[0], starfire[1]], [latitudes[0], longitudes[0]]).toFixed(4))} deg from North <br/>
                             Elevation: {parseFloat(calculateElevationAngle(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toFixed(4))} deg from horizontal <br/>
-                            Distance: {parseFloat(calculateTotalDistance(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toFixed(0))} km <br/>
-                            hasLineOfSight: {hasLineOfSight(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toString()}
+                            Distance: {parseFloat(calculateTotalDistance(starfire, [latitudes[0], longitudes[0], altitudes[0]]).toFixed(0))} km
                         </Popup>
                     </Marker>
 
-                    {hasLineOfSight(starfire, myClosestPoint.closestPoint) &&
-                    ( <Polyline positions={[starfire, myClosestPoint.closestPoint]} color='blue' /> )
-                    }
-                    <Marker position={myClosestPoint.closestPoint}>
+                    <Polyline positions={[starfire, myClosestPoint.closestPoint]} color='blue' />
+                    <Marker position={myClosestPoint.closestPoint} >
                         <Popup>
                             <h4>Closest Future Location</h4>
                             Latitude: {myClosestPoint.closestPoint[0]} °N <br/>
@@ -299,8 +304,7 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
                             Mountain Time: {times[myClosestPoint.index]} <br/>
                             Azimuth: {parseFloat(calculateAzimuth([starfire[0], starfire[1]], [myClosestPoint.closestPoint[0], myClosestPoint.closestPoint[1]]).toFixed(4))} deg from North <br/>
                             Elevation: {parseFloat(calculateElevationAngle(starfire, myClosestPoint.closestPoint).toFixed(4))} deg from horizontal <br/>
-                            Distance: {parseFloat(calculateTotalDistance(starfire, myClosestPoint.closestPoint).toFixed(0))} km <br/>
-                            hasLineOfSight: {hasLineOfSight(starfire, myClosestPoint.closestPoint).toString()}
+                            Distance: {parseFloat(calculateTotalDistance(starfire, myClosestPoint.closestPoint).toFixed(0))} km
                         </Popup>
                     </Marker>
 
@@ -325,7 +329,7 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
             </MapContainer>
             </div>
         </div>
-</span>
+</div>
 </>
     );
 
@@ -455,46 +459,33 @@ function calculateAzimuth([lat1, lon1], [lat2, lon2]) {
 
 
 function calculateElevationAngle([lat1, lon1, alt1], [lat2, lon2, alt2]) {
-    const R = 6371; // Radius of the Earth in km
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
+    // function toRadians(degrees) {return degrees * Math.PI / 180;}
 
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-              Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    // // Radius of the Earth in kilometers
+    // const R = 6371;
 
-    const los = Math.sqrt((alt1 + R) ** 2 + (alt2 + R) ** 2 - 2 * (alt1 + R) * (alt2 + R) * Math.cos(c));
+    // // Convert latitudes and longitudes from degrees to radians
+    // lat1 = toRadians(lat1);
+    // lon1 = toRadians(lon1);
+    // lat2 = toRadians(lat2);
+    // lon2 = toRadians(lon2);
 
-    const B = Math.acos(((alt1 + R) ** 2 + los ** 2 - (alt2 + R) ** 2) / (2 * (alt1 + R) * los));
+    // // Calculate the difference in longitudes
+    // const dLon = lon2 - lon1;
 
-    const B_deg = B * 180 / Math.PI;
+    // // Calculate the distance between the two points on the Earth's surface
+    // const d = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(dLon)) * R;
 
-    const elevationAngle = B_deg - 90;
+    const d = haversineDistance(lat1, lon1, lat2, lon2)
 
-    return elevationAngle;
-}
+    // Calculate the difference in altitudes
+    const h = alt2 - alt1;
 
+    // Calculate the elevation angle
+    const elevationAngle = Math.atan2(h, d);
 
+    // Convert the elevation angle from radians to degrees
+    const elevationAngleInDegrees = elevationAngle * 180 / Math.PI;
 
-function hasLineOfSight([lat1, lon1, alt1], [lat2, lon2, alt2]) {
-    const R = 6371; // Radius of the Earth in km
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-              Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-    const d = R * c; // Distance between points in km, (this is haversine distance)
-    console.log("d", d);
-    // const d2 = haversineDistance(lat1, lon1, lat2, lon2);
-    // console.log("d2", d2);
-
-
-    // Calculate the line of sight distance (this is law of cosines, is this valid?)
-    const los = Math.sqrt((alt1 + R) ** 2 + (alt2 + R) ** 2 - 2 * (alt1 + R) * (alt2 + R) * Math.cos(c));
-
-    return d <= los;
+    return elevationAngleInDegrees;
 }

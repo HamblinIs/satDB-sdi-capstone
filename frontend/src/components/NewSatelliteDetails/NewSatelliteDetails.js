@@ -118,7 +118,7 @@ export default function SatelliteDetails() {
       
 
         <button className='back-button' onClick={() => navigate("../search")}>Back</button>
-        <h1 className='roboto-regular'>Satellite Details</h1>
+        <h1 className='roboto-regular'>{satellite.name}</h1>
         <div className="grid-3x2">
         <label>Satellite Orbit
             {isEditing ? (

@@ -55,11 +55,13 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
 
   const handleLogOut = () => {
     setIsOpen(false);
-    setActiveUser({})
+    setActiveUser({});
   };
 
   const handleHome = () => {
-    navigate('/home')
+    setCategory('assessments');
+    setSearchBarInput('');
+    navigate('SatelliteResults')
   }
 
 
@@ -91,11 +93,11 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
       <div className='linkcontainer'>
       {activeUser.email ? (
         <div style={{ position: 'relative' }}>
-          <span class='create-button' onClick={handleToggle} style={{ position: 'relative' }}>
+          <span className='create-button' onClick={handleToggle} style={{ position: 'relative' }}>
             Create {isOpen ? <IoIosArrowUp/> : <IoIosArrowDown/>}
           </span>
           {isOpen && (
-            <div className='dropdown' style={{ bottom: 'calc(100% + 5px)', left: 0 }}>
+            <div className='dropdown' style={{ top: '40px', left: 0 }}>
               <Link to="CreateAssessment" onClick={handleLinkClick}>Create Assessment</Link>
               <Link to="CreateNewSatellite" onClick={handleLinkClick}>Create Satellite</Link>
             </div>

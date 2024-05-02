@@ -145,28 +145,23 @@ export default function Celestrak({ setTLEData }) {
     if (pagedData.length > 0) {
         return (
             <>
-<div className='satellite-container'>
+<div className='assessment-container'>
     <div className='content-wrapper'>
-            <CenterDiv>
-            <BackgroundDiv>
 
-            <CenterDiv>
-            <button onClick={() => navigate('../')}>Back</button>
+            <button onClick={() => navigate('/home/SatelliteResults')}>Back</button>
             <h1>100 Brightest Satellites from Celestrak</h1>
 
             <p>{`${currentPage} / ${totalPages}`}</p>
-            <ButtonsDiv>
-                <button onClick={prevPage} disabled={currentPage === 1}>Prev</button>
-                <button onClick={nextPage} disabled={currentPage === totalPages}>Next</button>
-            </ButtonsDiv>
-            </CenterDiv>
+                <button className = "pagebutton" onClick={prevPage} disabled={currentPage === 1}>Prev</button>
+                <button className = "pagebutton" onClick={nextPage} disabled={currentPage === totalPages}>Next</button>
+                <br/>
             {
+
                 <table className='table-mess'>
                     <thead>
                         <tr>
                             <th className='tada'>Satellite Name</th>
-                            <th className='tada'>Line 1</th>
-                            <th className='tada'>Line 2</th>
+                            <th className='tada'>TLE</th>
                             <th className='tada'>Ground Track</th>
                         </tr>
                     </thead>
@@ -174,10 +169,9 @@ export default function Celestrak({ setTLEData }) {
                         {pagedData.map((data, index) => (
                             <tr key={index}>
                                 <td className='tadaa'>{data.satelliteName}</td>
-                                <td className='tadaa'>{data.line1}</td>
-                                <td className='tadaa'>{data.line2}</td>
+                                <td className='tadaa'>{data.line1 + "\n"} {data.line2}</td>
                                 <td className='tadaa'>
-                                    <button onClick={() => {
+                                    <button className ="ground-track-button" onClick={() => {
                                         setTLEData(data); // sets one satellite's TLE for SatelliteGroundTrack to display
                                         navigate('../NewGroundTrack');
                                         localStorage.setItem('currentPage', currentPage.toString())
@@ -192,8 +186,6 @@ export default function Celestrak({ setTLEData }) {
             }
 
 
-            </BackgroundDiv>
-            </CenterDiv>
             </div>
 </div>
             </>
