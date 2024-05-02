@@ -104,7 +104,6 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
           )}
           </div>
       ) : ([])}
-          <p onClick={viewDetails}>Search</p>
           <p onClick={viewGroundTrack}>Ground-Track</p>
           <p onClick={() => navigate('SatelliteModelOrbit')}>Satellite Orbit</p>
           <FaHome className='home' onClick={handleHome} style={{ position: 'relative' }}/>
