@@ -70,24 +70,24 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
     navigate('SatelliteResults');
   }
 
-
   return (
-
-    <>
-
     <div className='navbar'>
-
-      <TfiMenu className='hamburger' onClick={handleOpen} style={{ position: 'relative' }}/>
-      {openMenu && (
-            <div className='dropdown' style={{ bottom: 'calc(100% + 5px)', left: 0 }}>
-              {activeUser.email ? (
-                <Link to="" onClick={handleLogOut}>Logout</Link>
-              ) : (
-                <Link to="Login" onClick={handleLinkClick}>Login</Link>
-              )}
-            </div>
-          )}
-
+      {/* TITLE DIV */}
+      <p className='title'>Satellite Assessment Center</p>
+      {/* SEARCH DIV */}
+        <form onSubmit={handleSubmitSearch}>
+          <input type="search" className='searchbar' placeholder='Search...' onChange={e => tempSearchBarInput = e.target.value}></input>
+        </form>
+      {/* RADIO DIV */}
+        <form className='radio' onChange={e => setCategory(e.target.value)}>
+          <label>
+            <input type="radio" value="satellites" name="search_category" defaultChecked /> Satellites
+          </label>
+          <label>
+            <input type="radio" value="assessments" name="search_category" /> Assessments
+          </label>
+        </form>
+      {/* LINK/Create DIV */}
       <div className='linkcontainer'>
       {activeUser.email ? (
         <div style={{ position: 'relative' }}>
@@ -101,37 +101,18 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
             </div>
           )}
           </div>
-      ) : (
-        <div>
-        </div>
-      )}
+      ) : ([])}
           <p onClick={viewDetails}>Search</p>
           <p onClick={viewGroundTrack}>Ground-Track</p>
           <p onClick={() => navigate('SatelliteModelOrbit')}>Satellite Orbit</p>
           <FaHome className='home' onClick={handleHome} style={{ position: 'relative' }}/>
+          {!activeUser.email ? (
+          <Link to="Login" className="login" onClick={handleLinkClick}>Login</Link>
+        ) : ([]) }
+        {activeUser.email ? (
+          <Link to=""  className="login" onClick={handleLogOut}>Logout</Link>
+        ) : ([]) }
       </div>
-      <p className='title'>Satellite Assessment Center</p>
-
-
-      <form onSubmit={handleSubmitSearch}>
-        <input type="search" className='searchbar' placeholder='Search...' onChange={e => tempSearchBarInput = e.target.value}></input>
-      </form>
-
-      <br/>
-
-      <form onChange={e => setCategory(e.target.value)}>
-        <label>
-          <input type="radio" value="satellites" name="search_category" defaultChecked /> Satellites
-        </label>
-        <label>
-          <input type="radio" value="assessments" name="search_category" /> Assessments
-        </label>
-      </form>
-
-
-
     </div>
-    </>
   )
-
 }

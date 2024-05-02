@@ -151,13 +151,13 @@ export default function Celestrak({ setTLEData }) {
             <BackgroundDiv>
 
             <CenterDiv>
-            <StyledButton onClick={() => navigate('../')}>Back</StyledButton>
+            <button onClick={() => navigate('../')}>Back</button>
             <h1>100 Brightest Satellites from Celestrak</h1>
 
             <p>{`${currentPage} / ${totalPages}`}</p>
             <ButtonsDiv>
-                <StyledButton onClick={prevPage} disabled={currentPage === 1}>Prev</StyledButton>
-                <StyledButton onClick={nextPage} disabled={currentPage === totalPages}>Next</StyledButton>
+                <button onClick={prevPage} disabled={currentPage === 1}>Prev</button>
+                <button onClick={nextPage} disabled={currentPage === totalPages}>Next</button>
             </ButtonsDiv>
             </CenterDiv>
             {
@@ -177,13 +177,13 @@ export default function Celestrak({ setTLEData }) {
                                 <td className='tadaa'>{data.line1}</td>
                                 <td className='tadaa'>{data.line2}</td>
                                 <td className='tadaa'>
-                                    <StyledButton2 onClick={() => {
+                                    <button onClick={() => {
                                         setTLEData(data); // sets one satellite's TLE for SatelliteGroundTrack to display
                                         navigate('../NewGroundTrack');
                                         localStorage.setItem('currentPage', currentPage.toString())
                                     }}>
                                         Ground Track
-                                    </StyledButton2>
+                                    </button>
                                 </td>
                             </tr>
                         ))}
