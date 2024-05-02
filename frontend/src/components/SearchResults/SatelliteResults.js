@@ -6,6 +6,7 @@ import './SatelliteResults.css'
 
 
 
+
 const imageUrl = "https://mir-s3-cdn-cf.behance.net/project_modules/disp/9e715d17935609.562c11d9e3832.gif"
 
 export default function SatelliteResults( { category, searchTerm } ) {
@@ -22,13 +23,13 @@ export default function SatelliteResults( { category, searchTerm } ) {
         .then((data) => {
           const addLink = data.map((item) => {
             item.view = (
-              <DetailsButton
+              <button
                 onClick={() => {
                   navigate(`../SatelliteDetails/${item.id}`);
                 }}
               >
                 Details
-              </DetailsButton>
+              </button>
             );
             return item;
           });
@@ -40,13 +41,13 @@ export default function SatelliteResults( { category, searchTerm } ) {
         .then((data) => {
           var addLink = data.map((item) => {
             item.view = (
-              <DetailsButton
+              <button
                 onClick={() => {
                   navigate(`../AssessmentDetails/${item.id}`);
                 }}
               >
                 Details
-              </DetailsButton>
+              </button>
             );
             item.creation_date = item.creation_date.slice(0, 10);
             return item;
@@ -135,16 +136,17 @@ export default function SatelliteResults( { category, searchTerm } ) {
 
 
           <div className='results-container' >
-          <h1 className='header'>
+          <h1 className='result-header'>
               {category === 'satellites' ? 'Satellite Results' : 'Assessment Results'}
             </h1>
           <table style={{ border: '1px solid black' }}>
 
             <thead>
+
               <tr >
               {/* <h1>1</h1> */}
                 {Object.keys(sortedItems[0]).map((header, index) => (
-                  <th key={index}><FilterButton onClick={() => handleSort2(header)}>{header.toUpperCase()}</FilterButton></th>
+                  <th key={index}><button onClick={() => handleSort2(header)}>{header.toUpperCase()}</button></th>
                   // <th key={index} className="purple-header">{header.toUpperCase()}</th>
                 ))}
                   {/* <h1>h2</h1> */}

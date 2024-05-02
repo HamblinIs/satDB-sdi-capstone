@@ -55,11 +55,13 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
 
   const handleLogOut = () => {
     setIsOpen(false);
-    setActiveUser({})
+    setActiveUser({});
   };
 
   const handleHome = () => {
-    navigate('/home')
+    setCategory('assessments');
+    setSearchBarInput('');
+    navigate('SatelliteResults')
   }
 
 
@@ -79,9 +81,9 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
 
       <TfiMenu className='hamburger' onClick={handleOpen} style={{ position: 'relative' }}/>
       {openMenu && (
-            <div className='dropdown' style={{ bottom: 'calc(100% + 5px)', left: 0 }}>
+            <div className='dropdown' style={{ left: '20px', left: 0 }}>
               {activeUser.email ? (
-                <Link to="" onClick={handleLogOut}>Logout</Link>
+                <Link to="/home/SatelliteResults" onClick={handleLogOut}>Logout</Link>
               ) : (
                 <Link to="Login" onClick={handleLinkClick}>Login</Link>
               )}
@@ -91,11 +93,11 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
       <div className='linkcontainer'>
       {activeUser.email ? (
         <div style={{ position: 'relative' }}>
-          <span class='create-button' onClick={handleToggle} style={{ position: 'relative' }}>
+          <span className='create-button' onClick={handleToggle} style={{ position: 'relative' }}>
             Create {isOpen ? <IoIosArrowUp/> : <IoIosArrowDown/>}
           </span>
           {isOpen && (
-            <div className='dropdown' style={{ bottom: 'calc(100% + 5px)', left: 0 }}>
+            <div className='dropdown' style={{ top: '40px', left: 0 }}>
               <Link to="CreateAssessment" onClick={handleLinkClick}>Create Assessment</Link>
               <Link to="CreateNewSatellite" onClick={handleLinkClick}>Create Satellite</Link>
             </div>
@@ -105,9 +107,8 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
         <div>
         </div>
       )}
-          <p onClick={viewDetails}>Search</p>
-          <p onClick={viewGroundTrack}>Ground-Track</p>
-          <p onClick={() => navigate('SatelliteModelOrbit')}>Satellite Orbit</p>
+          <p className='pointer' onClick={viewGroundTrack}>Ground-Track</p>
+          <p className='pointer' onClick={() => navigate('SatelliteModelOrbit')}>Satellite Orbit</p>
           <FaHome className='home' onClick={handleHome} style={{ position: 'relative' }}/>
       </div>
       <p className='title'>Satellite Assessment Center</p>
@@ -121,10 +122,10 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
 
       <form onChange={e => setCategory(e.target.value)}>
         <label>
-          <input type="radio" value="satellites" name="search_category" defaultChecked /> Satellites
+          <input type="radio" value="assessments" name="search_category" defaultChecked /> Assessments
         </label>
         <label>
-          <input type="radio" value="assessments" name="search_category" /> Assessments
+          <input type="radio" value="satellites" name="search_category" /> Satellites
         </label>
       </form>
 

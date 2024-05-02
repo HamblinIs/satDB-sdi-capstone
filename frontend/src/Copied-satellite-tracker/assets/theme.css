@@ -1,13 +1,7 @@
 
 .SearchBox {
-    border: none;
-    border-radius: 0px;
-    padding: 5px 0;
-    width: 100%;
-    border-bottom: 2px solid white;
-    background-color: white;
-    font-size: 2em;
-    outline: none;
+    height: 2vw;
+    margin-top: 10px;
 }
 
 .Result {
@@ -24,7 +18,6 @@
     font-size: small;
     cursor: pointer;
     overflow: hidden;
-    white-space: nowrap;
 }
 
 
@@ -38,9 +31,9 @@
     font-size: 0.8em;
 }
 
-.Highlights {
+/* .Highlights {
     text-align: center;
-}
+} */
 
 
 /* @media only screen and (max-width: 999px) {
@@ -82,11 +75,6 @@
 
 @media screen and (min-width: 1000px) { */
 
-    .Info {
-        position: absolute;
-        top: 100px;
-        left: 50px;
-    }
 
     .Search {
         max-width: 100px;
@@ -107,14 +95,14 @@
         gap: 15px;
     }
 
-    .Highlights {
+    /* .Highlights {
         position: absolute;
         top: 10px;
         width: 100%;
     }
 
     .Hint { font-size: 0.9em;}
-    .Highlight { font-size: 3em;}
+    .Highlight { font-size: 3em;} */
 
     .ResultsWrapper {
         margin-top: 10px;
