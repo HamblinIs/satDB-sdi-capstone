@@ -17,7 +17,9 @@ import { FaHome } from "react-icons/fa"
 //   z-index: 1;
 // `;
 
-export default function Nav() {
+
+
+export default function Nav( { setCategory, setSearchBarInput } ) {
   const [isOpen, setIsOpen] = useState(false);
   const [ openMenu, setOpenMenu ] = useState(false);
   let { activeUser, setActiveUser } = React.useContext(UserContext);
@@ -57,10 +59,16 @@ export default function Nav() {
   };
 
   const handleHome = () => {
-    navigate('/MainPage')
+    navigate('/Home')
   }
 
-  const [category, setCategory] = useState('')
+
+  let tempSearchBarInput = '';
+  const handleSubmitSearch = (e) => {
+    e.preventDefault();
+    setSearchBarInput(tempSearchBarInput.trim());
+    navigate('SatelliteResults');
+  }
 
 
   return (
@@ -105,17 +113,20 @@ export default function Nav() {
       <p className='title'>Satellite Assessment Center</p>
 
 
+      <form onSubmit={handleSubmitSearch}>
+        <input type="search" className='searchbar' placeholder='Search...' onChange={e => tempSearchBarInput = e.target.value}></input>
+      </form>
 
-      <input type="search" className='searchbar' placeholder='Search for a Satellite or Assessment' onChange></input>
       <br/>
-      <div onChange={(e) => setCategory(e.target.value)}>
-      <label>
-        <input type="radio" value="satellites" name="search_category" /> Satellites
-      </label>
-      <label>
-        <input type="radio" value="assessments" name="search_category" /> Assessments
-      </label>
-      </div>
+
+      <form onChange={e => setCategory(e.target.value)}>
+        <label>
+          <input type="radio" value="satellites" name="search_category" defaultChecked /> Satellites
+        </label>
+        <label>
+          <input type="radio" value="assessments" name="search_category" /> Assessments
+        </label>
+      </form>
 
 
 

@@ -1,5 +1,5 @@
-import React , { useState } from 'react';
-import {useNavigate} from 'react-router-dom';
+import React , { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 // import ImageViewer from './ImageViewer';
 import styled from 'styled-components'
 import './SatelliteResults.css'
@@ -8,51 +8,58 @@ import './SatelliteResults.css'
 
 const imageUrl = "https://mir-s3-cdn-cf.behance.net/project_modules/disp/9e715d17935609.562c11d9e3832.gif"
 
-export default function SatelliteResults() {
+export default function SatelliteResults( { category, searchTerm } ) {
+
 
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] =  useState('desending')
-  const [category, setCategory] = useState('')
   const [queryData, setAllQueryData] = useState([]);
 
-  const handleSearch = () => {
-    if(category === 'satellites'){
+  useEffect(() => {
+    if (category === "satellites") {
       fetch(`http://localhost:8080/satellites?name=${searchTerm}`)
-      .then(response => response.json())
-      .then(data => {
-        const addLink = data.map(item => {
-          item.view = <DetailsButton onClick = {() => {
-              navigate(`/SatelliteDetails/${item.id}`);
-          }}>Details</DetailsButton>
-
-          return (item)
-        })
-        setAllQueryData(addLink)
-      })
-    }
-    else if(category === 'assessments'){
+        .then((response) => response.json())
+        .then((data) => {
+          const addLink = data.map((item) => {
+            item.view = (
+              <DetailsButton
+                onClick={() => {
+                  navigate(`../SatelliteDetails/${item.id}`);
+                }}
+              >
+                Details
+              </DetailsButton>
+            );
+            return item;
+          });
+          setAllQueryData(addLink);
+        });
+    } else if (category === "assessments") {
       fetch(`http://localhost:8080/assessments?name=${searchTerm}`)
-      .then(response => response.json())
-      .then(data => {
-        var addLink = data.map(item => {
-          item.view = <DetailsButton onClick = {() => {
-              navigate(`/AssessmentDetails/${item.id}`);
-          }}>Details</DetailsButton>
-          item.creation_date = item.creation_date.slice(0,10)
-          return (item)
-        })
-        setAllQueryData(addLink)
-      })
+        .then((response) => response.json())
+        .then((data) => {
+          var addLink = data.map((item) => {
+            item.view = (
+              <DetailsButton
+                onClick={() => {
+                  navigate(`../AssessmentDetails/${item.id}`);
+                }}
+              >
+                Details
+              </DetailsButton>
+            );
+            item.creation_date = item.creation_date.slice(0, 10);
+            return item;
+          });
+          setAllQueryData(addLink);
+        });
     }
+    console.log("testing", queryData);
+  }, [searchTerm, category]);
 
-    console.log("testing", queryData)
-  }
 
 
-const chooseCategory = (e) => {
-  setCategory(e.target.value);
-}
+
 
 
   // FILTER FEATURES
@@ -100,7 +107,7 @@ const chooseCategory = (e) => {
 
   return (
     <CenterDiv>
-      <SearchDiv>
+      {/* <SearchDiv>
 
         <h3>Search for:
           <div onChange={chooseCategory}>
@@ -121,7 +128,7 @@ const chooseCategory = (e) => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <StyledButton onClick={() => handleSearch()}>Search</StyledButton>
-      </SearchDiv>
+      </SearchDiv> */}
       {sortedItems.length > 0 ?
         <div style={{ margin: "0 auto", display: "block" }}>
 

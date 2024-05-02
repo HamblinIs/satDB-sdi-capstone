@@ -46,6 +46,9 @@ function App() {
 
   const [ TLEData, setTLEData] = useState({});
 
+  const [category, setCategory] = useState('satellites'); // for "satellites" or "assessments" search
+  const [searchBarInput, setSearchBarInput] = useState(''); // for Nav for changing search input
+
   return (
     <>
       <div className="App">
@@ -54,7 +57,7 @@ function App() {
             {/* <Navbar /> */}
             <Routes>
               <Route exact path ="/" element={<Parallax />} />
-              <Route exact path ="/home" element={<MainPage />} >
+              <Route exact path ="/home" element={<MainPage setCategory={setCategory} setSearchBarInput={setSearchBarInput} />} >
                 <Route path="login" element={<Login />} />
                 <Route path="search" element={<HomePage />} />
                 <Route path="CreateAssessment" element={<CreateAssessment />} />
@@ -64,6 +67,7 @@ function App() {
                 <Route path="Satellites" element={<Celestrak setTLEData={setTLEData} />} />
                 <Route path="NewGroundTrack" element={<NewGroundTrack setTLEData={setTLEData} TLEData={TLEData} />} />
                 <Route path="SatelliteModelOrbit" element={<SatelliteModelOrbit />} />
+                <Route path="SatelliteResults" element={<SatelliteResults category={category} searchTerm={searchBarInput} />} />
               </Route>
 
 
@@ -73,7 +77,7 @@ function App() {
 
 
               <Route exact path ="/Background" element={<Background />} />
-              <Route exact path ="/SatelliteResults" element={<SatelliteResults />} />
+
             </Routes>
           </UserContext.Provider>
         </Router>

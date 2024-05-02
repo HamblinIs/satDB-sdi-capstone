@@ -7,7 +7,7 @@ import NewCreateSatellite from '../components/NewCreateSatellites/CreateNewSatel
 import './MainPage.css';
 
 
-export default function MainPage() {
+export default function MainPage( { setCategory, setSearchBarInput } ) {
   return (
     <div className='main-page'>
       <nav>
@@ -21,11 +21,13 @@ export default function MainPage() {
           <li><Link to="SatelliteDetails/1" >SatelliteDetails</Link></li>
           <li><Link to="Satellites" >Celestrak</Link></li>
           <li><Link to="SatelliteModelOrbit" >SatelliteModelOrbit</Link></li>
+          <li><Link to="SatelliteResults" >SatelliteResults</Link></li>
+
         </ul>
       </nav>
 
 
-      <Nav/>
+      <Nav setCategory={setCategory} setSearchBarInput={setSearchBarInput} />
       {/* <NewCreateSatellite/> */}
 
     </div>
