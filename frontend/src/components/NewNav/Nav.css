@@ -12,13 +12,9 @@
   justify-content: stretch;
   padding: 19px 54px 19px 54px;
   z-index: 0;
-  flex-grow: 1;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr;
-  position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-inline: auto;
 }
 
 .linkcontainer {
