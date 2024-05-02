@@ -74,7 +74,7 @@ export default function CreateAssessment() {
 
   return (
     <div className="assessment-container" >
-      <button onClick={() => navigate('../search')}>Back</button>
+      <button className="back-button" onClick={() => navigate('../search')}>Back</button>
       <h1 className='create-satellite-text roboto-regular'>Create Assessment</h1>
       <>
         <label>Name:

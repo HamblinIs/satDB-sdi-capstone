@@ -19,7 +19,7 @@ export default function PopMenu() {
                 {activeUser.email ? (
                     <option value='Logout' onClick={Out()}>Logout</option>
                 ) : (
-                    <option value='Login' onClick={navigate('/MainPage/login')}>Login</option>
+                    <option value='Login' onClick={navigate('/home/login')}>Login</option>
                 )
                 }
             </select>

@@ -10,9 +10,11 @@ import './MainPage.css';
 export default function MainPage() {
   return (
     <div className='main-page'>
-      <nav>
-        <Outlet/>
-        <ul>
+      {/* <nav> */}
+        <div className='page-container'>
+          <Outlet/>
+        </div>
+        {/* <ul>
           <li><Link to="login" >login</Link></li>
           <li><Link to="search" >search</Link></li>
           <li><Link to="CreateAssessment" >CreateAssessment</Link></li>
@@ -22,7 +24,7 @@ export default function MainPage() {
           <li><Link to="Satellites" >Celestrak</Link></li>
           <li><Link to="SatelliteModelOrbit" >SatelliteModelOrbit</Link></li>
         </ul>
-      </nav>
+      </nav> */}
 
 
       <Nav/>

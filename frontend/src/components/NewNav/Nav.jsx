@@ -57,7 +57,7 @@ export default function Nav() {
   };
 
   const handleHome = () => {
-    navigate('/MainPage')
+    navigate('/home')
   }
 
   const [category, setCategory] = useState('')

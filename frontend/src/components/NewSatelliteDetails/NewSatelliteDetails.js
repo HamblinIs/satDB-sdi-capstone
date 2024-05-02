@@ -44,22 +44,6 @@ text-align: center;
 
 
 
-const StyledButton = styled.button`
-    display: flex;
-    justify-content:center;
-    justify-items:center;
-    align-items:center;
-    align-content:center;
-    color: #081448;
-    border-radius: 3px;
-    border: 2px solid black;
-    background-color: #96a6ef;
-    width: 125px;
-    height: 35px;
-    font-weight: bold;
-`
-
-
 const imagesArr = ["https://cdn.defenseone.com/media/img/cd/2023/08/11/GettyImages_1407240226/open-graph.jpg", "https://spaceplace.nasa.gov/satellite/en/TEMPO.en.jpg", "https://media.istockphoto.com/id/1339097795/photo/satellite-orbiting-the-earth.jpg?s=612x612&w=0&k=20&c=FMG2NypIT0JuZVs26qSYOq2qTwsO89woydrwZimK21s="];
 
 export default function SatelliteDetails() {
@@ -131,9 +115,9 @@ export default function SatelliteDetails() {
 
   return (
     <div className="assessment-container">
-        <CenterDiv>
+      
 
-        <StyledButton onClick={() => navigate("../search")}>Back</StyledButton>
+        <button className='back-button' onClick={() => navigate("../search")}>Back</button>
         <h1 className='roboto-regular'>Satellite Details</h1>
         <div className="grid-3x2">
         <label>Satellite Orbit
@@ -170,7 +154,7 @@ export default function SatelliteDetails() {
         </div>
         <br />
 
-        <label>Associated Assessments:
+        <label>Associated Assessments
             {isEditing ? (
             <input className='searchbar3' type="text" name="assessments" value={satellite.assessments} onChange={handleChange} />
             ) : (
@@ -178,7 +162,7 @@ export default function SatelliteDetails() {
                 return (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <p key={`p1${index}`}>Name: {item.name} | Creation Date: {item.creation_date.slice(0,10)} </p>
-                    <StyledButton style={{marginLeft:'10px'}} onClick={() => navigate(`../AssessmentDetails/${item.id}`)}>Details</StyledButton>
+                    <button style={{marginLeft:'10px'}} onClick={() => navigate(`../AssessmentDetails/${item.id}`)}>Details</button>
                 </div>
                 )
             }
@@ -187,11 +171,11 @@ export default function SatelliteDetails() {
         <br />
 
         <div className="grid-2col">
-        <label>CAD Models:
+        <label>CAD Models
             <FilesListViewer state={satellite} setState={setSatellite} fileType="cad_models" isEditing={isEditing} />
         </label>
 
-        <label>Image Files:
+        <label>Image Files
             <FilesListViewer state={satellite} setState={setSatellite} fileType="images" isEditing={isEditing} />
         </label>
         </div>
@@ -209,7 +193,7 @@ export default function SatelliteDetails() {
         }
 
 
-    </CenterDiv>
+    
     </div>
   );
 }

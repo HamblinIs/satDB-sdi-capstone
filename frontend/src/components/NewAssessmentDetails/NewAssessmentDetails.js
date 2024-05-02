@@ -15,46 +15,6 @@ align-items: center;
 align-content: center;
 `
 
-const BackgroundDiv = styled.div`
-align-self: center;
-margin-top: 3%;
-margin-inline: auto;
-height: auto;
-width: 50vw;
-background: rgb(245, 246, 255);
-border: 1px solid #4a478a;
-border-radius: 34px;
-box-shadow: inset 5px 5px 9px 0px #FFFFFF, 15px 15px 8px 0px rgba(0, 0, 0, 0.3);
-/* overflow: hidden; */
-display: flex;
-align-items: start;
-align-content: stretch;
-justify-items: start;
-justify-content: center;
-padding: 75px 75px 75px 75px;
-z-index: 0;
-flex-direction: column;
-flex-wrap: nowrap;
-flex-grow: 1;
-text-align: center;
-/* margin: auto; */
-`
-
-const StyledButton = styled.button`
-    display: flex;
-    justify-content:center;
-    justify-items:center;
-    align-items:center;
-    align-content:center;
-    color: #081448;
-    border-radius: 3px;
-    border: 2px solid black;
-    background-color: #96a6ef;
-    width: 125px;
-    height: 35px;
-    font-weight: bold;
-`
-
 export default function AssessmentDetails() {
   const navigate = useNavigate();
   const { activeUser, setActiveUser } = useContext(UserContext);
@@ -65,6 +25,7 @@ export default function AssessmentDetails() {
 
   const [name, setName] = useState("");
   const [associatedSatellite, setAssociatedSatellite] = useState([]);
+  const [associatedSatList, setAssociatedSatList] = useState([]);
   const [creation_date, setCreationDate] = useState("");
   const [description, setDescription] = useState("");
   const [owner, setOwner] = useState("");
@@ -87,7 +48,22 @@ export default function AssessmentDetails() {
         setSimFiles(res.sim_files);
         setMiscFiles(res.misc_files);
       })
-  }, [assessmentId.id]);
+  }, [assessmentId.id, isEditing]);
+
+  useEffect(() => {
+    const satList = async () =>{
+      try {
+        await fetch('http://localhost:8080/satellites')
+        .then(response => response.json())
+        .then(data => {
+          setAssociatedSatList(data)
+        })
+      } catch (error) {
+        console.error('Failed to add assessment:', error);
+      }
+    }
+    satList();
+    }, [])
 
   const handleSave = () => {
 
@@ -122,12 +98,13 @@ export default function AssessmentDetails() {
   if (assessmentInfo) {
 
     return (
-    <BackgroundDiv>
-        <CenterDiv>
-        <StyledButton onClick={() => navigate("../search")}>Back</StyledButton>
+    <div className='assessment-container'>
+      
+        <button className='back-button' onClick={() => navigate("../search")}>Back</button>
         <h1 className='roboto-regular'>Assessment Details</h1>
 
-        <label>Name:
+        <div className='grid-3col'>
+        <label>Name
           {isEditing ? (
             <input className='searchbar3' type='text'  value={name} onChange={(e) => { setName(e.target.value) }} />
           ) : (
@@ -135,26 +112,7 @@ export default function AssessmentDetails() {
           )}
         </label>
 
-        <br />
-
-        <label>Associated Satellites:
-          {isEditing ? (
-            <input className='searchbar3' type='text' value={associatedSatellite} onChange={(e) => { associatedSatellite(e.target.value) }} />
-          ) : (
-            associatedSatellite.map(item => {
-              return (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <p>Name: {item.name} | Tail Number: {item.tail_num}</p>
-                  <StyledButton style={{marginLeft:'10px'}} onClick={() => navigate(`../SatelliteDetails/${item.id}`)}>Details</StyledButton>
-                </div>
-              )
-            })
-
-          )}
-        </label>
-
-        <br/>
-        <label>Creation Date:
+        <label>Creation Date
           {isEditing ? (
             <input className='searchbar3' type='text' value={creation_date} onChange={(e) => { setCreationDate(e.target.value) }} />
           ) : (
@@ -162,9 +120,7 @@ export default function AssessmentDetails() {
           )}
         </label>
 
-        <br />
-
-        <label>Description:
+        <label>Description
           {isEditing ? (
             <textarea value={description} onChange={(e) => { setDescription(e.target.value) }} />
           ) : (
@@ -172,7 +128,37 @@ export default function AssessmentDetails() {
           )}
         </label>
 
-        <br />
+        </div>
+
+        <label>Associated Satellites
+        {isEditing ? (
+            // <input type='text' value={associatedSatellite} onChange={(e) => { associatedSatellite(e.target.value) }} />
+            <label>Associated Satellite:
+              <select id="associatedSat" name="associatedSat"  onChange={(e) => {
+                console.log(e.target.value)
+                setAssociatedSatellite([{id: e.target.value}])}}>
+                <option value="">--Please choose an option--</option>
+                {associatedSatList.map(sat =>
+                  <option key={sat.tail_num} value={sat.id}>{`${sat.name}, Tail #: ${sat.tail_num}`}</option>
+                )}
+                  <option value="N/A">No Associated Satellites</option>
+              </select>
+            </label>
+          ) : (
+            associatedSatellite.map(item => {
+              return (
+                <div className='flex-container'>
+                  <p>Name: {item.name} | Tail Number: {item.tail_num}</p>
+                  <button onClick={() => navigate(`/SatelliteDetails/${item.id}`)}>View Details</button>
+                </div>
+              )
+            })
+
+          )}
+        </label>
+
+
+
 
         {/* Isaac needs to designate whether to make this field "created by" with the user accounts, or remove
         <label>Owner:
@@ -185,21 +171,22 @@ export default function AssessmentDetails() {
 
         <br /> */}
 
-        <label>Data Files:
-          <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="data_files" isEditing={isEditing} />
-        </label>
+        <div className='grid-3col'>
+          <label>Data Files
+            <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="data_files" isEditing={isEditing} />
+          </label>
 
-        <br />
-        <label>Simulation Files:
-          <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="sim_files" isEditing={isEditing} />
-        </label>
 
-        <br />
-        <label>Misc Files:
-          <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="misc_files" isEditing={isEditing} />
-        </label>
+          <label>Simulation Files
+            <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="sim_files" isEditing={isEditing} />
+          </label>
 
-        <br />
+
+          <label>Misc Files
+            <FilesListViewer state={assessmentInfo} setState={setAssessmentInfo} fileType="misc_files" isEditing={isEditing} />
+          </label>
+        </div>
+
 
         {Object.keys(activeUser).length>0 &&
         (isEditing ? (
@@ -209,14 +196,14 @@ export default function AssessmentDetails() {
         ))
         }
 
-        <br />
-
+        <div className='chart-area'>
         <h4>Visual Magnitude</h4>
-        <SimpleLineChart />
+        <div className='display-panel'>
+          <SimpleLineChart />
+        </div>
+        </div>
 
-        </CenterDiv>
-
-    </BackgroundDiv>
+    </div>
     );
   }
 }
