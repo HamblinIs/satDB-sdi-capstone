@@ -75,7 +75,7 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
   return (
     <div className='navbar'>
       {/* TITLE DIV */}
-      <p className='title'>Satellite Assessment Center</p>
+      <p className='title' onClick={handleHome}>Satellite Assessment Center</p>
       {/* SEARCH DIV */}
         <form onSubmit={handleSubmitSearch}>
           <input type="search" className='searchbar' placeholder='Search...' onChange={e => tempSearchBarInput = e.target.value}></input>
@@ -106,7 +106,6 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
       ) : ([])}
           <p onClick={viewGroundTrack}>Ground-Track</p>
           <p onClick={() => navigate('SatelliteModelOrbit')}>Satellite Orbit</p>
-          <FaHome className='home' onClick={handleHome} style={{ position: 'relative' }}/>
           {!activeUser.email ? (
           <Link to="Login" className="login" onClick={handleLinkClick}>Login</Link>
         ) : ([]) }

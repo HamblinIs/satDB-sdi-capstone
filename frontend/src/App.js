@@ -1,4 +1,3 @@
-import './index.css';
 import { BrowserRouter as Router, Routes, Route, Link, Outlet } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import AssessmentDetails from './components/NewAssessmentDetails/NewAssessmentDetails';

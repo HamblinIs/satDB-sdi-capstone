@@ -35,6 +35,10 @@
   grid-row: 1;
 }
 
+p {
+  cursor: pointer;
+}
+
 .login {
   grid-column: 4;
   grid-row: 1;
