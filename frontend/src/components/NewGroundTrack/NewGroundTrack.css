@@ -1,47 +1,20 @@
 .groundtrack-container {
-  position: relative;
-  align-self: center;
-  margin-top: 3%;
+  /* position: relative; */
   color: black;
-  padding-right: 20%;
-  margin-inline: auto;
-  height: auto;
-  max-width: 70vw;
+  height: 70vh;
   background: rgb(232, 221, 252);
   border: 1px solid #000000;
   border-radius: 34px;
   box-shadow: inset 5px 5px 9px 0px #FFFFFF, 15px 15px 8px 0px rgba(0, 0, 0, 0.3);
   overflow: hidden;
   display: flex;
-  align-items: start;
-  justify-content: center;
-  padding: 5%;
+  /* align-items: start; */
+  /* justify-content: center; */
   z-index: 0;
   /* margin: auto; */
 }
 
-.groundtrack-button{
-  margin-top: 20px;
-  margin-bottom: 60px;
-  width: 20vw;
-  height: 4vh;
-  flex-shrink: 0;
-  margin-left: 70px;
-  cursor: pointer;
-  /* color: rgba(255, 255, 255, 1); */
-}
-
-.submit-button{
-  margin-top: 10px;
-  margin-bottom: 20px;
-  margin-left: 10px;
-  align-content: center;
-
-  /* color: rgba(255, 255, 255, 1); */
-}
-
 .prop-container{
-margin-bottom: 30px;
 display: flex;
 flex-direction: column;
 text-align: center;
@@ -50,10 +23,17 @@ align-content: center;
 justify-content: center;
 }
 
+.assessment-container form {
+  align-items: center;
+  display: flex;
+  gap: 5px;
+}
+
 .prop-text {
   text-align: center;
   font-size: 30px;
   color: black;
+  width: fit-content;
 }
 
 .prop-input {
@@ -66,4 +46,10 @@ font-size: large;
 
 .map-container{
   padding-bottom: 20px;
+}
+
+.map-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

@@ -137,7 +137,7 @@ const BackgroundParallax = () => {
               e.currentTarget.style.color = '#fff';
               e.currentTarget.style.backgroundColor = '#000';
             }}
-            onClick = {() => {navigate('/home')}}
+            onClick = {() => {navigate('home/SatelliteResults')}}
             >ENTER HERE</button>
             <div>
               <ImageViewer images={starfireImages}/>

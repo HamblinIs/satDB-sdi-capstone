@@ -8,8 +8,6 @@
   font-size: 20px;
   color: black;
   border-radius: 29px;
-  min-height: 56px;
-  max-height: 56px;
   background-color: white;
   position: relative;
   width: 100%;
@@ -42,18 +40,18 @@
 }
 
 .login-text {
-  font-size: 30px;
+  font-size: 25px;
   color: #4a478a;
 }
 
 .login-text-header {
-  font-size: 50px;
+  font-size: 40px;
   color: #4a478a;
   margin: auto
 }
 
 .create-text-header {
-  font-size: 40px;
+  font-size: 35px;
   color: #4a478a;
   margin: auto
 }

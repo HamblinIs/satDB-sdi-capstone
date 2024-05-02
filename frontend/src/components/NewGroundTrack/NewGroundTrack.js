@@ -210,10 +210,10 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
 
     return (
 <>
-      <div className='groundtrack-container'>
+      <div className='assessment-container'>
         <div>
-            <button className='groundtrack-button' onClick={handleBack}>Back</button>
-            <button className='groundtrack-button' onClick={toggleMapType}>Toggle Map View</button>
+            <button className='back-button' onClick={handleBack}>Back</button>
+            
 
             <br/>
             <div className='prop-container'>
@@ -223,24 +223,23 @@ const myClosestPoint = findClosestPoint(starfire, longitudes, latitudes, altitud
             </label>
             <p>T={parseFloat(period).toFixed(2)} minutes</p>
 
-            <br/>
-
             {/* <button onClick={() => toggleShowAlternatives(!showAlternatives)}>{showAlternatives ? `Hide alternatives` : `Show alternatives`}</button> */}
 
-            <br/>
             </div>
 
             <form onSubmit={handleSubmit}>
-                <label className='prop-text'>TLE:
-                    <textarea defaultValue={`${TLEData.line1}\n${TLEData.line2}`} style={{height: '32px', width: '600px'}} onChange={handleCustomTLE} readOnly={false} />
-                </label>
+                <label className='prop-text'>TLE:</label>
+                    <textarea defaultValue={`${TLEData.line1}\n${TLEData.line2}`} style={{height: '32px', width: '100%'}} onChange={handleCustomTLE} readOnly={false} />
+                
                 <button className='submit-button' type="submit">Submit</button>
             </form>
 
             <div className='map-container'>
+            <div className='map-title'>
             <h1 className='prop-text'>{satelliteName}</h1>
-
-            <MapContainer center={[0, 0]} zoom={2} style={{ height: "90vh", width: "100%", marginLeft: "5%", border: "solid black" }}>
+            <button onClick={toggleMapType}>Toggle Map View</button>
+            </div>
+            <MapContainer center={[0, 0]} zoom={2} style={{ height: "50vh", width: "80vw", border: "solid black" }}>
 
 
             {mapType === 'normal' ? (

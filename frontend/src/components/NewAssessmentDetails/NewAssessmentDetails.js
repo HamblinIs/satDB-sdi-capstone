@@ -100,7 +100,7 @@ export default function AssessmentDetails() {
     return (
     <div className='assessment-container'>
       
-        <button className='back-button' onClick={() => navigate("../search")}>Back</button>
+        <button className='back-button' onClick={() => navigate("../SatelliteResults")}>Back</button>
         <h1 className='roboto-regular'>{name}</h1>
 
         <div className='grid-3col'>

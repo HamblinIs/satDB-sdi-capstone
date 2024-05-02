@@ -24,7 +24,7 @@ export default function Login() {
 
   const showChoice = (number) =>{
     setUserSelect(number)
-    setStep(2); // Update step to render the second container
+    setStep(number); // Update step to render the second container
   }
 
   const handleChange = (e, type) => {
@@ -70,7 +70,7 @@ export default function Login() {
           setActiveUser(response.userData)
           console.log(response.userData)
           alert('Login Successful!')
-          navigate('/home/SatelliteResults')
+          navigate('/home')
         }else{
           alert('Incorrect Username or Password.')
           console.log(response.status)
@@ -107,7 +107,7 @@ export default function Login() {
           alert('Created Account')
           setActiveUser(response.userData)
           console.log(response.userData)
-          navigate('/home/SatelliteResults')
+          navigate('/home')
         }else{
           alert('Failed to create account')
         }
@@ -127,8 +127,8 @@ export default function Login() {
   return (
 
 
-    <div style={{ display: 'grid'}}>
-      <div className='login-container'>
+    
+      <div className='assessment-container'>
         {step === 1 && ( // Render the first container if step is 1
           <>
             <h1 className='login-text-header'>Login</h1>
@@ -137,7 +137,7 @@ export default function Login() {
             <p className='login-text'>Password</p>
             <input type="password" id='password' className='searchbar' placeholder='Password'></input>
             <button className='login-button' onClick={ () => checkLogin()}>Submit</button>
-            <button className='login-button' onClick= {() => showChoice(2)}>Create Account</button>
+            <p style={{cursor: "pointer"}} onClick= {() => showChoice(2)}>Click Here To Register</p>
           </>
         )}
         {step === 2 && ( // Render the second container if step is 2
@@ -148,19 +148,19 @@ export default function Login() {
             <label className='login-text'> First Name
               <input type="text" className='searchbar' id="first" placeholder='Enter first name' onChange={(event) => handleChange(event, "first_name")} />
             </label>
-            <br/>
+            
             <label className='login-text'> Last Name
               <input type="text" className='searchbar' id="last" placeholder='Enter last name' onChange={(event) => handleChange(event, "last_name")} />
             </label>
-            <br/>
+            
             <label className='login-text'> Email
               <input type="text" className='searchbar' id="email" placeholder='Enter email address' onChange={(event) => handleChange(event, "email")} />
             </label>
-            <br/>
+            
             <label className='login-text'> Password
               <input type="password" className='searchbar' id="password" placeholder='Enter password' onChange={(event) => handleChange(event, "password")} />
             </label>
-            <br/>
+            
             <label className='login-text'> Purpose for Account
               <textarea className ='searchbar' id="purpose" onChange={(event) => handleChange(event, "purpose")} />
             </label>
@@ -170,13 +170,12 @@ export default function Login() {
               <p className={passwordValidity.letter ? 'valid' : 'invalid'}>Contain at least one capital letter</p>
               <p className={passwordValidity.specialCharacter ? 'valid' : 'invalid'}>Contain at least one special character</p>
             </div>
-
-            <br />
             <button className='login-button' onClick={registerUser}>Submit</button>
+            <p style={{cursor: "pointer"}} onClick= {() => showChoice(1)}>Already have an account? Click here.</p>
           </>
         )}
       </div>
-    </div>
+    
 
   )
 }
