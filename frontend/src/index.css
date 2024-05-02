@@ -63,6 +63,8 @@ button {
 .assessment-container {
   align-self: center;
   margin-inline: auto;
+  max-width: 100%;
+  min-width: fit-content;
   height: auto;
   background: rgb(232, 221, 252);
   border-radius: 34px;
