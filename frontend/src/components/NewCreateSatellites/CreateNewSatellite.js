@@ -84,7 +84,7 @@ return (
 <>
 
 <div className='assessment-container'>
-<button className='back-button' onClick={() => navigate('../search')}>Back</button>
+<button className='back-button' onClick={() => navigate('/home/SatelliteResults')}>Back</button>
   <h1 className='create-satellite-text roboto-regular'>Create Satellite</h1>
       <>
         <label>Name

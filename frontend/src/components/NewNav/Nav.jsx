@@ -54,8 +54,10 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
   }
 
   const handleLogOut = () => {
-    setIsOpen(false);
-    setActiveUser({});
+    if (window.confirm("Are you sure you want to logout?")) {
+      setIsOpen(false);
+      setActiveUser({});
+    };
   };
 
   const handleHome = () => {
@@ -96,10 +98,10 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
           </div>
         {/* <form className='radio' onChange={e => setCategory(e.target.value)}>
           <label>
-            <input type="radio" value="satellites" name="search_category" defaultChecked /> Satellites
+            <input type="radio" value="assessments" name="search_category" defaultChecked/> Assessments
           </label>
           <label>
-            <input type="radio" value="assessments" name="search_category" /> Assessments
+            <input type="radio" value="satellites" name="search_category" /> Satellites
           </label>
         </form> */}
       {/* LINK/Create DIV */}
@@ -119,7 +121,7 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
           <Link to="Login" className="login" onClick={handleLinkClick}>Login</Link>
         ) : ([]) }
         {activeUser.email ? (
-          <Link to=""  className="login" onClick={handleLogOut}>Logout</Link>
+          <Link to="/home/SatelliteResults"  className="login" onClick={handleLogOut}>Logout</Link>
         ) : ([]) }
       </div>
     </div>
