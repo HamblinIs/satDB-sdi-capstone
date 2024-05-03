@@ -92,17 +92,13 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
       {/* LINK/Create DIV */}
       <div className='linkcontainer'>
       {activeUser.email ? (
-        <div style={{ position: 'relative' }}>
-          <span className='create-button' onClick={handleToggle} style={{ position: 'relative' }}>
-            Create {isOpen ? <IoIosArrowUp/> : <IoIosArrowDown/>}
-          </span>
-          {isOpen && (
-            <div className='dropdown' style={{ top: '40px', left: 0 }}>
-              <Link to="CreateAssessment" onClick={handleLinkClick}>Create Assessment</Link>
-              <Link to="CreateNewSatellite" onClick={handleLinkClick}>Create Satellite</Link>
+            <div class="dropdown">
+              <p class="dropbtn">Create</p>
+              <div class="dropdown-content">
+                <Link to="CreateAssessment" onClick={handleLinkClick}>Create Assessment</Link>
+                <Link to="CreateNewSatellite" onClick={handleLinkClick}>Create Satellite</Link>
+              </div>
             </div>
-          )}
-          </div>
       ) : ([])}
           <p onClick={viewGroundTrack}>Ground-Track</p>
           <p onClick={() => navigate('SatelliteModelOrbit')}>Satellite Orbit</p>
