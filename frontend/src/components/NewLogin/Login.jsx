@@ -133,7 +133,7 @@ export default function Login() {
           <>
             <h1 className='login-text-header'>Login</h1>
             <p className='login-text'>Email</p>
-            <input type='text' id='username' className='searchbar' placeholder='Email'></input>
+            <input type='text' id='username' className='searchbar' placeholder='Email' autocomplete="off"></input>
             <p className='login-text'>Password</p>
             <input type="password" id='password' className='searchbar' placeholder='Password'></input>
             <button className='login-button' onClick={ () => checkLogin()}>Submit</button>
