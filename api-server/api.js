@@ -165,9 +165,11 @@ api.patch('/assessments/:id', async (req, res) => {
         await knex("misc_file_to_assessment").insert(misc_file_ids_added.map(misc_file => ({misc_file_id: misc_file.id, assessment_id: id})));
     }
 
-    await knex("satellite_to_assessment").where({assessment_id: id}).del();
-    console.log(satellites)
-    await knex("satellite_to_assessment").insert(satellites.map(satellite => ({satellite_id: satellite.id, assessment_id: id})));
+    if (satellites && satellites.length > 0) {
+        await knex("satellite_to_assessment").where({assessment_id: id}).del();
+        console.log(satellites)
+        await knex("satellite_to_assessment").insert(satellites.map(satellite => ({satellite_id: satellite.id, assessment_id: id})));
+    }
 
     knex('assessment')
         .where({id: id})
