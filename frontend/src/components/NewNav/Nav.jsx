@@ -81,14 +81,27 @@ export default function Nav( { setCategory, setSearchBarInput } ) {
           <input type="search" className='searchbar' placeholder='Search...' onChange={e => tempSearchBarInput = e.target.value}></input>
         </form>
       {/* RADIO DIV */}
-        <form className='radio' onChange={e => setCategory(e.target.value)}>
+        
+          <div className='category-select'>
+          <form className='radio' onChange={e => setCategory(e.target.value)}>
+              <div className='selection'>
+                <input id="assess" type="radio" value="assessments" name="search_category" defaultChecked />
+                <label for="assess">Assessments</label>
+              </div>
+              <div className='selection'>
+                <input id="sat" type="radio" value="satellites" name="search_category" />
+                <label for="sat">Satellites</label>
+              </div>
+          </form>
+          </div>
+        {/* <form className='radio' onChange={e => setCategory(e.target.value)}>
           <label>
             <input type="radio" value="satellites" name="search_category" defaultChecked /> Satellites
           </label>
           <label>
             <input type="radio" value="assessments" name="search_category" /> Assessments
           </label>
-        </form>
+        </form> */}
       {/* LINK/Create DIV */}
       <div className='linkcontainer'>
       {activeUser.email ? (

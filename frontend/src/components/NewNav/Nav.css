@@ -1,15 +1,14 @@
 .navbar {
   color: white;
-  width: 100vw;
   height:80px;
   background: #29274d;
   display: flex;
   align-items: center;
   justify-items: start;
   justify-content: space-between;
-  padding: 19px 54px 19px 54px;
+  padding: 19px 35px 19px 35px;
   z-index: 0;
-
+  /* gap: 10px; */
   margin-inline: auto;
 }
 
@@ -20,18 +19,15 @@
 .linkcontainer {
   font-size: 20px;
   position: relative;
-  width: 100px;
+  width: fit-content;
   background: rgba(255, 255, 255, 0);
   /* overflow: hidden; */
   display: flex;
   align-items: center;
   align-content: stretch;
-  justify-content: space-evenly;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  flex-grow: 1;
-  grid-column: 3;
-  grid-row: 1;
+  justify-content: space-between;
+  gap: 10px;
+  flex-basis: 30%;
 }
 
 p {
@@ -60,7 +56,7 @@ p {
   font-size: 36px;
   font-weight: 400;
   line-height: 1.2;
-  width: 502px;
+  width: fit-content;
   height: 45px;
   align-self: center;
   grid-column: 1;
@@ -88,12 +84,7 @@ p {
   grid-row: 1;
 }
 
-.radio {
-  margin-left: 20px;
-  grid-column: 2;
-  grid-row: 1;
-  justify-content: space-between;
-}
+
 
 /* .dropdown {
   display: flex;
@@ -108,7 +99,62 @@ p {
 .pointer {
   cursor: pointer;
 }
-/*////////////////////////////////////*/
+/*/////////////////Category Select/////////////////////*/
+
+.category-select {
+  height: 50%;
+  width: fit-content;
+  background-color: #17162c;
+  border-radius: 50px;
+  text-align: center;
+  padding-right: 20px;
+}
+
+.category-select label {
+  width: 100%;
+  margin: 0;
+  border-radius: 50px;
+  text-align: center;
+  display: inline-block;
+  height: 100%;
+  align-content: center;
+  padding-inline: 10px;
+}
+
+.radio {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+
+.selection {
+  height: 100%;
+  align-items: center;
+  align-content: center;
+}
+
+.category-select input:checked ~ label{
+  color: white;
+  background-color: rgb(67, 43, 112);
+  box-shadow: inset 3px 3px 4px 0px rgba(255, 255, 255, 0.13);
+  transition: background-color 0.3s ease;
+  transition: color 0.3s ease;
+}
+
+input {
+  appearance: none;
+  display: none;
+}
+
+.inner-block {
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+/*//////////////////Dropdown//////////////////*/
 .dropdown {
   float: left;
   overflow: hidden;
