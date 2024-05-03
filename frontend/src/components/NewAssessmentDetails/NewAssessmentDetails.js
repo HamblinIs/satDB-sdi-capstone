@@ -149,7 +149,7 @@ export default function AssessmentDetails() {
               return (
                 <div className='flex-container'>
                   <p>Name: {item.name} | Tail Number: {item.tail_num}</p>
-                  <button onClick={() => navigate(`/SatelliteDetails/${item.id}`)}>View Details</button>
+                  <button onClick={() => navigate(`../SatelliteDetails/${item.id}`)}>View Details</button>
                 </div>
               )
             })
