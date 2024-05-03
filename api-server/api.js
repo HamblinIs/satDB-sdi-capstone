@@ -101,8 +101,10 @@ api.patch('/satellites/:id', async (req, res) => {
         await knex("cad_model_to_satellite").insert(cad_model_ids_added.map(cad_model => ({cad_model_id: cad_model.id, satellite_id: id})));
     }
 
-    await knex("satellite_to_assessment").where({satellite_id: id}).del();
-    await knex("satellite_to_assessment").insert(assessments.map(assessment => ({satellite_id: id, assessment_id: assessment.id})));
+    if (assessments && assessments.length > 0) {
+        await knex("satellite_to_assessment").where({satellite_id: id}).del();
+        await knex("satellite_to_assessment").insert(assessments.map(assessment => ({satellite_id: id, assessment_id: assessment.id})));
+    }
 
     await knex('satellite')
         .where({id: id})
